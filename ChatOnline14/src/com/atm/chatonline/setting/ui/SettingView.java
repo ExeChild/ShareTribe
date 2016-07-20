@@ -89,8 +89,8 @@ public class SettingView extends BaseActivity implements OnClickListener{
 			
 		case R.id.font_size:
 			LogUtil.p(tag, "字体大小被点击");
-			Intent intent1 = new Intent(SettingView.this,SettingFont.class);
-			startActivity(intent1);
+//			Intent intent1 = new Intent(SettingView.this,SettingFont.class);
+//			startActivity(intent1);
 			break;
 			
 		case R.id.feedback:
