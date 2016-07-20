@@ -1,0 +1,95 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.atm.loginactivity.MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/edit_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="150dp"
+        android:padding="10dip" >
+
+        <com.atm.chatonline.chat.util.ClearEditText
+            android:id="@+id/edit_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_login_username"
+            android:hint="@string/username"
+            android:maxLength="15"
+            android:paddingBottom="3dp"
+            android:paddingEnd="10dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="10dp"
+            android:paddingStart="40dp"
+            android:paddingTop="3dp"
+            android:singleLine="true" />
+
+        <com.atm.chatonline.chat.util.ClearEditText
+            android:id="@+id/edit_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_account"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/text_login_key"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:maxLength="15"
+            android:paddingBottom="3dp"
+            android:paddingEnd="10dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="10dp"
+            android:paddingStart="40dp"
+            android:paddingTop="3dp"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_password"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn_login"
+            android:height="25dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp" >
+
+        <TextView
+            android:id="@+id/login_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="@string/error_login"
+            android:textColor="#33a3dc" />
+
+        <TextView
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/register"
+            android:textColor="#33a3dc" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="215dp"
+        android:text="@string/copy_label"
+        android:textColor="@color/blue" />
+
+</LinearLayout>

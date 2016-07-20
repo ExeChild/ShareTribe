@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+	    android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="#33cc66">
+        <ImageView
+            android:id="@+id/iv_return"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:src="@drawable/arrow"        
+            android:layout_centerVertical="true">        
+        </ImageView>
+        <TextView
+            android:id="@+id/department"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp" 
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:text="系别">
+        </TextView>	    
+	</RelativeLayout>
+
+    <RadioGroup 
+        android:id="@+id/radioGroup"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RadioButton 
+            android:id="@+id/finance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="金融系"/>
+        <RadioButton 
+            android:id="@+id/management"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="工商管理系"/>
+        <RadioButton 
+            android:id="@+id/insurance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="保险系"/>
+        <RadioButton 
+            android:id="@+id/technology"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="互联网金融与信息工程系"/>
+        <RadioButton 
+            android:id="@+id/account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="会计系"/>
+        <RadioButton 
+            android:id="@+id/law"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="法律系"/>
+    </RadioGroup>
+    <Button 
+        android:id="@+id/confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="确定"/>
+
+
+
+</LinearLayout>

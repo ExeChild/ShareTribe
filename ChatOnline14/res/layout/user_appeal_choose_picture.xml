@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    
+    android:orientation="vertical" 
+   	android:background="@drawable/bg_popwindow_select_picture">
+   <TextView 
+       android:id="@+id/carmera"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:padding="3dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="5dp"
+       android:textSize="18sp"
+       android:textColor="@color/black"
+       android:background="@drawable/bg_select_picture"
+       android:text="拍照"
+       />
+   <ImageView android:layout_width="match_parent"
+       android:layout_height="0.5dp"
+       android:layout_marginLeft="6dp"
+       android:layout_marginRight="8dp"
+       android:background="#000000"
+       android:contentDescription="line"/>
+<TextView 
+    android:id="@+id/gallery"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:padding="3dp"
+       android:layout_marginLeft="6dp"
+       android:layout_marginRight="8dp"
+       android:textSize="18sp"
+       android:background="@drawable/bg_select_picture"
+       android:textColor="@color/black"
+       android:text="相册"
+       />
+   <ImageView android:layout_width="match_parent"
+       android:layout_height="1dp"
+        android:layout_marginLeft="6dp"
+       android:layout_marginRight="8dp"
+       android:background="#000000"
+       android:contentDescription="line"/>
+    <TextView
+        android:id="@+id/btn_select_picture_cancel" 
+       	android:layout_width="match_parent"
+       	android:layout_height="wrap_content"
+        android:padding="3dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="6dp"
+       	android:textSize="18sp"
+       	android:background="@drawable/bg_select_picture"
+       	android:textColor="@color/black"
+       	android:text="取消"
+       />
+</LinearLayout>

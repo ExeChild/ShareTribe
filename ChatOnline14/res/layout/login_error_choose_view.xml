@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:background="@drawable/bg_popup"
+	android:padding="10dip" >
+	<Button
+		android:id="@+id/btn_forget_password"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/login_popup_password"/>
+	<Button
+		android:id="@+id/btn_find_username"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/login_popup_username"/>
+	
+	<Button
+		android:id="@+id/btn_cancel"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/login_popup_exit"/>
+	
+
+	
+
+</LinearLayout>
