@@ -505,10 +505,6 @@ public class ChatMainActivity extends BaseActivity implements OnClickListener,Re
 		InItView();
 	}
 	
-	protected void onResume(){
-		super.onResume();
-		getAllChildViews(ChatMainActivity.this);
-	}
 	/**
 	 * 将从服务器返回的群列表插入数据库，当且仅当第一次注册登录或删除本地数据库后登录调用
 	 * @param groupList

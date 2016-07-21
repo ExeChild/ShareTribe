@@ -687,9 +687,5 @@ public class BBSMainView extends BaseActivity implements OnClickListener {
 		
 	}
 
-	protected void onResume(){
-		super.onResume();
-		getAllChildViews(BBSMainView.this);
-	}
 
 }

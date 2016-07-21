@@ -163,31 +163,31 @@ public class SlidingTitleLayout extends LinearLayout implements OnClickListener{
 		headImage = (CircleImageView) slidingMenu.findViewById(R.id.btn_headimage);
 		btnexit = (Button) slidingMenu.findViewById(R.id.btn_slide_exit);
 		
-		
-		txt_bbs = (TextView)slidingMenu.findViewById(R.id.btn_bbs);
-		
-		txt_chat = (TextView)slidingMenu.findViewById(R.id.btn_chat);
-		
-		txt_recuit = (TextView)slidingMenu.findViewById(R.id.btn_recuit);
-		txt_news = (TextView)slidingMenu.findViewById(R.id.btn_news);
-		txt_personal = (TextView)slidingMenu.findViewById(R.id.btn_personal);
-		
-		txt_msg = (TextView)slidingMenu.findViewById(R.id.btn_msg);
-		txt_setting = (TextView)slidingMenu.findViewById(R.id.btn_settings);
-		
-		btnexit.setTextSize(BaseActivity.fontSize);
-		
-		LogUtil.p(tag, "111BaseActivity.fontSize:"+BaseActivity.fontSize);
-		txt_bbs.setTextSize(BaseActivity.fontSize);
-		LogUtil.p(tag, "222");
-		txt_chat.setTextSize(BaseActivity.fontSize);
-		LogUtil.p(tag, "333");
-		txt_recuit.setTextSize(BaseActivity.fontSize);
-		txt_news.setTextSize(BaseActivity.fontSize);
-		txt_personal.setTextSize(BaseActivity.fontSize);
-		LogUtil.p(tag, "44");
-		txt_msg.setTextSize(BaseActivity.fontSize);
-		txt_setting.setTextSize(BaseActivity.fontSize);
+		//经过讨论，先暂时去掉
+//		txt_bbs = (TextView)slidingMenu.findViewById(R.id.btn_bbs);
+//		
+//		txt_chat = (TextView)slidingMenu.findViewById(R.id.btn_chat);
+//		
+//		txt_recuit = (TextView)slidingMenu.findViewById(R.id.btn_recuit);
+//		txt_news = (TextView)slidingMenu.findViewById(R.id.btn_news);
+//		txt_personal = (TextView)slidingMenu.findViewById(R.id.btn_personal);
+//		
+//		txt_msg = (TextView)slidingMenu.findViewById(R.id.btn_msg);
+//		txt_setting = (TextView)slidingMenu.findViewById(R.id.btn_settings);
+//		
+//		btnexit.setTextSize(BaseActivity.fontSize);
+//		
+//		LogUtil.p(tag, "111BaseActivity.fontSize:"+BaseActivity.fontSize);
+//		txt_bbs.setTextSize(BaseActivity.fontSize);
+//		LogUtil.p(tag, "222");
+//		txt_chat.setTextSize(BaseActivity.fontSize);
+//		LogUtil.p(tag, "333");
+//		txt_recuit.setTextSize(BaseActivity.fontSize);
+//		txt_news.setTextSize(BaseActivity.fontSize);
+//		txt_personal.setTextSize(BaseActivity.fontSize);
+//		LogUtil.p(tag, "44");
+//		txt_msg.setTextSize(BaseActivity.fontSize);
+//		txt_setting.setTextSize(BaseActivity.fontSize);
 		
 		l1.setOnClickListener(this);
 		l2.setOnClickListener(this);

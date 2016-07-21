@@ -222,10 +222,6 @@ public class PersonalMessageActivity extends BaseActivity implements OnClickList
 			con.reqPersonINFO(friendID);
 		}
 	};
-	protected void onResume(){
-		super.onResume();
-		getAllChildViews(PersonalMessageActivity.this);
-	}
 
 	@Override
 	public void processMessage(Message msg) {

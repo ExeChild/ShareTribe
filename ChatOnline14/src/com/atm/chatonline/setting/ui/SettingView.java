@@ -43,7 +43,7 @@ public class SettingView extends BaseActivity implements OnClickListener{
 	void initUI(){
 		btnBack = (Button)findViewById(R.id.btn_back);
 		account_ll = (LinearLayout)findViewById(R.id.acconut_for_safe);
-		font_size_ll = (LinearLayout)findViewById(R.id.font_size);
+//		font_size_ll = (LinearLayout)findViewById(R.id.font_size);
 		feedback_ll = (LinearLayout)findViewById(R.id.feedback);
 		about_us_ll = (LinearLayout)findViewById(R.id.about_us);
 		title = (TextView)findViewById(R.id.title);
@@ -67,10 +67,10 @@ public class SettingView extends BaseActivity implements OnClickListener{
 		
 	}
 
-	protected void onResume(){
-		super.onResume();
-		getAllChildViews(SettingView.this);
-	}
+//	protected void onResume(){
+//		super.onResume();
+//		getAllChildViews(SettingView.this);
+//	}
 	
 
 	@Override
@@ -86,12 +86,12 @@ public class SettingView extends BaseActivity implements OnClickListener{
 			Intent intent = new Intent(SettingView.this,AccountSafe.class);
 			startActivity(intent);
 			break;
-			
-		case R.id.font_size:
-			LogUtil.p(tag, "字体大小被点击");
-//			Intent intent1 = new Intent(SettingView.this,SettingFont.class);
-//			startActivity(intent1);
-			break;
+			//经过讨论先暂时去掉2017.7.19
+//		case R.id.font_size:
+//			LogUtil.p(tag, "字体大小被点击");
+////			Intent intent1 = new Intent(SettingView.this,SettingFont.class);
+////			startActivity(intent1);
+//			break;
 			
 		case R.id.feedback:
 			LogUtil.p(tag, "反馈被点击");
