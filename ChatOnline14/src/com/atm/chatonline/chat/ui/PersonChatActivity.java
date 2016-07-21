@@ -383,6 +383,7 @@ public class PersonChatActivity extends BaseActivity implements OnClickListener,
 			PersonChatActivity.this.onBackPressed();
 		}else if(id==R.id.personal_message){
 			Intent intent=new Intent(PersonChatActivity.this,PersonalMessageActivity.class);
+			intent.putExtra("friendID", friendID);
 			startActivity(intent);
 		}else if(id==R.id.btn_emjio){
 			if(!isFaceShow){

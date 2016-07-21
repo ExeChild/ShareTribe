@@ -38,6 +38,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.atm.charonline.bbs.util.LogUtil;
 import com.atm.chatonline.bbs.commom.CircleImageView;
 import com.atm.chatonline.bbs.commom.MyTextListener;
 import com.atm.chatonline.bbs.commom.UriAPI;
@@ -227,6 +228,7 @@ public class BasicMessage extends BaseActivity implements OnClickListener{
 		tvEmail.setText(email);
 		etMotto.setText(sign);
 		etNickName.setText(nickname);
+		
 		iv.setImageBitmap(img);
 		etPosition.setText(jobTitle);
 		tvSex.setText(sex);

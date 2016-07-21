@@ -5,6 +5,8 @@ public class User {
 	private static String pwd;
 	private static String head;
 	
+	private static String nickName="ShareTribe";
+	
 	
 
 	public User(){}
@@ -34,4 +36,11 @@ public class User {
 		this.head = head;
 	}
 	
+	public static String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
 }

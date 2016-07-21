@@ -1,6 +1,6 @@
 package com.atm.chatonline.schoolnews.ui;
 
-import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +8,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -23,6 +22,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewParent;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
@@ -37,17 +37,13 @@ import com.atm.charonline.bbs.util.BBSConnectNet;
 import com.atm.charonline.bbs.util.ExtendsIntent;
 import com.atm.charonline.bbs.util.LogUtil;
 import com.atm.charonline.bbs.util.ReceivePhoto;
-import com.atm.charonline.recuit.ui.RecuitListView;
-import com.atm.chatonline.bbs.activity.bbs.BBSMainView;
-import com.atm.chatonline.chat.ui.ChatMainActivity;
 import com.atm.chatonline.chat.ui.BaseActivity;
 import com.atm.chatonline.chat.util.Config;
 import com.atm.chatonline.schoolnews.adapter.NewsAdapter;
 import com.atm.chatonline.schoolnews.bean.News;
 import com.atm.chatonline.schoolnews.bean.TopNews;
+import com.atm.chatonline.schoolnews.util.ImageHandler;
 import com.atm.chatonline.schoolnews.util.NewsXmlParser;
-import com.atm.chatonline.setting.ui.SettingView;
-import com.atm.chatonline.usercenter.activity.usercenter.UserCenter;
 import com.example.studentsystem01.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -61,7 +57,7 @@ public class SchoolNewsActivity extends BaseActivity {
 	private SlidingMenu slidingMenu;
 	//滑动图片的集合
 	private ArrayList<View> imagePageViews = null;
-	private ViewPager viewPager = null;
+	public ViewPager viewPager = null;
 	//当前ViewPager索引
 	private int pageIndex = 0;
 	//控件切换
@@ -96,7 +92,8 @@ public class SchoolNewsActivity extends BaseActivity {
 	private List<News> newsList = new ArrayList<News>();
 	
 	
-	private Handler handler;
+	public Handler handler;
+	public ImageHandler imageHandler = new ImageHandler(new WeakReference<SchoolNewsActivity>(this));
 	
 	private BBSConnectNet bBSConnectNet;
 	private NewsAdapter newsAdapter;
@@ -116,6 +113,8 @@ public class SchoolNewsActivity extends BaseActivity {
 		loadData();
 //		initWidget();
 		
+		//开始轮流播放
+		imageHandler.sendEmptyMessageDelayed(ImageHandler.MSG_UPDATE_IMAGE, ImageHandler.MSG_DELAY);
 		
 		handler = new Handler(){
 			public void handleMessage(Message msg){
@@ -354,11 +353,27 @@ public class SchoolNewsActivity extends BaseActivity {
 		}
 
 		@Override
-		public Object instantiateItem(View arg0, int arg1) {
+		public Object instantiateItem(View container, int position) {//public Object instantiateItem(View arg0, int arg1) {
 			// TODO Auto-generated method stub
-			((ViewPager) arg0).addView(imagePageViews.get(arg1));
-
-			return imagePageViews.get(arg1);
+//			((ViewPager) arg0).addView(imagePageViews.get(arg1));
+//
+//			return imagePageViews.get(arg1);
+		    //对ViewPager页号求模取出View列表中要显示的项
+            position %= imagePageViews.size();
+            if (position<0){
+                position = imagePageViews.size()+position;
+            }
+            View view = imagePageViews.get(position);
+            //如果View已经在之前添加到了一个父组件，则必须先remove，否则会抛出IllegalStateException。
+            ViewParent vp =view.getParent();
+            if (vp!=null){
+                ViewGroup parent = (ViewGroup)vp;
+                parent.removeView(view);
+            }
+            ((ViewGroup) container).addView(view);  
+            //add listeners here if necessary
+            return view; 
+			
 		}
 
 		@Override
@@ -389,10 +404,18 @@ public class SchoolNewsActivity extends BaseActivity {
 	// 滑动页面更改事件监听器
 	private class ImagePageChangeListener implements OnPageChangeListener {
 		@Override
-		public void onPageScrollStateChanged(int arg0) {
-			// TODO Auto-generated method stub
-		
-		}
+		   public void onPageScrollStateChanged(int arg0) {
+            switch (arg0) {
+            case ViewPager.SCROLL_STATE_DRAGGING:
+                handler.sendEmptyMessage(ImageHandler.MSG_KEEP_SILENT);
+                break;
+            case ViewPager.SCROLL_STATE_IDLE:
+                handler.sendEmptyMessageDelayed(ImageHandler.MSG_UPDATE_IMAGE, ImageHandler.MSG_DELAY);
+                break;
+            default:
+                break;
+            }
+        }
 
 		@Override
 		public void onPageScrolled(int arg0, float arg1, int arg2) {

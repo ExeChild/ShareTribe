@@ -71,7 +71,7 @@ public class SlidingTitleLayout extends LinearLayout implements OnClickListener{
 	private CircleImageView headImage;
 	private String subPath="atm_getUserHead.action";
 	private String headSubPath;
-	private TextView txt_bbs,txt_chat,txt_recuit,txt_news,txt_personal,txt_msg,txt_setting;
+	private TextView txt_name;
 	
 //	private MtitlePopupWindow popupWindow1;
 	/**
@@ -162,7 +162,6 @@ public class SlidingTitleLayout extends LinearLayout implements OnClickListener{
 		l6 = (LinearLayout) slidingMenu.findViewById(R.id.setting);
 		headImage = (CircleImageView) slidingMenu.findViewById(R.id.btn_headimage);
 		btnexit = (Button) slidingMenu.findViewById(R.id.btn_slide_exit);
-		
 		//经过讨论，先暂时去掉
 //		txt_bbs = (TextView)slidingMenu.findViewById(R.id.btn_bbs);
 //		

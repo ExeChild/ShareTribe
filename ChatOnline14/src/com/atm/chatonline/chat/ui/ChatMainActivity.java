@@ -371,42 +371,7 @@ public class ChatMainActivity extends BaseActivity implements OnClickListener,Re
 
 	
 	public void onClick(View v) {
-//		int id = v.getId();
-//		if (id == R.id.imgView_more) {
-//			popupWindow.showAsDropDown(v);
-//		}else if(id==R.id.imgView_person_center){
-//			Log.i(tag, "个人中心被点了");
-//			slidingMenu.toggle(true);
-//		}
-		switch(v.getId()){
 		
-			
-		case R.id.imgView__chat_search:
-			popupWindow.showAsDropDown(v);
-			break;
-		case R.id.imgView_person_center:
-			Log.i(tag, "控件切换被点");
-			slidingMenu.toggle(true);
-			break;
-		case R.id.bbs:
-			Log.i(tag, "从ChatMainActivity跳回到BBSMainView");
-			Intent intent = new Intent(ChatMainActivity.this, BBSMainView.class);
-//			slidingMenu.toggle(false);
-			startActivity(intent);
-			break;
-		case R.id.news:
-			Log.i(tag, "校友动态被点击");
-			Intent intent2 = new Intent(ChatMainActivity.this,SchoolNewsActivity.class);
-//			slidingMenu.toggle(false);
-			startActivity(intent2);
-			break;
-		case R.id.user_center:
-			Log.i(tag, "个人中心被点击");
-			Intent intent1=new Intent(ChatMainActivity.this,UserCenter.class);
-			slidingMenu.toggle(false);
-			startActivity(intent1);
-			break;
-		}
 	}
 	
 	/**
