@@ -52,7 +52,7 @@ public class SettingView extends BaseActivity implements OnClickListener{
 		title.setText(sps);
 		btnBack.setOnClickListener(this);
 		account_ll.setOnClickListener(this);
-		font_size_ll.setOnClickListener(this);
+//		font_size_ll.setOnClickListener(this);
 		feedback_ll.setOnClickListener(this);
 		about_us_ll.setOnClickListener(this);
 	}
