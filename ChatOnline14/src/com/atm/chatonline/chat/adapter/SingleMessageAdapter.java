@@ -37,10 +37,8 @@ public class SingleMessageAdapter extends ArrayAdapter<Friend>{
 			viewHolder.signature = (TextView)view.findViewById(R.id.personal_content);
 			viewHolder.school = (TextView)view.findViewById(R.id.school_content);
 			viewHolder.department = (TextView)view.findViewById(R.id.department_content);
-			viewHolder.publishNoteNum = (TextView)view.findViewById(R.id.publish_note_number);
 			viewHolder.publishNoteTitle = (TextView)view.findViewById(R.id.publish_note_title);
 			viewHolder.publishNoteDetail = (TextView)view.findViewById(R.id.publish_note_detail);
-			viewHolder.collectNoteNum = (TextView)view.findViewById(R.id.collect_note_number);
 			viewHolder.collectNoteTitle = (TextView)view.findViewById(R.id.collect_note_title);
 			viewHolder.collectNoteDetail = (TextView)view.findViewById(R.id.collect_note_details);
 			view.setTag(viewHolder);
@@ -52,10 +50,8 @@ public class SingleMessageAdapter extends ArrayAdapter<Friend>{
 		viewHolder.signature.setText(friend.getSignature());
 		viewHolder.school.setText(friend.getSchool());
 		viewHolder.department.setText(friend.getDepartment());
-		viewHolder.publishNoteNum.setText(friend.getPublishNoteNum());
 		viewHolder.publishNoteTitle.setText(friend.getPublishNoteTitle());
 		viewHolder.publishNoteDetail.setText(friend.getPublishNoteDetail());
-		viewHolder.collectNoteNum.setText(friend.getCollectNoteNum());
 		viewHolder.collectNoteTitle.setText(friend.getCollectNoteTitle());
 		viewHolder.collectNoteDetail.setText(friend.getCollectNoteDetail());
 		
@@ -81,10 +77,8 @@ public class SingleMessageAdapter extends ArrayAdapter<Friend>{
 		TextView signature;
 		TextView school;
 		TextView department;
-		TextView publishNoteNum;
 		TextView publishNoteTitle;
 		TextView publishNoteDetail;
-		TextView collectNoteNum;
 		TextView collectNoteTitle;
 		TextView collectNoteDetail;
 	}

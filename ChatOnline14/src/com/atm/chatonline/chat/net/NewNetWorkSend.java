@@ -8,6 +8,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.util.Log;
 
 import com.atm.charonline.bbs.util.LogUtil;
@@ -291,6 +294,23 @@ public class NewNetWorkSend {
 		buffer.putInt(Config.MESSAGE_OFFLINE);
 		put(userId);
 		writeBuffer();
+	}
+	
+	//发送请求获取我的消息
+	public boolean getMyMessage(String userId,Integer type){
+		JSONObject json=new JSONObject();
+		try {
+			json.put("userId", userId);
+			json.put("type", type);
+		} catch (JSONException e) {
+			System.out.println("发送获取我的消息请求时，json 构造异常");
+			return false;
+		}
+		buffer = ByteBuffer.allocateDirect(8+json.toString().getBytes().length);
+		buffer.putInt(Config.MY_MESSAGE);
+		put(userId);
+		writeBuffer();
+		return true;
 	}
 	
 	//请求查看朋友信息

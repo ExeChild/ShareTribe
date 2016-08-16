@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@color/green"
+	android:background="@drawable/background_personal_message"
 	android:paddingTop="5dip"
 	android:paddingBottom="5dip"
 	android:paddingLeft="10dip"

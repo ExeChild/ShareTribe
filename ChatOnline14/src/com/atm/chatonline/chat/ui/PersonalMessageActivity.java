@@ -17,7 +17,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -39,6 +39,8 @@ public class PersonalMessageActivity extends BaseActivity implements OnClickList
 	private TextView peopleName;	//人物名
 	private TextView attentions;	//关注人数
 	private TextView followers;		//粉丝人数
+	private TextView publishNoteNum;//发帖数量
+	private TextView collectNoteNum;//收藏帖数量
 	private ListView messageLV;		//消息列表
 	private List<Friend> friendMessage = new ArrayList<Friend>();
 	private Handler handler;
@@ -47,6 +49,7 @@ public class PersonalMessageActivity extends BaseActivity implements OnClickList
 	private SingleMessageAdapter singleMessageAdapter;
 	private Bitmap trueBitmap;//黄色
 	private Bitmap falseBitmap;//白色
+	private LinearLayout ll_attentions,ll_followers;
 	
 	public void onCreate(Bundle savedInstanceState){
 		Log.i(tag, "即将进入PersonalMessageActivity");
@@ -67,8 +70,10 @@ public class PersonalMessageActivity extends BaseActivity implements OnClickList
 					imgHead.setImageBitmap(friendMessage.get(0).getBm());//friendMessage.get(0).getBm()
 					peopleName.setText(friendMessage.get(0).getNickName());
 					Log.i(tag, "朋友的名字是:"+friendMessage.get(0).getNickName());
-					attentions.setText("关注:"+friendMessage.get(0).getAttentions()+"人");
-					followers.setText("粉丝:"+friendMessage.get(0).getFollowers()+"人");
+					attentions.setText(friendMessage.get(0).getAttentions());
+					followers.setText(friendMessage.get(0).getFollowers());
+					publishNoteNum.setText(friendMessage.get(0).getPublishNoteNum());
+					collectNoteNum.setText(friendMessage.get(0).getCollectNoteNum());
 					singleMessageAdapter = new SingleMessageAdapter(PersonalMessageActivity.this,R.layout.personal_message_simpleitem,friendMessage);
 					messageLV.setAdapter(singleMessageAdapter);
 					singleMessageAdapter.notifyDataSetChanged();
@@ -89,6 +94,8 @@ public class PersonalMessageActivity extends BaseActivity implements OnClickList
 		btnAttention.setOnClickListener(this);
 		attentions.setOnClickListener(this);
 		followers.setOnClickListener(this);
+		ll_attentions.setOnClickListener(this);
+		ll_followers.setOnClickListener(this);
 //		initAttention();
 	}
 	
@@ -100,7 +107,11 @@ public class PersonalMessageActivity extends BaseActivity implements OnClickList
 		peopleName = (TextView)findViewById(R.id.sixin_username);
 		attentions = (TextView)findViewById(R.id.attentions);
 		followers = (TextView)findViewById(R.id.followers);
-		messageLV = (ListView)findViewById(R.id.messge_list);
+		publishNoteNum = (TextView)findViewById(R.id.publish_note_number);
+		collectNoteNum = (TextView)findViewById(R.id.collect_note_number);
+		messageLV = (ListView)findViewById(R.id.message_list);
+		ll_attentions = (LinearLayout)findViewById(R.id.ll_attentions);
+		ll_followers = (LinearLayout)findViewById(R.id.ll_followers);
 		trueBitmap = BitmapFactory.decodeResource(getResources(),
 				R.drawable.heart_pressed);
 		falseBitmap = BitmapFactory.decodeResource(getResources(),
@@ -171,7 +182,7 @@ public class PersonalMessageActivity extends BaseActivity implements OnClickList
 			intent.putExtra("nickName", friendMessage.get(0).getNickName());
 			intent.putExtra("bm", FileUtil.BitmapToBytes(friendMessage.get(0).getBm(),false));
 			startActivity(intent);
-		}else if(id==R.id.attentions){
+		}else if(id==R.id.ll_attentions){
 			Log.i(tag, "你点击了这个人的关注列表");
 			Log.i(tag, "userID:"+userID+"、friendID:"+friendMessage.get(0).getFriendID()+"nickName:"+friendMessage.get(0).getNickName());
 			Intent intent=new Intent(this,AttentionActivity.class);
@@ -180,7 +191,7 @@ public class PersonalMessageActivity extends BaseActivity implements OnClickList
 			intent.putExtra("friendID", friendMessage.get(0).getFriendID());
 			intent.putExtra("nickName", friendMessage.get(0).getNickName());
 			startActivity(intent);
-		}else if(id==R.id.followers){
+		}else if(id==R.id.ll_followers){
 			Log.i(tag, "你点击了这个人的粉丝列表");
 			Log.i(tag, "userID:"+userID+"、friendID:"+friendMessage.get(0).getFriendID()+"nickName:"+friendMessage.get(0).getNickName());
 			Intent intent=new Intent(this,FollowersActivity.class);

@@ -371,7 +371,7 @@ public class BBSMainView extends BaseActivity implements OnClickListener {
 		// Looper.prepare();
 		view01 = getLocalActivityManager().startActivity("activity01",
 				new Intent(intent1)).getDecorView();
-		Log.i(tag, "!!!!!!!!!!");
+		Log.i(tag, "!!!!!!!!!! view01ÊÇ·ñÎªnull="+(view01==null));
 		view02 = getLocalActivityManager().startActivity("activity02",
 				new Intent(BBSMainView.this, BBSDepartmentView.class))
 				.getDecorView();

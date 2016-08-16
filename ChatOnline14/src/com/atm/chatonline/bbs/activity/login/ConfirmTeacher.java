@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atm.charonline.bbs.util.SendRegisterTeacher;
@@ -28,6 +29,7 @@ public class ConfirmTeacher extends Activity implements OnClickListener{
 	private Handler handler;
 	IsNetworkAvailable conNetwork;
 	private SendRegisterTeacher sendRegisterTeacher;
+	private TextView title;
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -62,6 +64,8 @@ public class ConfirmTeacher extends Activity implements OnClickListener{
 		btnSure = (Button)findViewById(R.id.btn_register);
 		editTeaNum = (EditText)findViewById(R.id.edit_teacher_num);
 		editTeaSchoolPwd = (EditText)findViewById(R.id.edit_teacher_pwd);
+		title = (TextView)findViewById(R.id.title);
+		title.setText("教师身份认证");
 	}
 
 	@Override

@@ -18,7 +18,7 @@
 	<string name="login_popup_password">忘记密码</string>
 	<string name="login_popup_username">找回账号</string>
 	<string name="login_popup_exit">取	消</string>
-	<string name="forget_password_desc">请输入您的账号或注册邮箱</string>
+	<string name="forget_password_desc">请输入您的注册邮箱</string>
 	<string name="forget_password_pwd">账	户：</string>
 	<string name="appeal">申诉</string>
 	<string name="submit">确	定</string>
@@ -50,4 +50,48 @@
 	<string name="share_desc">分享到第三方app的imageview描述</string>
 	<string name="share_timeline">微信朋友圈</string>
 	<string name="share_friend">微信朋友</string>
+	
+	
+	<!-- 分享用的字符串 -->
+	<string name="recuit_title">招聘</string>
+	<string name="recuit_content">ShareTribe招聘功能旨在为校友提供一个可靠的、便捷的找实习或功左的分享平台，在校生或已毕业的校友可以发布招聘信息</string>
+	<string name="apply_title">求职</string>
+	<string name="apply_content">ShareTribe求职功能旨在为广大的校友提供另一个可靠的、便捷的求职平台，在校生或还没找到工作的校友可以发布求职信息</string>
+	
+	
+	
+	<!-- usermessage string ，回复我的包含在评论当中 -->
+	<string name="title_user_msg">我的消息</string>
+	
+	<string name="apply_msg_str">评	论</string>
+	<string name="reply_msg_str">\@	 我</string>
+	<string name="system_msg_str">通	  知</string>
+	
+	
+	<!-- basicmessage text -->
+	<string name="basic_message_email">邮箱</string>
+	<string name="basic_message_dept">系别</string>
+	<string name="basic_message_major">专业</string>
+	<string name="basic_message_school">学校</string>
+	<string name="basic_message_phone">联系方式</string>
+	<string name="basic_message_job">职位</string>
+    <string name="basic_message_sex">性别</string>
+    <string name="basic_message_name">姓名</string>
+    <string name="basic_message_nickname">昵称</string>
+    <string name="basic_message_note">签名</string>
+    <string name="basic_message_note_hint">您还没有设置签名(200个字以内)</string>
+    <string name="basic_message_line_desc">底部线条</string>
+    
+    <!-- 我的帖子 text -->
+    <string name="mybbs_publish_note">发布</string>
+    <string name="mybbs_relate_note">相关</string>
+    <string name="mybbs_collect_note">收藏</string>
+    
+    <!-- 我的消息的string -->
+    <string name="replymsg_test_text">\@刘琴依\：来看看这个帖子很有用\>\>\n这是一个跳转链接</string>
+    <string name="applymsg_test_text">评论：这条帖子很有趣，快过来看看看看看看快过来看看看看看看快过来看看看看看看快过来看看看看看看快过来看看看看看看</string>
+    <string name="replymsg_reply_mark_text">\@</string>
+    <string name="replymsg_reply_colon_text">\:</string>
+    <string name="replymsg_replied_nickname_text">刘琴依昵称的昵称的昵称</string>
+    <string name="replymsg_reply_content_text">来看看这个帖子很有用很有用很有用很有用</string>
 </resources>

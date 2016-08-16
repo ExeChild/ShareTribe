@@ -40,6 +40,7 @@ import com.atm.chatonline.schoolnews.ui.RecommendActivity;
 import com.atm.chatonline.schoolnews.ui.SchoolNewsActivity;
 import com.atm.chatonline.setting.ui.SettingView;
 import com.atm.chatonline.usercenter.activity.usercenter.UserCenter;
+import com.atm.chatonline.usermsg.ui.MyMessageActivity;
 import com.example.studentsystem01.R;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -56,14 +57,16 @@ public class SlidingTitleLayout extends LinearLayout implements OnClickListener{
 	private ImageView imgViewPerCenter, imgViewEdit, imgViewSearch;
 	private ImageView imgViewChatSearch,imgViewMore;
 	private ImageView imgViewInvite;
-	private LinearLayout l1,l2,l3,l4,l5,l6;
+	private LinearLayout l1,l2,l3,l4,l5,l6,l7;
 	private Activity activity;
 	private String ACTIVITY;
 	private String BBS="com.atm.chatonline.bbs.activity.bbs.BBSMainView";
 	private String RECUIT="com.atm.charonline.recuit.ui.RecuitMainView";
 	private String CHAT="com.atm.chatonline.chat.ui.ChatMainActivity";
 	private String SCHOOLNEWS="com.atm.chatonline.schoolnews.ui.SchoolNewsActivity";
-	Intent intent1,intent2,intent3,intent0,intent4,intent5,intent6,intentRecommend;
+	private String MY_MSG="com.atm.chatonline.usermsg.ui.MyMessageActivity";
+	private String USER_CENTER="com.atm.chatonline.usercenter.activity.usercenter.UserCenter";
+	Intent intent1,intent2,intent3,intent0,intent4,intent5,intent6,intent7,intentRecommend;
 	Intent intentCreateGroup,intentSearch;//对应于聊天的小窗口
 	private int i=0;
 	private Button btnexit;
@@ -133,6 +136,7 @@ public class SlidingTitleLayout extends LinearLayout implements OnClickListener{
 		intent4 = new Intent(getContext(),SchoolNewsActivity.class);
 		intent5 = new Intent(getContext(),UserCenter.class);
 		intent6 = new Intent(getContext(),SettingView.class);
+		intent7=new Intent(getContext(),MyMessageActivity.class);
 		intentRecommend = new Intent(getContext(),RecommendActivity.class);
 		headImage.setOnClickListener(this);
 		intentCreateGroup = new Intent(getContext(),CreateGroupActivity.class);
@@ -160,6 +164,7 @@ public class SlidingTitleLayout extends LinearLayout implements OnClickListener{
 		l4 = (LinearLayout) slidingMenu.findViewById(R.id.news);
 		l5 = (LinearLayout) slidingMenu.findViewById(R.id.user_center);
 		l6 = (LinearLayout) slidingMenu.findViewById(R.id.setting);
+		l7=(LinearLayout)slidingMenu.findViewById(R.id.my_message_tab);
 		headImage = (CircleImageView) slidingMenu.findViewById(R.id.btn_headimage);
 		btnexit = (Button) slidingMenu.findViewById(R.id.btn_slide_exit);
 		//经过讨论，先暂时去掉
@@ -194,6 +199,7 @@ public class SlidingTitleLayout extends LinearLayout implements OnClickListener{
 		l4.setOnClickListener(this);
 		l5.setOnClickListener(this);
 		l6.setOnClickListener(this);
+		l7.setOnClickListener(this);
 		btnexit.setOnClickListener(this);
 	}
 	/* (non-Javadoc)
@@ -296,7 +302,11 @@ public class SlidingTitleLayout extends LinearLayout implements OnClickListener{
 			break;
 		case R.id.user_center:
 			LogUtil.p(tag,"user_center被点了");
+			if(ACTIVITY.equals(USER_CENTER))
+				slidingMenu.toggle(false);
+			else
 			activity.startActivity(intent5);
+			activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 			break;
 //
 		case R.id.news:
@@ -326,6 +336,14 @@ public class SlidingTitleLayout extends LinearLayout implements OnClickListener{
 		case R.id.setting:
 			LogUtil.p(tag,"设置被点击");
 			activity.startActivity(intent6);
+			break;
+		case R.id.my_message_tab:
+			LogUtil.p(tag, "我的消息选项卡被点击了");
+			if(ACTIVITY.equals(MY_MSG))
+				slidingMenu.toggle(false);
+			else
+			activity.startActivity(intent7);
+			activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 			break;
 		}
 		

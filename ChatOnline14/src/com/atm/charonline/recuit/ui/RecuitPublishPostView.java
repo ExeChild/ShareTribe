@@ -259,7 +259,7 @@ public class RecuitPublishPostView extends BaseActivity implements OnClickListen
 	//初始化控件
 	private void initView() {
 		// TODO Auto-generated method stub
-		sendPost = (TextView) findViewById(R.id.sendPost);
+		sendPost = (TextView) findViewById(R.id.next);
 		album = (ImageView) findViewById(R.id.album);
 		department = (ImageView) findViewById(R.id.department);
 		expression = (ImageView) findViewById(R.id.expression);
@@ -316,7 +316,7 @@ public class RecuitPublishPostView extends BaseActivity implements OnClickListen
 					BBSChooseDepartmentView.class);
 			startActivityForResult(departmentIntent, 0);
 			break;
-		case R.id.sendPost:
+		case R.id.next:
 			if (title.getText().toString() != ""
 					&& content.getText().toString() != "") {
 				Toast.makeText(RecuitPublishPostView.this, "发帖成功",

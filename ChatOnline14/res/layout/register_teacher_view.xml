@@ -1,188 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/screen"
+    android:id="@+id/rl_register_teacher_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    
-    android:background="@drawable/bg_choose"
-    >
-    <!-- android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    
-    在values文件夹下面的dimens文件里面有一个name叫做activity_vertical_margin的项，这个项里面值android:paddingBottom的值，
-     -->
+    android:background="@color/setting_color"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
 
-    <TableLayout
-        android:id="@+id/loginPanel"
+    <include
+        android:id="@+id/personal_center_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        layout="@layout/only_back_title" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dip"
-      
-        >
-        <TableRow >
-            <TextView 
-                android:layout_width="0dip"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                
-                android:text="账   号:"/>
+        android:layout_below="@id/personal_center_title_bar"
+        android:orientation="vertical"
+        android:padding="15dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="2"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:text="账号"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/txt_account_t"
                 android:layout_width="0dip"
-                android:layout_weight="5"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="15"
                 android:background="@drawable/edit_text"
-                android:maxLines="1"
                 android:hint="请输入不多于23个字的字母或数字"
                 android:maxLength="23"
-                android:textSize="10dip"
-                 />
-        </TableRow>
-        
-        <TableRow android:layout_marginTop="10dip">
-            <TextView 
-                android:layout_width="0dip"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:text="密   码:"/>
+                android:maxLines="1"
+                android:textSize="10dip" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="2"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:text="密码"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/txt_password_t"
                 android:layout_width="0dip"
-                android:layout_weight="5"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
+                android:layout_height="match_parent"
+                android:layout_weight="15"
+                android:background="@drawable/edit_text"
                 android:hint="请输入不少于6位数的密码"
-                android:textSize="10dp"
-                android:background="@drawable/edit_text"/>
-        </TableRow>
-        
-        <TableRow android:layout_marginTop="10dip">
-            <TextView 
-                android:layout_width="0dip"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:text="确认密码:"/>
+                android:inputType="textPassword"
+                android:textSize="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="2"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:text="确认密码"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/txt_rep_password_t"
                 android:layout_width="0dip"
-                android:layout_weight="5"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:background="@drawable/edit_text"/>
-        </TableRow>
-        
-         <TableRow android:layout_marginTop="10dip">
-            <TextView 
-                android:layout_width="0dip"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:text="学  校:"/>
-            <Spinner 
-                android:layout_width="0dip"
-                android:layout_weight="5"
-                android:layout_height="wrap_content"
-                android:id="@+id/spi_school_t"
+                android:layout_height="match_parent"
+                android:layout_weight="15"
                 android:background="@drawable/edit_text"
-                android:entries="@array/gd_school"/>
-        </TableRow>
-        
-         <TableRow android:layout_marginTop="10dip">
-            <TextView 
-                android:layout_width="0dip"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:text="系  别:"/>
-            <Spinner 
-                android:layout_width="0dip"
-                android:layout_weight="5"
-                android:layout_height="wrap_content"
-                android:id="@+id/spi_department_t"
-                android:background="@drawable/edit_text"
-                android:entries="@array/jr_school_dept"/>
-        </TableRow>
-        
-           <TableRow android:layout_marginTop="10dip">
-            <TextView 
-                android:layout_width="0dip"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:text="邮  箱:"
-                android:hint="请填写正确的邮箱"
-                />
-            <EditText
-                android:id="@+id/txt_email_t"
-                android:layout_width="0dip"
-                android:layout_weight="4"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_text"
-                />
-             <Button 
-                android:id="@+id/btn_email_t"
-            	android:layout_width="0dip"
-            	android:layout_height="15dip"
-            	android:layout_weight="1"
-            	android:text="点击发送"
-            	android:textSize="10dip" 
-            	android:background="@drawable/bg_button01"/>
-           
-           
-        </TableRow>
-        
-        <TableRow android:layout_marginTop="10dip">
-            <TextView 
-                android:layout_width="0dip"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:text="验 证 码:"
-                
-                />
-            <EditText
-                android:id="@+id/txt_ver_num_t"
-                android:layout_width="0dip"
-                android:layout_weight="5"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_text"
-                />
-            
-        </TableRow>
-        
-        <TableRow android:layout_marginTop="10dip">
-            <CheckBox 
-                android:id="@+id/chk_agree_t"
-                android:layout_width="0dip"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text=" "
-                />
+                android:inputType="textPassword" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="2"
+            android:orientation="horizontal" >
+
             <TextView
-                android:id="@+id/tv_agree_t"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:text="学校"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spi_school_t"
                 android:layout_width="0dip"
-                android:layout_weight="9"
-                android:layout_height="wrap_content"
-                android:text="同意ATM服务条款"
-                />
-            
-        </TableRow>
-        
+                android:layout_height="match_parent"
+                android:layout_weight="15"
+                android:background="@drawable/edit_text"
+                android:entries="@array/gd_school" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="2"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:text="系别"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spi_department_t"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="15"
+                android:background="@drawable/edit_text"
+                android:entries="@array/jr_school_dept" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="2"
+            android:orientation="horizontal" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="2"
+            android:orientation="horizontal" >
+
             <Button
-                android:id="@+id/btn_register"
-                android:layout_width="wrap_content"
+                android:id="@+id/btn_next"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dip"
                 android:background="@drawable/bg_button01"
                 android:clickable="false"
                 android:text="下一步" />
-        
-    </TableLayout>
-    
+        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

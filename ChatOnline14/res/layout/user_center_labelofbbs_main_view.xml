@@ -24,7 +24,9 @@
         android:visibility="gone"
         android:layout_gravity="center_horizontal"
         android:text="数据加载失败！"/>
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
+    
+   
+ <com.handmark.pulltorefresh.library.PullToRefreshListView
         xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/user_center_labelofbbs_lv"
         android:layout_width="fill_parent"  
@@ -44,5 +46,4 @@
     >
 
 </com.handmark.pulltorefresh.library.PullToRefreshListView>
-
 </LinearLayout>

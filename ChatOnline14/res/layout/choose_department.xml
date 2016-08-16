@@ -20,11 +20,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:text="系别选择">
+        </TextView>	   
+        <TextView
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp" 
             android:textColor="#ffffff"
             android:textSize="20sp"
-            android:text="系别">
+            android:text="下一步">
         </TextView>	    
 	</RelativeLayout>
 
@@ -33,43 +43,7 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <RadioButton 
-            android:id="@+id/finance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="金融系"/>
-        <RadioButton 
-            android:id="@+id/management"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="工商管理系"/>
-        <RadioButton 
-            android:id="@+id/insurance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="保险系"/>
-        <RadioButton 
-            android:id="@+id/technology"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="互联网金融与信息工程系"/>
-        <RadioButton 
-            android:id="@+id/account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="会计系"/>
-        <RadioButton 
-            android:id="@+id/law"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="法律系"/>
+
     </RadioGroup>
-    <Button 
-        android:id="@+id/confirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="确定"/>
-
-
 
 </LinearLayout>

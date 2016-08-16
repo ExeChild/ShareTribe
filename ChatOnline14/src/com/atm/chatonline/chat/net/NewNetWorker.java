@@ -276,6 +276,11 @@ public class NewNetWorker extends Thread {
 						"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_GETHEAD");
 				handleUserHead();
 				break;
+			case Config.MY_MESSAGE:
+				Log.i(tag,
+						"NewNetWorker01---从服务器得到请求是：Config.MY_MESSAGE");
+				handleMyMessage();
+				break;
 
 			case -100:
 				Log.i(tag, "NewNetWorker01------从服务器得到请求是：请求重新连接服务器");
@@ -296,6 +301,7 @@ public class NewNetWorker extends Thread {
 
 	}
 
+	
 	/**
 	 * 重复登录，强制已经登录的用户退出
 	 */
@@ -1000,7 +1006,21 @@ public class NewNetWorker extends Thread {
 		}
 		BaseActivity.sendMessage(msg);
 	}
+	
+	/**
+	 * 处理服务器发送过来的我的消息
+	 */
+	private void handleMyMessage() {
+		Message msg=new Message();
+		
+		
+		
+		
+		
+		BaseActivity.sendMessage(msg);
+	}
 
+	
 	// 处理关注
 	public void handleReqAttention() {
 		int result = getPutInt();
@@ -1160,6 +1180,9 @@ public class NewNetWorker extends Thread {
 		}
 	}
 
+	
+	
+	
 	public byte[] getFileBytes(SocketChannel socketChannel) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		int length = getPutInt();

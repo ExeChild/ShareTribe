@@ -155,4 +155,14 @@
         <!-- 模糊 -->
     </style>
 
+     <!-- 我的消息的选项卡样式 -->
+     <style name="MyWidget" parent="@android:style/Theme" />
+    
+    <style name="MyWidget.TabText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@drawable/tab_indicator_text</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+    </style>
+    
 </resources>

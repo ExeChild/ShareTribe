@@ -3,6 +3,13 @@
  */
 package com.atm.charonline.recuit.ui;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +22,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -70,6 +78,8 @@ public class ApplyListView extends Activity {
 	private String cookie;
 	private TextView recuit_wait;
 	private static Handler handler;
+	
+	private boolean isNeedCache = true;
 	
 	public static Handler getHandler() {
 		return handler;
@@ -274,6 +284,7 @@ public class ApplyListView extends Activity {
 
 			//下载数据
 			try {
+				isNeedCache = false;
 				loadData();
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -303,7 +314,24 @@ public class ApplyListView extends Activity {
 			//先把列表清空
 			applyList.clear();
 		}
-		response = getResponseFromNet();
+		if(tip!="全部"&&tip!="全职"&&tip!="兼职"&&tip!="实习") {
+			LogUtil.d("tip不等于全部全职兼职实习");
+			isNeedCache = false;
+		}
+		//缓存数据
+		if(isNeedCache) {
+			String cacheDate = judgeDataCache();
+			if(!TextUtils.isEmpty(cacheDate)) {
+				LogUtil.d("调用了ApplyListView，有数据");
+				response = cacheDate;
+			}else {
+				response = getResponseFromNet();
+				//如果是主界面请求数据：将请求的数据保存下来
+				saveData(response);
+			}
+		}else {
+			response = getResponseFromNet();
+		}
 		LogUtil.p("顺序","loadData+1");
 		
 		Data data = new Gson().fromJson(response,Data.class);
@@ -322,6 +350,63 @@ public class ApplyListView extends Activity {
 		default:
 			addData(data);
 		}
+		}
+	}
+	
+	/**
+	 * @return 
+	 * 
+	 */
+	private String judgeDataCache() {
+		FileInputStream in = null;
+		BufferedReader reader = null;
+		StringBuilder content = new StringBuilder();
+		try {
+			in = openFileInput("applyData");
+			reader = new BufferedReader(new InputStreamReader(in));
+			String line = "";
+			while((line = reader.readLine())!= null) {
+				content.append(line);
+			}
+			if(content.toString()!=null) {
+				LogUtil.d("此处已有数据，数据为：");
+				LogUtil.d(content.toString());
+			}
+		}catch(IOException e) {
+			e.printStackTrace();
+		}finally {
+			if(reader != null) {
+				try {
+					reader.close();
+				}catch(IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return content.toString();
+	}
+	
+	/**
+	 * @param response2 
+	 * 
+	 */
+	private void saveData(String response2) {
+		FileOutputStream out = null;
+		BufferedWriter writer = null;
+		try {
+			out = openFileOutput("applyData", Context.MODE_PRIVATE);
+			writer = new BufferedWriter(new OutputStreamWriter(out));
+			writer.write(response2);
+		}catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(writer != null) {
+					writer.close();
+				}
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

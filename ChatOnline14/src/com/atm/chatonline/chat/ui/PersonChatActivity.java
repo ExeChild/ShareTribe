@@ -72,8 +72,6 @@ public class PersonChatActivity extends BaseActivity implements OnClickListener,
 	private InputMethodManager mInputMethodManager;
 	private Bitmap bm;
 	private File fileImg;
-	
-	
 	private Resources res;
 	private LinearLayout ll_exp;
 	private boolean isFaceShow = false;

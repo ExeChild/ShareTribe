@@ -148,4 +148,8 @@ public class Communication {
 		return newNetWorker01.sendMsg.sendImg(userID,friendID,time,filePath);
 	}
 	
+	//发送获取我的消息的请求
+	public boolean reqMyMsg(String userId,Integer type){
+		return newNetWorker01.sendMsg.getMyMessage(userId, type);
+	}
 }

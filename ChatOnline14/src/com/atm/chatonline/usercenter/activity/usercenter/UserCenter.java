@@ -41,6 +41,7 @@ public class UserCenter extends BaseActivity implements OnClickListener{
 	private CircleImageView civ;
 	private Bitmap img;
 	private ProgressBar pro;
+	private Bundle bundle;
 	private final int BASIC_MSG=13;//数字尽量定大点，避免与系统的变量冲突
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,8 @@ public class UserCenter extends BaseActivity implements OnClickListener{
 		SharedPreferences pref = getSharedPreferences("data",
 				Context.MODE_PRIVATE);
 		cookie = pref.getString("cookie", "");
+		bundle=new Bundle();
+		bundle.putString("cookie", cookie);
 		new Thread(new Runnable(){
 
 			@Override
@@ -167,7 +170,9 @@ public class UserCenter extends BaseActivity implements OnClickListener{
 			break;
 		case R.id.user_center_note:
 			Log.i(tag,"帖子被点击");
-			startActivity(new Intent(this,MyBbs.class));
+			Intent intentBBs=new Intent(this,MyBbs.class);
+			intentBBs.putExtras(bundle);
+			startActivity(intentBBs);
 			break;
 		case R.id.btn_back:
 			this.onBackPressed();

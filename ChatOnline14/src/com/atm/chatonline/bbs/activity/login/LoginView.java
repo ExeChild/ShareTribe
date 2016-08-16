@@ -15,13 +15,16 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +40,7 @@ import com.atm.chatonline.chat.util.ClearEditText;
 import com.atm.chatonline.chat.util.Config;
 import com.example.studentsystem01.R;
  
-public class LoginView extends BaseActivity implements OnClickListener{
+public class LoginView extends BaseActivity implements OnClickListener,OnTouchListener{
 	String tag="LoginView";
 	private Button btnLogin;
 	private String username,pwd;
@@ -54,18 +57,22 @@ public class LoginView extends BaseActivity implements OnClickListener{
 	private int login=Config.AUTOLOGIN;//存储intent里面携带的整型数据，3表示自动登录，4表示第一次登录，5表示下线之后登录
 	private User user;
 	private ProgressDialog progressDialog;// 进度条
-
+	private InputMethodManager mInputMethodManager;
+	private RelativeLayout parent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login_view);
+        mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        parent = (RelativeLayout)findViewById(R.id.parent);
         btnLogin=(Button) findViewById(R.id.btnLogin);
         t1=(ClearEditText) findViewById(R.id.edit_account);
         t2=(ClearEditText) findViewById(R.id.edit_password);
         register = (TextView) findViewById(R.id.register);
         loginError=(TextView) findViewById(R.id.login_error);
         conNetwork=new IsNetworkAvailable();
+        parent.setOnTouchListener(this);
         btnLogin.setOnClickListener(this);
         register.setOnClickListener(this);
         loginError.setOnClickListener(this);
@@ -520,5 +527,20 @@ public class LoginView extends BaseActivity implements OnClickListener{
 				sendNotifycation();
 			}
 			
+		}
+
+
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			// TODO Auto-generated method stub
+			switch (v.getId()) {
+			case R.id.parent:
+				mInputMethodManager.hideSoftInputFromWindow(t1.getWindowToken(), 0);
+				break;
+			default:
+				break;
+			}
+			return false;
 		}
 }

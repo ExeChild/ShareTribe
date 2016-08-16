@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atm.charonline.bbs.util.SendRegisterStudent;
@@ -27,6 +28,7 @@ public class ConfirmGraduateStudent extends Activity implements OnClickListener{
 	private Button btnSure,btnBack;
 	private String respCode;
 	private Handler handler;
+	private TextView title;
 	
 	IsNetworkAvailable conNetwork;
 	private SendRegisterStudent sendRegisterStudent;
@@ -65,6 +67,8 @@ public class ConfirmGraduateStudent extends Activity implements OnClickListener{
 		editClass = (EditText)findViewById(R.id.edit_student_class);
 		editNum = (EditText)findViewById(R.id.edit_student_num);
 		editName = (EditText)findViewById(R.id.edit_student_name);
+		title = (TextView)findViewById(R.id.title);
+		title.setText("毕业生身份认证");
 	}
 	@Override
 	public void onClick(View v) {

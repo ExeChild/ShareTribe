@@ -83,6 +83,11 @@ public interface Config {
 	public static final int CROWD_FULL = 1323; // 群满人
 	public static final int CROWD_NO_EXIST = 1324;// 群不存在
 
+	/**
+	 * 我的消息
+	 */
+	public static final int MY_MESSAGE = 1153; 
+	
 	public static final int CROWD_FIND_SUCCESS = 1350;// 查找群成功后，判断是否调用更新搜索群方法---郑
 	/**
 	 * 用户操作

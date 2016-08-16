@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atm.charonline.bbs.util.SendRegisterStudent;
@@ -30,6 +31,7 @@ public class ConfirmInternalStudent extends Activity implements OnClickListener{
 	IsNetworkAvailable conNetwork;
 	private SendRegisterStudent sendRegisterStudent;
 	UserConfirm userConfirm;
+	private TextView title;
 	
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -70,6 +72,8 @@ public class ConfirmInternalStudent extends Activity implements OnClickListener{
 		btnSure = (Button)findViewById(R.id.btn_register);
 		editStuNum = (EditText)findViewById(R.id.edit_student_num);
 		editStuSchoolPwd = (EditText)findViewById(R.id.edit_student_pwd);
+		title = (TextView)findViewById(R.id.title);
+		title.setText("在校生身份认证");
 	}
 	@Override
 	public void onClick(View v) {

@@ -27,10 +27,22 @@ public class ReceivePhoto {
 	private HttpURLConnection con;
 	private InputStream is;
 
+	@SuppressWarnings("deprecation")
 	public ReceivePhoto(String address){
-		this.address = subURL + address;		
-		sendRequestWithHttpURLConnection();
+		this.address = subURL + address;	
+		LogUtil.d("Õº∆¨ª∫¥Ê£∫≈–∂œ «∑Ò”–ª∫¥Ê£ø");
+		if(ImageFileCacheUtils.getImage(address)==null) {
+			LogUtil.d("Õº∆¨ª∫¥Ê£∫√ª”–Õº∆¨£¨»•œ¬‘ÿÕº∆¨");
+			sendRequestWithHttpURLConnection();
+		}else {
+			LogUtil.d("Õº∆¨ª∫¥Ê£∫”–Õº∆¨£¨»•ª∫¥Êƒ√Õº∆¨");
+			d = new BitmapDrawable(ImageFileCacheUtils.getImage(address));
+		}
 	}
+//	public ReceivePhoto(String address){
+//		this.address = subURL + address;		
+//		sendRequestWithHttpURLConnection();
+//	}
 	
 	private void sendRequestWithHttpURLConnection() {
 		Thread thread1 =new Thread(new Runnable(){

@@ -27,7 +27,7 @@ import com.example.studentsystem01.R;
 public class ForgetPassword extends Activity implements OnClickListener{
 	private EditText forgetusername;
 	private Button forgetsubmit;
-	private TextView textviewappeal;
+	private TextView textviewappeal,title;
 	private String sourceStr,tag="ForgetPassword",respCode="",confirmNumber,userId;
 	private IsNetworkAvailable conNetwork=null;//判断是否有网络连接
 	private MyToast toast;
@@ -69,6 +69,9 @@ public class ForgetPassword extends Activity implements OnClickListener{
 		forgetusername=(EditText)findViewById(R.id.edit_forget_pwd);
 		forgetsubmit=(Button)findViewById(R.id.btn_forget_submit);
 		textviewappeal=(TextView)findViewById(R.id.text_forget_appeal);
+		title = (TextView)findViewById(R.id.title);//2017.7.22
+		title.setText("找回密码");
+		title.setTextSize(18);
 		Button btnBack=(Button)findViewById(R.id.btn_back);
 		forgetsubmit.setOnClickListener(this);
 		textviewappeal.setOnClickListener(this);

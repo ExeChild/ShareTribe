@@ -1,5 +1,12 @@
 package com.atm.chatonline.bbs.activity.bbs;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +19,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -66,6 +74,7 @@ public class BBSListView extends BaseActivity implements OnClickListener {
 	private String tag = "BBSListView";
 	private static TextView bbsWait;
 	private static Handler handler;
+	private boolean isNeedCache = true;
 
 	public static Handler getHandler() {
 		return handler;
@@ -232,6 +241,30 @@ public class BBSListView extends BaseActivity implements OnClickListener {
 		Log.i(tag, "走完initView");
 
 	}
+	
+	/**
+	 * @param response2 
+	 * 
+	 */
+	private void saveData(String response2) {
+		FileOutputStream out = null;
+		BufferedWriter writer = null;
+		try {
+			out = openFileOutput("data", Context.MODE_PRIVATE);
+			writer = new BufferedWriter(new OutputStreamWriter(out));
+			writer.write(response2);
+		}catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(writer != null) {
+					writer.close();
+				}
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	/**
 	 * 初始化数据
@@ -282,6 +315,7 @@ public class BBSListView extends BaseActivity implements OnClickListener {
 
 		protected String doInBackground(Void... params) {
 			try {
+				isNeedCache = false;
 				// 下载数据
 				loadData();
 			} catch (JSONException e) {
@@ -341,8 +375,24 @@ public class BBSListView extends BaseActivity implements OnClickListener {
 			Log.d(tag,"bbsList.clear()");
 			bbsList.clear();
 		}
-		response = getResponseFromNet();
-		Log.d(tag,"loadData+1");
+		//如果是主界面请求数据，先判断是否有数据
+		if(tip.equals("first")&&isNeedCache) {
+			LogUtil.d("BBSMainView调用了BBSListView，先判断是否有数据");
+			String cacheDate = judgeDataCache();
+			if(!TextUtils.isEmpty(cacheDate)) {
+				LogUtil.d("BBSMainView调用了BBSListView，有数据");
+				response = cacheDate;
+			}else {
+				response = getResponseFromNet();
+				Log.d(tag,"loadData+1");
+				//如果是主界面请求数据：将请求的数据保存下来
+				saveData(response);
+			}
+		}else {
+			LogUtil.d("不是BBSMainView调用了BBSListView");
+			response = getResponseFromNet();
+			Log.d(tag,"loadData+1");
+		}
 		
 		Data data = new Gson().fromJson(response,Data.class);
 		LogUtil.p(tag, "gson没问题");
@@ -377,6 +427,39 @@ public class BBSListView extends BaseActivity implements OnClickListener {
 		Log.d(tag,"loadData走完");
 	}
 
+	/**
+	 * @return 
+	 * 
+	 */
+	private String judgeDataCache() {
+		FileInputStream in = null;
+		BufferedReader reader = null;
+		StringBuilder content = new StringBuilder();
+		try {
+			in = openFileInput("data");
+			reader = new BufferedReader(new InputStreamReader(in));
+			String line = "";
+			while((line = reader.readLine())!= null) {
+				content.append(line);
+			}
+			if(content.toString()!=null) {
+				LogUtil.d("此处已有数据，数据为：");
+				LogUtil.d(content.toString());
+			}
+		}catch(IOException e) {
+			e.printStackTrace();
+		}finally {
+			if(reader != null) {
+				try {
+					reader.close();
+				}catch(IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return content.toString();
+	}
+	
 	/**
 	 * 获取照片。
 	 */
