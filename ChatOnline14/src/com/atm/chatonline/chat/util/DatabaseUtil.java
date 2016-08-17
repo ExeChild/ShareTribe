@@ -19,6 +19,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.atm.charonline.bbs.util.LogUtil;
 import com.atm.chatonline.chat.info.ChatMessage;
 import com.atm.chatonline.chat.info.Friend;
 import com.atm.chatonline.chat.info.Group;
@@ -35,6 +36,7 @@ public class DatabaseUtil extends SQLiteOpenHelper{
 	private final String TABLE_NAME_GROUP="groupmessage";
 	private final String TABLE_GROUP="mygroup";
 	private final String TABLE_FRIEND_LIST="friend_list";
+	private final String TABLE_STATUS="status_list";
 	static Context context;
 //	private static DatabaseUtil instance;
 	
@@ -68,13 +70,31 @@ public class DatabaseUtil extends SQLiteOpenHelper{
 		
 		//sqlFriendList:这是一张关注和粉丝表，添加字段:relationship。对于用户来说，2002表示关注，2003表示粉丝
 		String sqlFriendList="create table "+TABLE_FRIEND_LIST+"(_Id integer primary key autoincrement,self_Id varchar(10),friend_Id varchar(10),friend_nickName varchar(32),department varchar(32),relationship int)";
+		String sqlStatus="create table "+TABLE_STATUS+"(_Id integer primary key autoincrement,flag_id varchar(10) default 'status', status_id integer default 0);";
 		db.execSQL(sql);
 		db.execSQL(sql_1);
 		db.execSQL(sqlgroup);
 		db.execSQL(sqlFriendList);
+		db.execSQL(sqlStatus);
 	}
 	public void onUpgrade(SQLiteDatabase db,int oldVersion,int newVersion){
 		
+	}
+	
+	//查询状态
+	public  int queryStatus(){
+		SQLiteDatabase db=getReadableDatabase();
+		Cursor cursor=db.rawQuery("select * from "+TABLE_STATUS+" where flag_id=?",new String[]{"status"});
+		if(cursor==null||cursor.getCount()==0){
+			LogUtil.p(tag, "查询状态无记录");
+			insertStatus();
+			return 0;
+		}else{
+			cursor.moveToFirst();
+			LogUtil.p(tag, "有记录");
+			return cursor.getInt(cursor.getColumnIndex("status_id"));
+			
+		}
 	}
 	
 	//查询与任意用户的聊天记录，并获取最新的一条消息，并获取对方的头像，昵称
@@ -299,6 +319,14 @@ public class DatabaseUtil extends SQLiteOpenHelper{
 		}
 		
 	/**--插入消息--**/
+		//把勿扰模式的状态插进去
+	public void insertStatus(){
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues cv = new ContentValues();
+		cv.put("status_id", 0);
+		db.insert(TABLE_STATUS, null, cv);
+	}	
+	
 	
 	//插入聊天信息
 	public void insertMessages(ContentValues values){
@@ -340,6 +368,18 @@ public class DatabaseUtil extends SQLiteOpenHelper{
 			db.insert(TABLE_FRIEND_LIST, null, values);
 			db.close();
 			Log.i(tag, "好友信息已被插入");
+		}
+		
+		/**--更新消息--**/
+		
+		public void updateStatus(int status){
+			LogUtil.p(tag, "status:"+status);
+			SQLiteDatabase db = getWritableDatabase();
+			ContentValues cv = new ContentValues();
+			cv.put("status_id", status);
+			String[] args={"status"};
+			db.update(TABLE_STATUS, cv, "flag_id=?", args);
+			LogUtil.p(tag, "update后查看:"+queryStatus());
 		}
 		
 		
