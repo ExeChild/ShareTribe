@@ -1011,13 +1011,14 @@ public class NewNetWorker extends Thread {
 	 * 处理服务器发送过来的我的消息
 	 */
 	private void handleMyMessage() {
-		Message msg=new Message();
+		//Message msg=new Message();
+		String json=getString();
+		System.out.println(json.toString());
 		
 		
 		
 		
-		
-		BaseActivity.sendMessage(msg);
+		//BaseActivity.sendMessage(msg);
 	}
 
 	
