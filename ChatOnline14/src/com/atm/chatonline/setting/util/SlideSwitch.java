@@ -16,6 +16,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
+import com.atm.charonline.bbs.util.LogUtil;
+import com.atm.chatonline.chat.ui.BaseActivity;
 import com.example.studentsystem01.R;
   
 /** 
@@ -39,11 +41,12 @@ public class SlideSwitch extends View
     
     public static final float FONT_SIZE=20;//设置字体大小
       
+    private String tag="SlideSwitch";
     //用于显示的文本  
     private String mOnText = "打开";  
     private String mOffText = "关闭";  
   
-    private int mSwitchStatus = SWITCH_OFF;  
+    public static int mSwitchStatus = BaseActivity.isDisturb ;  
   
     private boolean mHasScrolled = false;//表示是否发生过滚动  
   
@@ -91,7 +94,8 @@ public class SlideSwitch extends View
         mSwitch_thumb = BitmapFactory.decodeResource(res, R.drawable.switch_button);  
         mBmpWidth = mSwitch_on.getWidth();  
         mBmpHeight = mSwitch_on.getHeight();  
-        mThumbWidth = mSwitch_thumb.getWidth();  
+        mThumbWidth = mSwitch_thumb.getWidth(); 
+        Log.d(tag, "初始化mSwitchStatus:"+mSwitchStatus);
     }  
   
     @Override  
@@ -178,7 +182,8 @@ public class SlideSwitch extends View
   
         default:  
             break;  
-        }  
+        }
+        Log.d(tag, "mSwitchStatus:"+mSwitchStatus);
         return true;  
     }  
   
@@ -201,14 +206,19 @@ public class SlideSwitch extends View
           
         if(mSwitchStatus == SWITCH_OFF)  
         {  
+        	Log.d(tag, "SWITCH_OFF");
             drawBitmap(canvas, null, null, mSwitch_off);  
             drawBitmap(canvas, null, null, mSwitch_thumb);  
             mPaint.setColor(Color.rgb(105, 105, 105));  
             canvas.translate(mSwitch_thumb.getWidth(), 0);  
             canvas.drawText(mOffText, 0, 20, mPaint);  
+//            BaseActivity.isDisturb = true;//表示进入  可以接收信息模式
+            BaseActivity.setDisStatus(SWITCH_OFF);
+			LogUtil.p(tag, "接收信息模式");
         }  
         else if(mSwitchStatus == SWITCH_ON)  
         {  
+        	Log.d(tag, "SWITCH_ON");
             drawBitmap(canvas, null, null, mSwitch_on);  
             int count = canvas.save();  
             canvas.translate(mSwitch_on.getWidth() - mSwitch_thumb.getWidth(), 0);  
@@ -216,6 +226,9 @@ public class SlideSwitch extends View
             mPaint.setColor(Color.WHITE);  
             canvas.restoreToCount(count);  
             canvas.drawText(mOnText, 17, 20, mPaint);  
+//            BaseActivity.isDisturb = false;//表示进入 勿扰模式
+            BaseActivity.setDisStatus(SWITCH_ON);
+			LogUtil.p(tag, "勿扰模式");
         }  
         else //SWITCH_SCROLING  
         {  

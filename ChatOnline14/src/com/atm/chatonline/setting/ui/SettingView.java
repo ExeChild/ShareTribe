@@ -10,7 +10,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 
 import com.atm.charonline.bbs.util.LogUtil;
 import com.atm.chatonline.chat.ui.BaseActivity;
+import com.atm.chatonline.setting.util.SlideSwitch;
 import com.example.studentsystem01.R;
 /**
  * Author:ZDH
@@ -31,6 +31,8 @@ public class SettingView extends BaseActivity implements OnClickListener{
 	private float fontSize;
 	private SpannableString sps = null;
 	private String titleName ="设  置";
+	private SlideSwitch swiDisturb;
+	private int swiStatus;
 	private List<View> listView = new ArrayList<View>();
 	
 	public void onCreate(Bundle savedInstanceState){
@@ -47,6 +49,8 @@ public class SettingView extends BaseActivity implements OnClickListener{
 		feedback_ll = (LinearLayout)findViewById(R.id.feedback);
 		about_us_ll = (LinearLayout)findViewById(R.id.about_us);
 		title = (TextView)findViewById(R.id.title);
+		swiDisturb = (SlideSwitch)findViewById(R.id.switch_disturb);
+		
 		sps = new SpannableString(titleName);
 		sps.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, titleName.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  //粗体 0-4字体的长度
 		title.setText(sps);
@@ -55,6 +59,10 @@ public class SettingView extends BaseActivity implements OnClickListener{
 //		font_size_ll.setOnClickListener(this);
 		feedback_ll.setOnClickListener(this);
 		about_us_ll.setOnClickListener(this);
+		
+		swiDisturb.setOnClickListener(this);
+//		swiDisturb.setOnSwitchChangedListener(onSwitchChangedListener)
+		
 	}
 	
 	void initData(){
@@ -92,6 +100,16 @@ public class SettingView extends BaseActivity implements OnClickListener{
 ////			Intent intent1 = new Intent(SettingView.this,SettingFont.class);
 ////			startActivity(intent1);
 //			break;
+			
+//		case R.id.switch_disturb:
+//			LogUtil.p(tag, "勿扰模式被点击");
+//			if(swiDisturb.mSwitchStatus==swiDisturb.SWITCH_ON){
+//				BaseActivity.isDisturb = false;//表示进入 勿扰模式
+//				LogUtil.p(tag, "勿扰模式");
+//			}else{
+//				BaseActivity.isDisturb = true;//表示进入  可以接收信息模式
+//				LogUtil.p(tag, "接收信息模式");
+//			}
 			
 		case R.id.feedback:
 			LogUtil.p(tag, "反馈被点击");

@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import android.app.Activity;
 import android.app.ActivityGroup;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -44,6 +43,7 @@ import com.atm.chatonline.chat.net.Communication;
 import com.atm.chatonline.chat.util.Config;
 import com.atm.chatonline.chat.util.DatabaseUtil;
 import com.atm.chatonline.chat.util.FileUtil;
+import com.atm.chatonline.setting.util.Status;
 import com.example.studentsystem01.R;
 
 
@@ -59,9 +59,11 @@ public abstract class BaseActivity extends ActivityGroup{
 	public static User self = new User();
 	public static Friend friend = new Friend();
 	public static Group group=new Group();
+	public static Status status = new Status();
 	
 	private static List<View> listView = new ArrayList<View>();
 	public  static float fontSize = FontConfig.NOMAL_FONT;
+	public static  int isDisturb;//0表示勿扰模式是关闭
 	
 	int count=0;
 	
@@ -80,8 +82,10 @@ public abstract class BaseActivity extends ActivityGroup{
 			Log.i(tag,"queue.size:"+queue.size());
 		}if(dbUtil==null){
 			dbUtil = new DatabaseUtil(this);
+			
 		}
-		
+		isDisturb =dbUtil.queryStatus();
+		LogUtil.p(tag, "isDisturb"+isDisturb);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 	}
 	
@@ -101,6 +105,8 @@ public abstract class BaseActivity extends ActivityGroup{
 	public static void setFriend(Friend friend) {
 		BaseActivity.friend = friend;
 	}
+	
+
 	
 	public static Group getGroup() {//***
 		return group;
@@ -169,6 +175,11 @@ public abstract class BaseActivity extends ActivityGroup{
 			}
 		}
 	};
+	
+	public static void setDisStatus(int status){
+		dbUtil.updateStatus(status);
+	}
+
 	
 	protected void setPreference(String userID,String pwd){
 		SharedPreferences.Editor editor = getSharedPreferences("User",MODE_PRIVATE).edit();
@@ -253,6 +264,9 @@ public abstract class BaseActivity extends ActivityGroup{
 	 
 	 //发送消息通知在手机栏上，并实现点击事件
 	 public  void sendNotifycation(){
+		 isDisturb=dbUtil.queryStatus();
+		 if(isDisturb==0){//按钮关闭
+	     LogUtil.p(tag, "可以接收短信");
 		 NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 		 Notification notification = new Notification(R.drawable.pic_head,"New Message",System.currentTimeMillis());
 		 Intent intent = new Intent(this,PersonChatActivity.class);
@@ -272,6 +286,9 @@ public abstract class BaseActivity extends ActivityGroup{
 		 manager.notify(0, notification);
 		 
 		 Log.i(tag, "发送了消息通知");
+		 }else{//按钮打开
+			 LogUtil.p(tag, "勿扰模式");
+		 }
 	 }
 	 
 		public static void saveMessagesToDB(String userID,String friendID,String nickName,int direction,int type,String time,String content){

@@ -4,15 +4,24 @@ package com.atm.chatonline.bbs.activity.login;
  * 2015.7.21,atm--李
  */
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.renderscript.Allocation;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -40,6 +49,7 @@ import com.atm.chatonline.chat.util.ClearEditText;
 import com.atm.chatonline.chat.util.Config;
 import com.example.studentsystem01.R;
  
+@SuppressLint("NewApi")
 public class LoginView extends BaseActivity implements OnClickListener,OnTouchListener{
 	String tag="LoginView";
 	private Button btnLogin;
@@ -59,11 +69,15 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 	private ProgressDialog progressDialog;// 进度条
 	private InputMethodManager mInputMethodManager;
 	private RelativeLayout parent;
+	final float radius=25.f;
+	 private Context context=null;
+//	private View viewBackground;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login_view);
+        context=getApplicationContext();
         mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         parent = (RelativeLayout)findViewById(R.id.parent);
         btnLogin=(Button) findViewById(R.id.btnLogin);
@@ -76,6 +90,8 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
         btnLogin.setOnClickListener(this);
         register.setOnClickListener(this);
         loginError.setOnClickListener(this);
+//        final Bitmap bmp=BitmapFactory.decodeResource(getResources(), R.drawable.login_background);
+//		bulr(bmp,parent);
         initPopupWindow();
         initData();//初始化数据
         user=getPreference();//获取user信息
@@ -213,6 +229,26 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 		}
     }
     
+	/**
+	 * 高斯模糊的实现 SDK Build-tools 必须大于或等于18
+	 * 			  SDK Tools 必须小于或等于22
+	 * @param bmp  传入的要实现模糊的Bimap图片 ，可以用BitmapFactory.decodeResource（）获取
+	 * @param img  传入的ImageView
+	 */
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+	@SuppressLint("NewApi")
+	private void bulr(Bitmap bmp, RelativeLayout view) {
+		 	RenderScript rs = RenderScript.create(context);// 构建一个RenderScript对象
+		    Allocation overlayAlloc = Allocation.createFromBitmap(rs, bmp);// 创建用于输入的脚本类型
+		    ScriptIntrinsicBlur blur = 
+		        ScriptIntrinsicBlur.create(rs, overlayAlloc.getElement());// 创建高斯模糊脚本
+		    blur.setInput(overlayAlloc);// 设置输入脚本类型
+		    blur.setRadius(radius);// 设置模糊半径，范围0f<radius<=25f
+		    blur.forEach(overlayAlloc);// 执行高斯模糊算法，并将结果填入输出脚本类型中
+		    overlayAlloc.copyTo(bmp);// 将输出内存编码为Bitmap，图片大小必须注意
+		    view.setBackground(new BitmapDrawable(getResources(), bmp));//设置背景
+		    rs.destroy();// 关闭RenderScript对象
+	}
     
     //初始化popupWindow
     public void initPopupWindow()

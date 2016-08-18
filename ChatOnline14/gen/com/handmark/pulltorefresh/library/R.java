@@ -42,11 +42,11 @@ public final class R {
 		public static final int indicator_right_padding = 0x7f050000;
 	}
 	public static final class drawable {
-		public static final int default_ptr_flip = 0x7f02005f;
-		public static final int default_ptr_rotate = 0x7f020060;
-		public static final int indicator_arrow = 0x7f0200b7;
-		public static final int indicator_bg_bottom = 0x7f0200b8;
-		public static final int indicator_bg_top = 0x7f0200b9;
+		public static final int default_ptr_flip = 0x7f020060;
+		public static final int default_ptr_rotate = 0x7f020061;
+		public static final int indicator_arrow = 0x7f0200b9;
+		public static final int indicator_bg_bottom = 0x7f0200ba;
+		public static final int indicator_bg_top = 0x7f0200bb;
 	}
 	public static final class id {
 		public static final int both = 0x7f060005;
@@ -69,8 +69,8 @@ public final class R {
 		public static final int webview = 0x7f060001;
 	}
 	public static final class layout {
-		public static final int pull_to_refresh_header_horizontal = 0x7f03005b;
-		public static final int pull_to_refresh_header_vertical = 0x7f03005c;
+		public static final int pull_to_refresh_header_horizontal = 0x7f03005c;
+		public static final int pull_to_refresh_header_vertical = 0x7f03005d;
 	}
 	public static final class string {
 		public static final int pull_to_refresh_from_bottom_pull_label = 0x7f070000;
