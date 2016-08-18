@@ -1,7 +1,7 @@
 package com.atm.chatonline.bbs.activity.login;
 /**
- * 该类用于，生成登陆页面，向后台传输登录信息
- * 2015.7.21,atm--李
+ * 赂脙脌脿脫脙脫脷拢卢脡煤鲁脡碌脟脗陆脪鲁脙忙拢卢脧貌潞贸脤篓麓芦脢盲碌脟脗录脨脜脧垄
+ * 2015.7.21,atm--脌卯
  */
 
 import android.annotation.SuppressLint;
@@ -61,15 +61,17 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 	private MyToast toast;
 	private PopupWindow popup;
 	private SendLoginInfo sendLoginInfo;
-	SharedPreferences preferences;//存储小数据，存储活动运行的次数
-	IsNetworkAvailable conNetwork;//判断是否有网络连接
+	SharedPreferences preferences;//麓忙麓垄脨隆脢媒戮脻拢卢麓忙麓垄禄卯露炉脭脣脨脨碌脛麓脦脢媒
+	IsNetworkAvailable conNetwork;//脜脨露脧脢脟路帽脫脨脥酶脗莽脕卢陆脫
 	private boolean flag=true;
-	private int login=Config.AUTOLOGIN;//存储intent里面携带的整型数据，3表示自动登录，4表示第一次登录，5表示下线之后登录
+	private int login=Config.AUTOLOGIN;//麓忙麓垄intent脌茂脙忙脨炉麓酶碌脛脮没脨脥脢媒戮脻拢卢3卤铆脢戮脳脭露炉碌脟脗录拢卢4卤铆脢戮碌脷脪禄麓脦碌脟脗录拢卢5卤铆脢戮脧脗脧脽脰庐潞贸碌脟脗录
 	private User user;
-	private ProgressDialog progressDialog;// 进度条
+	private ProgressDialog progressDialog;// 陆酶露脠脤玫
 	private InputMethodManager mInputMethodManager;
 	private RelativeLayout parent;
-	final float radius=30.f;
+
+	final float radius=25.f;
+
 	 private Context context=null;
 //	private View viewBackground;
     @Override
@@ -93,26 +95,26 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 //        final Bitmap bmp=BitmapFactory.decodeResource(getResources(), R.drawable.login_background);
 //		bulr(bmp,parent);
         initPopupWindow();
-        initData();//初始化数据
-        user=getPreference();//获取user信息
-        //获取SharedPreference对象
+        initData();//鲁玫脢录禄炉脢媒戮脻
+        user=getPreference();//禄帽脠隆user脨脜脧垄
+        //禄帽脠隆SharedPreference露脭脧贸
         preferences = getSharedPreferences("count",MODE_PRIVATE);
-        //获取count值，第一个参数是键，存入时用哪个键，就哪个键，第二个是默认参数
+        //禄帽脠隆count脰碌拢卢碌脷脪禄赂枚虏脦脢媒脢脟录眉拢卢麓忙脠毛脢卤脫脙脛脛赂枚录眉拢卢戮脥脛脛赂枚录眉拢卢碌脷露镁赂枚脢脟脛卢脠脧虏脦脢媒
         int count = preferences.getInt("count", 0);
-        //判断程序与第几次运行，如果是第一次运行则跳转到引导页面
+        //脜脨露脧鲁脤脨貌脫毛碌脷录赂麓脦脭脣脨脨拢卢脠莽鹿没脢脟碌脷脪禄麓脦脭脣脨脨脭貌脤酶脳陋碌陆脪媒碌录脪鲁脙忙
         if (count == 0) {
         	startActivity(new Intent(getApplicationContext(), WelcomeView.class));
             finish();
         }
         
         Editor editor = preferences.edit();
-        //存入数据，健名为count
+        //麓忙脠毛脢媒戮脻拢卢陆隆脙没脦陋count
         editor.putInt("count", ++count);
-        //提交修改
+        //脤谩陆禄脨脼赂脛
         editor.commit();
         
         
-        //通过gerPreference获取，用户名和密码
+        //脥篓鹿媒gerPreference禄帽脠隆拢卢脫脙禄搂脙没潞脥脙脺脗毛
        
 
         
@@ -121,10 +123,10 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
         if(!conNetwork.isNetworkAvailable(LoginView.this)){
 			String tag=null;
 			Log.i(tag, "1232132133");
-			Toast.makeText(getApplicationContext(), "当前没有可用网络！", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), "碌卤脟掳脙禄脫脨驴脡脫脙脥酶脗莽拢隆", Toast.LENGTH_LONG).show();
 		}
         
-        //以下为新增加if语句，先判断是否保存有密码，若有则可能为自动登录或被迫下线进入登录界面的登录情况
+        //脪脭脧脗脦陋脨脗脭枚录脫if脫茂戮盲拢卢脧脠脜脨露脧脢脟路帽卤拢麓忙脫脨脙脺脗毛拢卢脠么脫脨脭貌驴脡脛脺脦陋脳脭露炉碌脟脗录禄貌卤禄脝脠脧脗脧脽陆酶脠毛碌脟脗录陆莽脙忙碌脛碌脟脗录脟茅驴枚
         if(!user.getPwd().equals("")&&!user.getUserID().equals("")&&login!=Config.LOGIN_AFTER_REGISTER){
         	if(login==Config.AUTOLOGIN){
         		Log.i("********>>>", "userId="+user.getUserID()+",pwd="+user.getPwd());
@@ -143,12 +145,12 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
         		switch(msg.what)
         		{
         		case 1:
-        			Log.i(tag, "登录失败");
-        			btnLogin.setClickable(true);//失败的时候，按钮还能在点击2016.7.16
-        			showToast("登录失败");
+        			Log.i(tag, "碌脟脗录脢搂掳脺");
+        			btnLogin.setClickable(true);//脢搂掳脺碌脛脢卤潞貌拢卢掳麓脜楼禄鹿脛脺脭脷碌茫禄梅2016.7.16
+        			showToast("碌脟脗录脢搂掳脺");
         			break;
         		case 2:
-        			Log.i(tag, "msg.what=2,走redirectTo（）");
+        			Log.i(tag, "msg.what=2,脳脽redirectTo拢篓拢漏");
         			redirectTo();	
         			/*if(islogin){
         				Log.i(tag,"isLogin1 is "+islogin);
@@ -163,10 +165,10 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
         			String tag=null;
         			Log.i(tag, "22222222222");
         			flag=false;
-        			showToast("当前没有可用网络");
+        			showToast("碌卤脟掳脙禄脫脨驴脡脫脙脥酶脗莽");
         			break;
         		default :
-//        			showToast("服务器无响应");
+//        			showToast("路镁脦帽脝梅脦脼脧矛脫娄");
         				break;
         		}
         	}
@@ -175,10 +177,10 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
         
     
     
-    private void initData() {//新加的方法 2015.9.14-李
+    private void initData() {//脨脗录脫碌脛路陆路篓 2015.9.14-脌卯
 		Intent intent=getIntent();
 		Bundle bundle=intent.getExtras();
-		//如果bundle为null，证明是按返回键退出程序，即再次点击程序就会自动登录，所以login默认值设置为Config.AUTOLOGIN
+		//脠莽鹿没bundle脦陋null拢卢脰陇脙梅脢脟掳麓路碌禄脴录眉脥脣鲁枚鲁脤脨貌拢卢录麓脭脵麓脦碌茫禄梅鲁脤脨貌戮脥禄谩脳脭露炉碌脟脗录拢卢脣霉脪脭login脛卢脠脧脰碌脡猫脰脙脦陋Config.AUTOLOGIN
 		if(bundle!=null){
 		login=bundle.getInt("login");
 		Log.i(tag, "logins is "+login);
@@ -189,7 +191,7 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 
 
 	public void onClick(View v){
-		Log.i(tag, "onclick 被点击");
+		Log.i(tag, "onclick 卤禄碌茫禄梅");
     	if(!flag){
     		Message msg=new Message();
     		msg.what=3;
@@ -200,17 +202,17 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 		Log.i(tag, "111");
 		switch(v.getId())
 		{
-		case R.id.btnLogin:	//按下登录按钮
+		case R.id.btnLogin:	//掳麓脧脗碌脟脗录掳麓脜楼
 			
 			login(t1.getText().toString(),t2.getText().toString());
 			BaseActivity.getSelf().setUserID(t1.getText().toString());
 			BaseActivity.getSelf().setPwd(t2.getText().toString());
 			btnLogin.setClickable(false);
-			Log.i(tag, "BTNLOGIN) 被点击");
+			Log.i(tag, "BTNLOGIN) 卤禄碌茫禄梅");
 			
 			break;
-		case R.id.register:	//按下注册界面
-			cancelToast();//消除消息提示框
+		case R.id.register:	//掳麓脧脗脳垄虏谩陆莽脙忙
+			cancelToast();//脧没鲁媒脧没脧垄脤谩脢戮驴貌
 			Intent intent=new Intent(LoginView.this,RegisterChooseView.class);
 			startActivity(intent);
 			break;
@@ -223,34 +225,34 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 			break;
 		
 			default:
-				//Toast.makeText(getApplication(), "按钮不响应", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getApplication(), "掳麓脜楼虏禄脧矛脫娄", Toast.LENGTH_SHORT).show();
 				break;
 		}
 		}
     }
     
 	/**
-	 * 高斯模糊的实现 SDK Build-tools 必须大于或等于18
-	 * 			  SDK Tools 必须小于或等于22
-	 * @param bmp  传入的要实现模糊的Bimap图片 ，可以用BitmapFactory.decodeResource（）获取
-	 * @param img  传入的ImageView
+	 * 赂脽脣鹿脛拢潞媒碌脛脢碌脧脰 SDK Build-tools 卤脴脨毛麓贸脫脷禄貌碌脠脫脷18
+	 * 			  SDK Tools 卤脴脨毛脨隆脫脷禄貌碌脠脫脷22
+	 * @param bmp  麓芦脠毛碌脛脪陋脢碌脧脰脛拢潞媒碌脛Bimap脥录脝卢 拢卢驴脡脪脭脫脙BitmapFactory.decodeResource拢篓拢漏禄帽脠隆
+	 * @param img  麓芦脠毛碌脛ImageView
 	 */
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	@SuppressLint("NewApi")
 	private void bulr(Bitmap bmp, RelativeLayout view) {
-		 	RenderScript rs = RenderScript.create(context);// 构建一个RenderScript对象
-		    Allocation overlayAlloc = Allocation.createFromBitmap(rs, bmp);// 创建用于输入的脚本类型
+		 	RenderScript rs = RenderScript.create(context);// 鹿鹿陆篓脪禄赂枚RenderScript露脭脧贸
+		    Allocation overlayAlloc = Allocation.createFromBitmap(rs, bmp);// 麓麓陆篓脫脙脫脷脢盲脠毛碌脛陆脜卤戮脌脿脨脥
 		    ScriptIntrinsicBlur blur = 
-		        ScriptIntrinsicBlur.create(rs, overlayAlloc.getElement());// 创建高斯模糊脚本
-		    blur.setInput(overlayAlloc);// 设置输入脚本类型
-		    blur.setRadius(radius);// 设置模糊半径，范围0f<radius<=25f
-		    blur.forEach(overlayAlloc);// 执行高斯模糊算法，并将结果填入输出脚本类型中
-		    overlayAlloc.copyTo(bmp);// 将输出内存编码为Bitmap，图片大小必须注意
-		    view.setBackground(new BitmapDrawable(getResources(), bmp));//设置背景
-		    rs.destroy();// 关闭RenderScript对象
+		        ScriptIntrinsicBlur.create(rs, overlayAlloc.getElement());// 麓麓陆篓赂脽脣鹿脛拢潞媒陆脜卤戮
+		    blur.setInput(overlayAlloc);// 脡猫脰脙脢盲脠毛陆脜卤戮脌脿脨脥
+		    blur.setRadius(radius);// 脡猫脰脙脛拢潞媒掳毛戮露拢卢路露脦搂0f<radius<=25f
+		    blur.forEach(overlayAlloc);// 脰麓脨脨赂脽脣鹿脛拢潞媒脣茫路篓拢卢虏垄陆芦陆谩鹿没脤卯脠毛脢盲鲁枚陆脜卤戮脌脿脨脥脰脨
+		    overlayAlloc.copyTo(bmp);// 陆芦脢盲鲁枚脛脷麓忙卤脿脗毛脦陋Bitmap拢卢脥录脝卢麓贸脨隆卤脴脨毛脳垄脪芒
+		    view.setBackground(new BitmapDrawable(getResources(), bmp));//脡猫脰脙卤鲁戮掳
+		    rs.destroy();// 鹿脴卤脮RenderScript露脭脧贸
 	}
     
-    //初始化popupWindow
+    //鲁玫脢录禄炉popupWindow
     public void initPopupWindow()
     {
     	View v=getLayoutInflater().inflate(R.layout.login_error_choose_view, null);
@@ -274,7 +276,7 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
         v.findViewById(R.id.btn_find_username).setOnClickListener(new OnClickListener(){
 
 			@Override
-			public void onClick(View v) {//跳转找回账户界面
+			public void onClick(View v) {//脤酶脳陋脮脪禄脴脮脣禄搂陆莽脙忙
 				popup.dismiss();
 				Intent intent=new Intent(LoginView.this,FindUsername.class);
 				startActivity(intent);
@@ -284,7 +286,7 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
         v.findViewById(R.id.btn_forget_password).setOnClickListener(new OnClickListener(){
 
 			@Override
-			public void onClick(View v) {//跳转忘记密码界面
+			public void onClick(View v) {//脤酶脳陋脥眉录脟脙脺脗毛陆莽脙忙
 				popup.dismiss();
 				Intent intent=new Intent(LoginView.this,ForgetPassword.class);
 				startActivity(intent);
@@ -294,38 +296,38 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
     }
     
     public void login(String userId,String pwd){
-    	Log.i(tag, "login 被执行");
+    	Log.i(tag, "login 卤禄脰麓脨脨");
     	username=userId;
 		this.pwd=pwd;
 		Thread thread = new Thread(runnable);
 		thread.start();
 		try {
-			Log.i(tag, "join被执行");
+			Log.i(tag, "join卤禄脰麓脨脨");
 			thread.join();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
-    //这是软件关闭后，不卸载，再打开软件，自动登入
+    //脮芒脢脟脠铆录镁鹿脴卤脮潞贸拢卢虏禄脨露脭脴拢卢脭脵麓貌驴陋脠铆录镁拢卢脳脭露炉碌脟脠毛
     public void autoRedirectTo(){
 //    	initProgressDialog();
-    	Log.i(tag, "这是软件关闭后，不卸载，再打开软件，自动登入");
-       	cancelToast();//消除消息提示框
-    	Log.i(tag, "发送自动登录请求");
+    	Log.i(tag, "脮芒脢脟脠铆录镁鹿脴卤脮潞贸拢卢虏禄脨露脭脴拢卢脭脵麓貌驴陋脠铆录镁拢卢脳脭露炉碌脟脠毛");
+       	cancelToast();//脧没鲁媒脧没脧垄脤谩脢戮驴貌
+    	Log.i(tag, "路垄脣脥脳脭露炉碌脟脗录脟毛脟贸");
     	if(con==null){
-    		Log.i(tag, "con为null");
+    		Log.i(tag, "con脦陋null");
 //    		BaseActivity.con=Communication.newInstance();
     	}
     	
     	BaseActivity.getSelf().setUserID(user.getUserID());
     	setPreference(user.getUserID(),user.getPwd());
-    	LogUtil.p(tag, "当前的userID:"+user.getUserID());
-    	LogUtil.p(tag, "存入BaseActivity的userID:"+BaseActivity.getSelf().getUserID());
+    	LogUtil.p(tag, "碌卤脟掳碌脛userID:"+user.getUserID());
+    	LogUtil.p(tag, "麓忙脠毛BaseActivity碌脛userID:"+BaseActivity.getSelf().getUserID());
     	Thread thread = new Thread(autoLoginRunnable);
     	thread.start();
     	
-    	Log.i(tag, "做httpLogin");
+    	Log.i(tag, "脳枚httpLogin");
 //    	Log.i(tag, "autoRedirectTo---httpLogin");
     	Thread thread2=new Thread(httpLogin);
     	Log.i(tag, "autoRedirectTo---httpLogin111");
@@ -342,11 +344,11 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
     }
     
     
-    //进入主界面
+    //陆酶脠毛脰梅陆莽脙忙
     public void redirectTo()
     {
-    	cancelToast();//消除消息提示框
-//    	Log.i(tag, "发送自动登录请求");
+    	cancelToast();//脧没鲁媒脧没脧垄脤谩脢戮驴貌
+//    	Log.i(tag, "路垄脣脥脳脭露炉碌脟脗录脟毛脟贸");
 //    	Thread thread = new Thread(autoLoginRunnable);
 //    	thread.start();
     	
@@ -357,7 +359,7 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
     	startActivity(intent);
 //    	if(login==Config.AUTOLOGIN){
 //			progressDialog.dismiss();
-//			Log.i(tag, "进度框被消灭");
+//			Log.i(tag, "陆酶露脠驴貌卤禄脧没脙冒");
 //			}
     	finish();
     }
@@ -368,19 +370,19 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 		public void run() {
 			Message msg=new Message();
 			
-			//密码或用户名为空
+			//脙脺脗毛禄貌脫脙禄搂脙没脦陋驴脮
 			if("".equals(username)||"".equals(pwd))
 			{
-				respCode="用户名或密码错误";
+				respCode="脫脙禄搂脙没禄貌脙脺脗毛麓铆脦贸";
 				msg.what=1;
 				handler.sendMessage(msg);
 				
 			} else{
 				Log.i(tag, "username ="+username+"  "+" password ="+pwd);
-				//第一次登录就要新建Communication,否则就直接连接，就是调用networker 里面的connect方法
+				//碌脷脪禄麓脦碌脟脗录戮脥脪陋脨脗陆篓Communication,路帽脭貌戮脥脰卤陆脫脕卢陆脫拢卢戮脥脢脟碌梅脫脙networker 脌茂脙忙碌脛connect路陆路篓
 				Log.i(tag, "login"+login);
 				if(con==null){
-					BaseActivity.con=Communication.newInstance();//这里不需要private Communication con，因为会造成con不是WoliaoBaseActivity
+					BaseActivity.con=Communication.newInstance();//脮芒脌茂虏禄脨猫脪陋private Communication con拢卢脪貌脦陋禄谩脭矛鲁脡con虏禄脢脟WoliaoBaseActivity
 				Log.i("---->>>>","con is null");
 				}else{
 					Log.i(tag, "openSocketChannel");
@@ -388,14 +390,14 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 					BaseActivity.con.openSocketChannel();
 				}
 				BaseActivity.con.reqLogin(username,pwd);
-				Log.i(tag, "reqLogin 被执行");
+				Log.i(tag, "reqLogin 卤禄脰麓脨脨");
 				/*sendLoginInfo = new SendLoginInfo(username,pwd);
 				respCode=sendLoginInfo.checkLoginInfo();
-				if(respCode.equals("登录成功"))//密码或用户名不为空
+				if(respCode.equals("碌脟脗录鲁脡鹿娄"))//脙脺脗毛禄貌脫脙禄搂脙没虏禄脦陋驴脮
 				{
 						msg.what=2;handler.sendMessage(msg);
 				}else{
-					//用户名或密码输入错误
+					//脫脙禄搂脙没禄貌脙脺脗毛脢盲脠毛麓铆脦贸
 					msg.what=1;handler.sendMessage(msg);
 				}*/
 		}
@@ -406,10 +408,10 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 
 		@Override
 		public void run() {
-			//con=Communication.newInstance();//这里不需要private Communication con，因为会造成con不是WoliaoBaseActivity
+			//con=Communication.newInstance();//脮芒脌茂虏禄脨猫脪陋private Communication con拢卢脪貌脦陋禄谩脭矛鲁脡con虏禄脢脟WoliaoBaseActivity
 			if(con==null){
 				Log.i(tag, "new con");
-				BaseActivity.con=Communication.newInstance();//这里不需要private Communication con，因为会造成con不是WoliaoBaseActivity
+				BaseActivity.con=Communication.newInstance();//脮芒脌茂虏禄脨猫脪陋private Communication con拢卢脪貌脦陋禄谩脭矛鲁脡con虏禄脢脟WoliaoBaseActivity
 			}else if(!con.newNetWorker01.socketChannel.isRegistered()){
 				Log.i(tag, "opensocket channel");
 				BaseActivity.con.openSocketChannel();
@@ -417,7 +419,7 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 			Log.i(tag, "autoLoginRunnable--con.reqLogin:user.getUserID:"+user.getUserID());
 			con.reqLogin(user.getUserID(),user.getPwd());	
 			//setCookie();
-			Log.i(tag, "已发送");
+			Log.i(tag, "脪脩路垄脣脥");
 		}
 		
 	};
@@ -439,21 +441,21 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 		/*sendLoginInfo = new SendLoginInfo(username,null);	
 		try {
 			respCode=sendLoginInfo.checkLoginInfo();
-			Log.i(tag, "论坛登入respCode:"+respCode);
-			if(respCode.equals("success"))//密码或用户名不为空,并且登录成功
+			Log.i(tag, "脗脹脤鲁碌脟脠毛respCode:"+respCode);
+			if(respCode.equals("success"))//脙脺脗毛禄貌脫脙禄搂脙没虏禄脦陋驴脮,虏垄脟脪碌脟脗录鲁脡鹿娄
 			{
-					handler.sendEmptyMessage(2));//跳转到论坛主界面
+					handler.sendEmptyMessage(2));//脤酶脳陋碌陆脗脹脤鲁脰梅陆莽脙忙
 					Log.d("cookie",sendLoginInfo.getCookie());
 			        SharedPreferences.Editor editor1 =  getSharedPreferences("data",Context.MODE_PRIVATE).edit();
 			        editor1.putString("cookie", sendLoginInfo.getCookie());
 			        editor1.commit();
 					
 			}else{
-				//用户名或密码输入错误
+				//脫脙禄搂脙没禄貌脙脺脗毛脢盲脠毛麓铆脦贸
 				handler.sendEmptyMessage(1);
 			}
 		} catch (InterruptedException e) {
-			handler.sendEmptyMessage(4);//服务器无响应
+			handler.sendEmptyMessage(4);//路镁脦帽脝梅脦脼脧矛脫娄
 		}*/
 		
 		setCookie();
@@ -468,22 +470,22 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 	   sendLoginInfo = new SendLoginInfo(user.getUserID(),null);	
 		try {
 			respCode=sendLoginInfo.checkLoginInfo();
-			Log.i(tag, "论坛登入respCode:"+respCode);
-			if(respCode.equals("success"))//密码或用户名不为空,并且登录成功
+			Log.i(tag, "脗脹脤鲁碌脟脠毛respCode:"+respCode);
+			if(respCode.equals("success"))//脙脺脗毛禄貌脫脙禄搂脙没虏禄脦陋驴脮,虏垄脟脪碌脟脗录鲁脡鹿娄
 			{
 					
 					Log.d("setCookie()",sendLoginInfo.getCookie());
 			        SharedPreferences.Editor editor1 =  getSharedPreferences("data",Context.MODE_PRIVATE).edit();
 			        editor1.putString("cookie", sendLoginInfo.getCookie());
 			        editor1.commit();
-			        handler.sendEmptyMessage(2);//跳转到论坛主界面
+			        handler.sendEmptyMessage(2);//脤酶脳陋碌陆脗脹脤鲁脰梅陆莽脙忙
 					
 			}else{
-				//用户名或密码输入错误
+				//脫脙禄搂脙没禄貌脙脺脗毛脢盲脠毛麓铆脦贸
 				handler.sendEmptyMessage(1);
 			}
 		} catch (InterruptedException e) {
-			handler.sendEmptyMessage(4);//服务器无响应
+			handler.sendEmptyMessage(4);//路镁脦帽脝梅脦脼脧矛脫娄
 		}
    }
    Runnable runnableGetOfflineMessage = new Runnable(){
@@ -492,7 +494,7 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 		 BaseActivity.con.getOfflineMessage(user.getUserID());
 	 }  
    };
- //判断toast是否存在
+ //脜脨露脧toast脢脟路帽麓忙脭脷
  		public void showToast(String s)
  		{
  			if(toast==null)
@@ -503,14 +505,14 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
  			}
  			toast.show();
  		}
- 		//cancel掉toast
+ 		//cancel碌么toast
  		public void cancelToast()
  		{
  			if(toast!=null){
  				toast.cancel();
  			}
  		}
- 		//用户按返回键
+ 		//脫脙禄搂掳麓路碌禄脴录眉
  		@Override
  		public void onBackPressed(){
  			cancelToast();
@@ -519,9 +521,9 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
  		}
  		
 // 		private void initProgressDialog() {
-// 			// 进度提示框
+// 			// 陆酶露脠脤谩脢戮驴貌
 // 			progressDialog = new ProgressDialog(LoginView.this);
-// 			progressDialog.setTitle("正在为你跳转主界面");
+// 			progressDialog.setTitle("脮媒脭脷脦陋脛茫脤酶脳陋脰梅陆莽脙忙");
 // 			progressDialog.setMessage("Loading...");
 // 			progressDialog.setCancelable(true);
 // 			progressDialog.show();
@@ -533,33 +535,33 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 
 		@Override
 		public void processMessage(Message msg) {
-			Message msg1 = new Message();//与processMessage的msg区分
+			Message msg1 = new Message();//脫毛processMessage碌脛msg脟酶路脰
 			if(msg.what==Config.LOGIN_SUCCESS){
 				
-//				Log.i(tag, "LoginActivity----得到LOGIN_SUCCESS，即将跳转ChatMainActivity");
+//				Log.i(tag, "LoginActivity----碌脙碌陆LOGIN_SUCCESS拢卢录麓陆芦脤酶脳陋ChatMainActivity");
 				//Intent intent=new Intent(this,ChatMainActivity.class);
-//				Log.i(tag, "登入成功了，请求获取离线消息");
+//				Log.i(tag, "碌脟脠毛鲁脡鹿娄脕脣拢卢脟毛脟贸禄帽脠隆脌毛脧脽脧没脧垄");
 				
 				setPreference(user.getUserID(),user.getPwd());
-				Log.i(tag, "userID:"+user.getUserID()+"、pwd:"+user.getPwd()+"--插入数据成功");
+				Log.i(tag, "userID:"+user.getUserID()+"隆垄pwd:"+user.getPwd()+"--虏氓脠毛脢媒戮脻鲁脡鹿娄");
 				BaseActivity.getSelf().setUserID(t1.getText().toString());
 				BaseActivity.getSelf().setPwd(t2.getText().toString());
 				LogUtil.p(tag, "BaseActivity.getSelf().getUserID:"+BaseActivity.getSelf().getUserID());
 				new Thread(runnableGetOfflineMessage).start();
-				Log.i(tag, "登入成功了，请求获取离线消息");
+				Log.i(tag, "碌脟脠毛鲁脡鹿娄脕脣拢卢脟毛脟贸禄帽脠隆脌毛脧脽脧没脧垄");
 				new Thread(httpLogin).start();
 //				redirectTo();
 				//startActivity(intent);
 			}else if(msg.what==Config.FAILED){
 				Log.i(tag, "msg.what=failed");
 				msg1.what=1;
-				handler.sendMessage(msg1);//2016.7.16这个修改很重要，handler的msg和processMessage的msg要不同
-				//Toast.makeText(getApplicationContext(), "用户登录失败", Toast.LENGTH_SHORT).show();
+				handler.sendMessage(msg1);//2016.7.16脮芒赂枚脨脼赂脛潞脺脰脴脪陋拢卢handler碌脛msg潞脥processMessage碌脛msg脪陋虏禄脥卢
+				//Toast.makeText(getApplicationContext(), "脫脙禄搂碌脟脗录脢搂掳脺", Toast.LENGTH_SHORT).show();
 			}else if(msg.what==Config.USER_LOGIN_ALREADY){
-				showToast("用户已登录");
-				//Toast.makeText(getApplicationContext(), "用户已登录", Toast.LENGTH_SHORT).show();
+				showToast("脫脙禄搂脪脩碌脟脗录");
+				//Toast.makeText(getApplicationContext(), "脫脙禄搂脪脩碌脟脗录", Toast.LENGTH_SHORT).show();
 			}else if (msg.what == Config.SEND_NOTIFICATION) {
-				LogUtil.p(tag, "新消息通知");
+				LogUtil.p(tag, "脨脗脧没脧垄脥篓脰陋");
 				sendNotifycation();
 			}
 			
