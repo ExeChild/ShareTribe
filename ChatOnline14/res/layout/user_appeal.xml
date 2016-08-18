@@ -200,6 +200,7 @@
                	android:textSize="14sp"
                 android:text="请点击左边方框选择一张手持身份证正面照片。"/>
                  <TextView 
+                     android:id="@+id/img_example"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_marginTop="15dp"
@@ -213,14 +214,16 @@
             android:id="@+id/btn_user_appeal_submit"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:textSize="16sp"
-            android:background="@drawable/btn_confirm"
+            
+            android:background="@drawable/background_button_login"
            
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="15dp"
             android:layout_weight="1"
+            android:textSize="18sp"
             android:text="确		定"/>
+       
         
     </LinearLayout>
 

@@ -42,8 +42,10 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.atm.charonline.bbs.util.LogUtil;
 import com.atm.charonline.bbs.util.SendPicture;
 import com.atm.chatonline.bbs.commom.MyToast;
 import com.atm.chatonline.bbs.commom.UriAPI;
@@ -62,6 +64,8 @@ public class UserAppeal extends Activity  implements OnClickListener{
 	private ImageView img;
 	private Handler handler;
 	private PopupWindow pop;
+	//2016.8.18接手加冰
+	private TextView title,imgExample;
 	
 
 	@Override
@@ -97,7 +101,8 @@ public class UserAppeal extends Activity  implements OnClickListener{
 		
 		pop=new PopupWindow(v,LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
 		ColorDrawable cd = new ColorDrawable(-0000);
-	    pop.setAnimationStyle(R.style.popwindow_alpha_style); 
+//	    pop.setAnimationStyle(R.style.popwindow_alpha_style); 
+	    pop.setAnimationStyle(R.style.popup_anim_style); 
         pop.setBackgroundDrawable(cd);
 		pop.setOutsideTouchable(true);
 		pop.setFocusable(true);
@@ -134,14 +139,16 @@ public class UserAppeal extends Activity  implements OnClickListener{
 		etUserId=(EditText)findViewById(R.id.user_appeal_userid);
 		etUserName=(EditText)findViewById(R.id.user_appeal_name);
 		etUserEmail=(EditText)findViewById(R.id.user_appeal_email);
-		
-		
+		title = (TextView)findViewById(R.id.title);
+		imgExample = (TextView)findViewById(R.id.img_example);
 		
 		img=(ImageView)findViewById(R.id.upload_img);
 		//img.setScaleType(ImageView.ScaleType.CENTER);
 		Button btnBack=(Button)findViewById(R.id.btn_back);
 		Button btnSubmit=(Button)findViewById(R.id.btn_user_appeal_submit);
 		RadioGroup rg=(RadioGroup)findViewById(R.id.type_btn_group);
+		title.setText("申  诉");
+		title.setTextSize(18);
 		rg.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			@Override
@@ -149,17 +156,21 @@ public class UserAppeal extends Activity  implements OnClickListener{
 				// TODO 自动生成的方法存根
 				switch(checkedId){
 				case R.id.inschool:
+					LogUtil.p(tag, "在校生");
 					role="在校生";
 					break;
 				case R.id.graduated:
+					LogUtil.p(tag, "毕业生");
 					role="毕业生";
 					break;
 				case R.id.teacher:
+					LogUtil.p(tag, "教师");
 					role="教师";
 					break;
 				}
 			}
 		});
+		imgExample.setOnClickListener(this);
 		etUserId.setOnClickListener(this);
 		etUserName.setOnClickListener(this);
 		etUserEmail.setOnClickListener(this);
@@ -188,6 +199,9 @@ public class UserAppeal extends Activity  implements OnClickListener{
 			//初始化一个popwindow来选择
 			pop.showAtLocation(v, Gravity.CENTER, 0, 0);
 			break;
+		case R.id.img_example:
+			Intent intent = new Intent(UserAppeal.this,ImgExample.class);
+			startActivity(intent);
 			
 		}
 	}
