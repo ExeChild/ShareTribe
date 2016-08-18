@@ -69,7 +69,7 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 	private ProgressDialog progressDialog;// ½ø¶ÈÌõ
 	private InputMethodManager mInputMethodManager;
 	private RelativeLayout parent;
-	final float radius=25.f;
+	final float radius=30.f;
 	 private Context context=null;
 //	private View viewBackground;
     @Override
