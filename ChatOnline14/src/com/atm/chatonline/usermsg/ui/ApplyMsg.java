@@ -71,7 +71,7 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 			initAdapter();
 		}
 		//获取评论消息
-		//new Thread(myMsgRunnable).start();
+		new Thread(myMsgRunnable).start();
 		//initData();
 		//initAdapter();
 		

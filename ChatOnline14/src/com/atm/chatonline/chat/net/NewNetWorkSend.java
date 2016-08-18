@@ -297,7 +297,7 @@ public class NewNetWorkSend {
 	}
 	
 	//发送请求获取我的消息
-	public boolean getMyMessage(String userId,Integer type){
+	public boolean getMyMessage(String userId,int type){
 		JSONObject json=new JSONObject();
 		try {
 			json.put("userId", userId);
@@ -308,7 +308,7 @@ public class NewNetWorkSend {
 		}
 		buffer = ByteBuffer.allocateDirect(8+json.toString().getBytes().length);
 		buffer.putInt(Config.MY_MESSAGE);
-		put(userId);
+		put(json.toString());
 		writeBuffer();
 		return true;
 	}

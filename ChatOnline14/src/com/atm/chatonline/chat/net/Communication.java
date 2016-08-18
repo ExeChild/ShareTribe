@@ -149,7 +149,7 @@ public class Communication {
 	}
 	
 	//发送获取我的消息的请求
-	public boolean reqMyMsg(String userId,Integer type){
+	public boolean reqMyMsg(String userId,int type){
 		return newNetWorker01.sendMsg.getMyMessage(userId, type);
 	}
 }
