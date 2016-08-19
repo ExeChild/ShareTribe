@@ -27,7 +27,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener{
 	private EditText editAccount,editPwd;
 	private Button btnLogin;
 	private String userID,pwd;
-	
+	//∂À∏Á∫√Àß
 	
 	protected  void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
