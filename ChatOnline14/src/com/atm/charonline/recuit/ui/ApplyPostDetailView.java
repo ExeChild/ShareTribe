@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atm.charonline.bbs.util.BBSConnectNet;
+import com.atm.charonline.recuit.ui.RecuitPostDetailView.TelRecuitJSInterface;
 import com.atm.chatonline.bbs.activity.bbs.BBSClickGoodListView;
 import com.atm.chatonline.bbs.activity.bbs.BBSCommentView;
 import com.atm.chatonline.bbs.adapter.MyWebChromeClient;
@@ -126,6 +128,7 @@ public class ApplyPostDetailView extends BaseActivity implements OnClickListener
 			}
 		});
 		webView.addJavascriptInterface(new DemoJavaScriptInterface(), "demo1");
+		webView.addJavascriptInterface(new TelRecuitJSInterface(), "recuitView");
 		synCookies(this, url + essayId + ".html");//同步cookie
 		webView.loadUrl(url + essayId + ".html");
 	}
@@ -277,6 +280,47 @@ public class ApplyPostDetailView extends BaseActivity implements OnClickListener
 				public void finishPostDetailView(){
 					ApplyPostDetailView.this.finish();
 				}
+	}
+	
+	/**
+	 * js调用native 的句柄是recuitView  方法时tel
+	 * @author Jackbing
+	 *
+	 */
+	class TelRecuitJSInterface{
+		//type有两种类型 一种是sms，一种是tel
+		public void tel(String type,String number){
+			
+			if(type.equals("sms")){
+				//发短信
+				sendSmsOnlyNumber(number);
+			}else{
+				//打电话
+				dialPhoneNumber(number);
+			}
+		}
+		
+	}
+	
+	/**
+	 * 调用系统发送短信的界面,指定目标发送者
+	 * @param content
+	 */
+
+	public void sendSmsOnlyNumber(String number){
+		Uri smsUri=Uri.parse("smsto:"+number);
+		Intent intent=new Intent(Intent.ACTION_SENDTO,smsUri);
+		startActivity(intent);
+	}
+	
+	/**
+	 * 调用系统打电话的界面，指定目标电话号码
+	 * @param number
+	 */
+	public void dialPhoneNumber(String number){
+		Uri telUri=Uri.parse("tel:"+number);
+		Intent intent=new Intent(Intent.ACTION_VIEW,telUri);
+		startActivity(intent);
 	}
 
 	@Override
