@@ -343,6 +343,7 @@ public class BBSCommentView extends BaseActivity implements
 		pWebView.getLoadingLayoutProxy(true, false).setReleaseLabel(
 				"松开刷新");
 		pWebView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<WebView>() {
+			
 			@Override
 			public void onPullDownToRefresh(
 					PullToRefreshBase<WebView> refreshView) {
@@ -363,6 +364,8 @@ public class BBSCommentView extends BaseActivity implements
 
 			}
 
+			
+			
 			@Override
 			public void onPullUpToRefresh(PullToRefreshBase<WebView> refreshView) {
 				// 上拉加载更多回复 JS：getReply();
@@ -427,9 +430,11 @@ public class BBSCommentView extends BaseActivity implements
 			return null;
 		}
 
+		
 		@Override
 		protected void onPostExecute(Void aVoid) {
 			super.onPostExecute(aVoid);
+			
 			comment_view.getSettings().setBuiltInZoomControls(true);
 			comment_view.getSettings().setSupportZoom(true);
 			// 加载需要显示的网页

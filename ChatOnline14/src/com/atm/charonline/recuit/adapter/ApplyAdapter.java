@@ -63,25 +63,25 @@ public class ApplyAdapter extends ArrayAdapter<Apply> {
 		Log.d("recuitAdapter:recuit.getWoTypeName()",apply.getWoTypeName());
 		Log.d("recuitAdapter:recuit.getReTypeName()",apply.getReTypeName());
 		
-		viewHolder.publishTime.setText(apply.getPublishTime());
-		viewHolder.salary.setText(apply.getExpectSalary());
-		viewHolder.workContent.setText(apply.getWoTypeName());
+		viewHolder.publishTime.setText(apply.getPublishTime().toString().trim());
+		viewHolder.salary.setText(apply.getExpectSalary().toString().trim());
+		viewHolder.workContent.setText(apply.getWoTypeName().toString().trim());
 
 			switch(apply.getReTypeName()) {
-			case "实习":
-				LogUtil.d("图片变动：实习");
+			case "瀹炰範":
+				LogUtil.d("瀹炰範");
 				viewHolder.recuitType.setBackgroundResource(R.drawable.image_internship);
 				break;
-			case "全职":
-				LogUtil.d("图片变动：全职");
+			case "鍏ㄨ亴":
+				LogUtil.d("鍏ㄨ亴");
 				viewHolder.recuitType.setBackgroundResource(R.drawable.image_fulltime);
 				break;
-			case "兼职":
-				LogUtil.d("图片变动：兼职");
+			case "鍏艰亴":
+				LogUtil.d("鍏艰亴");
 				viewHolder.recuitType.setBackgroundResource(R.drawable.image_parttime);
 				break;
 			default:
-				LogUtil.d("图片变动：全职");
+				LogUtil.d("鍏ㄨ亴");
 				viewHolder.recuitType.setBackgroundResource(R.drawable.image_fulltime);
 			}
 		return view;

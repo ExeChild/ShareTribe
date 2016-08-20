@@ -208,6 +208,7 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 		
 		@Override
 		public void run() {
+			Log.i(tag, "获取评论消息");
 			ApplyMsg.con.reqMyMsg(userId,0);	
 		}
 	};

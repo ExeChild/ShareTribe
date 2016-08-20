@@ -1012,12 +1012,11 @@ public class NewNetWorker extends Thread {
 	 */
 	private void handleMyMessage() {
 		//Message msg=new Message();
+		System.out.println("获取到发送过来的消息");
 		String json=getString();
 		System.out.println(json.toString());
 		
-		
-		
-		
+
 		//BaseActivity.sendMessage(msg);
 	}
 
