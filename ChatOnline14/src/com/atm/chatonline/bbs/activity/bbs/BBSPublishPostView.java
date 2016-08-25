@@ -10,7 +10,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -64,7 +66,8 @@ import com.example.studentsystem01.R;
 public class BBSPublishPostView extends BaseActivity implements OnClickListener {
 
 	private LinearLayout ll_function, ll_exp, ll_photo;
-	private ImageView album, expression, photo_one, aite, iv_return;
+	private ImageView album, expression, photo_one, aite, iv_return,
+			iv_addLable;
 	private TextView next;
 	private EditText title, content;
 	private Uri imageUri;
@@ -82,7 +85,7 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 	private SimpleAdapter adapter1, adapter2;
 	private GridView grid1, grid2;
 	private View viewPager1, viewPager2;
-	private boolean isFaceShow = false,isPhotoShow = false;
+	private boolean isFaceShow = false, isPhotoShow = false;
 	private Resources res;
 	private JSONArray aiteID = new JSONArray();
 	private static int i = 0;// 记录@次数
@@ -111,11 +114,11 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 	private List<PhotoItem> selectedPic = new ArrayList<PhotoItem>();
 	private Context context;
 	private PhotoAdapter select_adap;
-
-	private static final int RESULT_LABEL = 0;
-	private static final int RESULT_PHOTO = 1;
-	private static final int RESULT_DEPARTMENT = 2;
-	private static final int RESULT_AITE = 3;
+	private PhotoItem photoItem;
+	private int size;
+	private static final int REQUEST_PHOTO = 1;
+	private static final int REQUEST_NEXT = 2;
+	private static final int REQUEST_AITE = 3;
 
 	@SuppressLint("NewApi")
 	@Override
@@ -123,43 +126,110 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.bbs_publish_post);
-
+		context = getApplicationContext();
 		initView();
 		getArray();// 从资源文件夹下获取已定义好的数组
-
 		mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
 		accomplishExpBoard();// 实现表情面板
 		setListenerForViews();
-		// initEvent();
+		setAdapterForPhotos();
+		setParamsForGridView();
+		setCookie();// 获取cookie
 
-		// title.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-		//
-		// @Override
-		// public void onFocusChange(View arg0, boolean arg1) {
-		// // TODO Auto-generated method stub
-		// if (arg1) {
-		// Log.d(tag, "title");
-		// }
-		// if (isFaceShow) {
-		// ll_exp.setVisibility(View.GONE);
-		// isFaceShow = false;
-		// }
-		// }
-		// });
-		// content.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-		//
-		// @Override
-		// public void onFocusChange(View arg0, boolean arg1) {
-		// // TODO Auto-generated method stub
-		// if (isFaceShow) {
-		// ll_exp.setVisibility(View.GONE);
-		// isFaceShow = false;
-		// }
-		// }
-		// });
-		context = getApplicationContext();
-		// 获取cookie
+	}
+
+	private void setAdapterForPhotos() {
+		// TODO Auto-generated method stub
+		photoItem = new PhotoItem(R.drawable.add_pic, 1);
+		selectedPic.add(photoItem);
+		select_adap = new PhotoAdapter(context, null, selectedPic) {
+			@Override
+			public int getViewTypeCount() {
+				// TODO Auto-generated method stub
+				return 2;
+			}
+
+			@Override
+			public int getItemViewType(int position) {
+				// TODO Auto-generated method stub
+				return selectedPic.get(position).getFlag();
+			}
+
+			@Override
+			public View getView(final int position, View arg1, ViewGroup arg2) {
+				// TODO Auto-generated method stub
+				GridViewItemWithDelete grid = null;
+
+				if (selectedPic.get(position).getFlag() == 1) {
+					Log.d(tag, "selectedPic.size()==" + selectedPic.size()
+							+ ",positon==" + position);
+					grid = new GridViewItemWithDelete(context, true);
+					grid.setLayoutParams(new LayoutParams(125, 125));
+					grid.iv_photo.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View arg0) {
+							// TODO Auto-generated method stub
+							Intent albumIntent = new Intent(
+									BBSPublishPostView.this,
+									BBSSelectPhotosView.class);
+							startActivityForResult(albumIntent, REQUEST_PHOTO);
+						}
+					});
+					return grid;
+				} else {
+					if (arg1 == null && getItemViewType(position) == 0) {
+						grid = new GridViewItemWithDelete(context);
+						grid.setLayoutParams(new LayoutParams(
+								LayoutParams.MATCH_PARENT,
+								LayoutParams.MATCH_PARENT));
+					} else {
+						grid = (GridViewItemWithDelete) arg1;
+					}
+					grid.iv_delete.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View arg0) {
+							// TODO Auto-generated method
+							// stub
+							Toast.makeText(context, "Delete",
+									Toast.LENGTH_SHORT).show();
+							selectedPic.remove(position);
+							Log.d(tag, "position=" + position);
+							select_adap.notifyDataSetChanged();
+						}
+					});
+
+				}
+
+				Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(
+						context.getContentResolver(), selectedPic.get(position)
+								.getPhotoID(), Thumbnails.MICRO_KIND, null);
+				grid.mySetBitmap(bitmap);
+				return grid;
+			}
+		};
+
+		gv_bottom.setAdapter(select_adap);
+	}
+
+	private void setParamsForGridView() {
+		// TODO Auto-generated method stub
+		size = selectedPic.size();
+		DisplayMetrics dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+		float density = dm.density;
+		int allWidth = (int) (160 * size * density);
+		int itemWidth = (int) (100 * density);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				allWidth, LinearLayout.LayoutParams.FILL_PARENT);
+		gv_bottom.setLayoutParams(params);
+		gv_bottom.setColumnWidth(itemWidth);
+		gv_bottom.setNumColumns(size);
+	}
+
+	private void setCookie() {
+		// TODO Auto-generated method stub
 		SharedPreferences pref = getSharedPreferences("data",
 				Context.MODE_PRIVATE);
 		cookie = pref.getString("cookie", "");
@@ -170,18 +240,6 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
 				.detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
 				.penaltyLog().penaltyDeath().build());
-
-		// // 类型的监听事件
-		// spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-		// public void onItemSelected(AdapterView<?> parent, View view,
-		// int position, long id) {
-		// str_type = type[position];
-		// }
-		//
-		// public void onNothingSelected(AdapterView<?> parent) {
-		//
-		// }
-		// });
 	}
 
 	private void setListenerForViews() {
@@ -258,11 +316,6 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 					content.setSelection(index1 + description1[arg2].length());
 				}
 			}
-
-			private void LogUtil(String tag, String string) {
-				// TODO Auto-generated method stub
-
-			}
 		});
 
 		grid2.setOnItemClickListener(new OnItemClickListener() {
@@ -296,19 +349,6 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 		});
 
 	}
-
-	// // 设置监听事件
-	// private void initEvent() {
-	// // TODO Auto-generated method stub
-	// album.setOnClickListener(this);
-	// expression.setOnClickListener(this);
-	// department.setOnClickListener(this);
-	// sendPost.setOnClickListener(this);
-	// aite.setOnClickListener(this);
-	// iv_return.setOnClickListener(this);
-	// photo_one.setOnClickListener(this);
-	//
-	// }
 
 	// 实现表情面板
 	private void accomplishExpBoard() {
@@ -425,8 +465,8 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
 		// TODO Auto-generated method stub
 		// ContentResolver contentResolver = getContentResolver();
-		switch (arg1) {
-		case RESULT_LABEL:
+		switch (arg0) {
+		case REQUEST_AITE:
 			if (arg1 == RESULT_OK) {// 从关注界面获得数据
 				try {
 					aiteID.put(i, arg2.getStringExtra("friendID"));
@@ -440,69 +480,16 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 						"@" + arg2.getStringExtra("nickName") + " ");// 在当前光标处插入文本
 			}
 			break;
-		case RESULT_PHOTO:
+		case REQUEST_PHOTO:
 			// 从相册返回的数据
 			if (arg2 != null) {
 				try {
-					selectedPic = (ArrayList<PhotoItem>) arg2
+					List<PhotoItem> temp_selectedPic = (ArrayList<PhotoItem>) arg2
 							.getSerializableExtra("selectedPic");
-					select_adap = new PhotoAdapter(context, null, selectedPic) {
-						@Override
-						public View getView(final int position, View arg1, ViewGroup arg2) {
-							// TODO Auto-generated method stub
-							GridViewItemWithDelete grid = null;
-							if (arg1 == null) {
-								grid = new GridViewItemWithDelete(context);
-								grid.setLayoutParams(new LayoutParams(
-										LayoutParams.MATCH_PARENT,
-										LayoutParams.MATCH_PARENT));
-								// arg1.setTag(grid);
-							} else {
-								grid = (GridViewItemWithDelete) arg1;
-							}
-							grid.iv_delete
-									.setOnClickListener(new OnClickListener() {
-
-										@Override
-										public void onClick(View arg0) {
-											// TODO Auto-generated method stub
-											Toast.makeText(context, "Delete",
-													Toast.LENGTH_SHORT).show();
-											selectedPic.remove(position);
-											Log.d(tag, "position=" + position);
-											select_adap.notifyDataSetChanged();
-										}
-									});
-
-							Bitmap bitmap = MediaStore.Images.Thumbnails
-									.getThumbnail(context.getContentResolver(),
-											selectedPic.get(position)
-													.getPhotoID(),
-											Thumbnails.MICRO_KIND, null);
-							grid.mySetBitmap(bitmap);
-
-							return grid;
-						}
-					};
-					gv_bottom.setAdapter(select_adap);
-					int size = selectedPic.size();
-					DisplayMetrics dm = new DisplayMetrics();
-					getWindowManager().getDefaultDisplay().getMetrics(dm);
-					float density = dm.density;
-					/*
-					 * int allWidth = (int) (110 * size * density); int
-					 * itemWidth = (int) (75 * density);
-					 */
-					int allWidth = (int) (160 * size * density);
-					int itemWidth = (int) (100 * density);
-					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-							allWidth, LinearLayout.LayoutParams.FILL_PARENT);
-					gv_bottom.setLayoutParams(params);
-					gv_bottom.setColumnWidth(itemWidth);
-					gv_bottom.setHorizontalSpacing(10);
-					gv_bottom.setStretchMode(GridView.NO_STRETCH);
-					gv_bottom.setNumColumns(size);
-					ll_photo.setVisibility(View.VISIBLE);
+					selectedPic
+							.addAll(selectedPic.size() - 1, temp_selectedPic);
+					select_adap.notifyDataSetChanged();
+					setParamsForGridView();
 					isPhotoShow = true;
 				} catch (Exception e) {
 					// TODO Auto-generatedcatch block
@@ -540,15 +527,11 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 		// // crop(uri);//剪切图片
 		// }
 		// break;
-		case RESULT_DEPARTMENT:
-			str_department = arg2.getStringExtra("department");
-			break;
-		case RESULT_AITE:
-			break;
 		}
 	}
 
 	// 初始化控件
+	@SuppressWarnings("deprecation")
 	private void initView() {
 		// TODO Auto-generated method stub
 		next = (TextView) findViewById(R.id.next);
@@ -566,32 +549,31 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 		ll_photo = (LinearLayout) findViewById(R.id.ll_photo);
 		iv_return = (ImageView) findViewById(R.id.iv_return);
 		gv_bottom = (GridView) findViewById(R.id.gv_bottom);
+		iv_addLable = new ImageView(context);
+		iv_addLable.setBackgroundDrawable(getResources().getDrawable(
+				R.drawable.add_pic));
+		iv_addLable.setLayoutParams(new LayoutParams(125, 125));
 
 	}
-
-	// /*
-	// * 从相册获取
-	// */
-	// public void gallery(View view) {
-	// // 激活系统图库，选择一张图片
-	// Intent intent = new Intent(Intent.ACTION_PICK);
-	// intent.setType("image/*");
-	// // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_GALLERY
-	// startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
-	// }
 
 	@Override
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
 		switch (arg0.getId()) {
-		case R.id.album://相册
-			Intent albumIntent = new Intent(BBSPublishPostView.this,
-					BBSSelectPhotosView.class);
-			startActivityForResult(albumIntent, 0);
+		case R.id.album:// 相册
+			if (!isPhotoShow) {
+				if (isFaceShow)
+					ll_exp.setVisibility(View.GONE);
+				ll_photo.setVisibility(View.VISIBLE);
+				isPhotoShow = true;
+			} else {
+				ll_photo.setVisibility(View.GONE);
+				isPhotoShow = false;
+			}
 			break;
 		case R.id.expression:
 			if (!isFaceShow) {
-				if(isPhotoShow)
+				if (isPhotoShow)
 					ll_photo.setVisibility(View.GONE);
 				mInputMethodManager.hideSoftInputFromWindow(
 						content.getWindowToken(), 0);
@@ -612,36 +594,29 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 					AttentionActivity.class);
 			aiteIntent.putExtra("userID", userID);
 			aiteIntent.putExtra("fromActivity", Config.BBSPOSTDETAILVIEW);
-			startActivityForResult(aiteIntent, 1);
+			startActivityForResult(aiteIntent, REQUEST_AITE);
 			break;
 		case R.id.iv_return:
-			// AlertDialog.Builder back = new AlertDialog.Builder(this);
-			// back.setTitle("提示框")
-			// .setMessage("退出当前编辑？")
-			// .setPositiveButton("退出",
-			// new DialogInterface.OnClickListener() {
-			// public void onClick(DialogInterface dialog,
-			// int which) {
-			// BBSPublishPostView.this.finish();
-			// }
-			//
-			// })
-			// .setNegativeButton("取消",
-			// new DialogInterface.OnClickListener() {
-			//
-			// @Override
-			// public void onClick(DialogInterface arg0,
-			// int arg1) {
-			// // TODO Auto-generated method stub
-			// }
-			// });
-			//
-			// back.create().show();
+			AlertDialog.Builder build = new AlertDialog.Builder(this);
+			build.setMessage("确定退出当前编辑贴？").setPositiveButton("确定",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							BBSPublishPostView.this.finish();
+						}
+					}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+			build.create().show();
 			break;
 		case R.id.next:
 			Intent departmentIntent = new Intent(BBSPublishPostView.this,
 					BBSChooseDepartmentView.class);
-			startActivityForResult(departmentIntent, 2);
+			startActivityForResult(departmentIntent, REQUEST_NEXT);
 			break;
 		// case R.id.sendPost:
 		// if (!title.getText().toString().equals("")
@@ -694,12 +669,6 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 		// }
 		// i = 0;
 		// break;
-		case R.id.photo_one:
-			Intent photoIntent = new Intent(BBSPublishPostView.this,
-					BBSPreviewPicture.class);
-			photoIntent.putExtra("picturePath", picturePath);
-			startActivityForResult(photoIntent, 3);
-			break;
 		}
 	}
 

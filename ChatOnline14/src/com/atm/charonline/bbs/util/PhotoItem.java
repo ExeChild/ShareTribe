@@ -11,15 +11,31 @@ public class PhotoItem implements Serializable {
 	private int  photoID;
 	private boolean select;
 	private String path;
+	private int flag = 0;//flag=1代表是“添加图片”
 	public PhotoItem(int id,String path) {
 		photoID = id;
 		select = false;
 		this.path=path;
 	}
 	
-	public PhotoItem(int id,boolean flag) {
+	public PhotoItem(int id,boolean select) {
 		photoID = id;
-		select = flag;
+		this.select = select;
+	}
+	public PhotoItem(int id,int flag){
+		photoID = id;
+		this.flag = flag;
+	}
+	
+	
+	
+	
+	public int getFlag() {
+		return flag;
+	}
+
+	public void setFlag(int flag) {
+		this.flag = flag;
 	}
 	
 	

@@ -13,8 +13,9 @@ import android.widget.RelativeLayout;
 
 public class GridViewItemWithDelete extends RelativeLayout {
 	private Context context;
-	private ImageView iv_photo;
+	public ImageView iv_photo;
 	public ImageView iv_delete;
+	public boolean flag = false;
 
 	
 	public GridViewItemWithDelete(Context context, AttributeSet attrs, int defStyle) {
@@ -24,6 +25,7 @@ public class GridViewItemWithDelete extends RelativeLayout {
 		View view = LayoutInflater.from(context).inflate(R.layout.gridview_item1, this);
 		iv_photo = (ImageView) view.findViewById(R.id.photo_img_view);
 		iv_delete = (ImageView) view.findViewById(R.id.photo_delete);
+		flag = false;
 	}
 
 	public GridViewItemWithDelete(Context context, AttributeSet attrs) {
@@ -36,11 +38,17 @@ public class GridViewItemWithDelete extends RelativeLayout {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public GridViewItemWithDelete(Context context,boolean flag) {
+		super(context);
+		this.flag = flag;
+		View view = LayoutInflater.from(context).inflate(R.layout.gridview_item2, this);
+		iv_photo = (ImageView) view.findViewById(R.id.photo_img_view);
+	}
+	
 	public void mySetBitmap(Bitmap bit){
 		if(iv_photo != null){
 			iv_photo.setImageBitmap(bit);
 		}
 	}
-
 
 }
