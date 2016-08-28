@@ -2,11 +2,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-  <LinearLayout 
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:background="#33cc66" >
-  </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_return"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/arrow" >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_publish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:text="发帖"
+            android:textColor="#ffffff"
+            android:textSize="20sp" >
+        </TextView>
+    </RelativeLayout>
 
   <LinearLayout
       android:layout_width="match_parent"
@@ -14,13 +34,13 @@
       android:orientation="horizontal" >
 
       <EditText
-          android:id="@+id/title"
-          android:layout_width="250dp"
+          android:id="@+id/et_lable"
+          android:layout_width="244dp"
           android:layout_height="wrap_content"
           android:layout_marginLeft="10dp"
           android:background="@drawable/post_title_bg"
           android:ems="30"
-          android:hint="标签字数不超过8个字"
+          android:hint="标签字数不超过8个字" 
           android:maxLength="30"
           android:maxLines="1"
           android:singleLine="true" >
@@ -28,13 +48,17 @@
           <requestFocus />
       </EditText>
 
-      <ImageView
-          android:id="@+id/addLab"
+	  <LinearLayout
+	      android:layout_width="30dp"
+	      android:layout_height="wrap_content" >
+
+       <ImageView
+          android:id="@+id/iv_addLable"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginLeft="15dp"
+          android:layout_marginLeft="10dp"
           android:background="@drawable/addlabel" />
-
+	  </LinearLayout>
   </LinearLayout>
        
     <LinearLayout
@@ -49,11 +73,19 @@
         	android:layout_marginLeft="15dp"
         />
     <TextView 
-        android:id="@+id/hotLabel"
+        android:id="@+id/tv_hotLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="热门标签"/>
     </LinearLayout>
+    <com.atm.chatonline.usercenter.view.FlowLayout 
+        android:id="@+id/flow_layout_view"
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >        
+    </com.atm.chatonline.usercenter.view.FlowLayout>
 
   
 </LinearLayout>
