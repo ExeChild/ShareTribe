@@ -11,6 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,7 +33,7 @@ import com.example.studentsystem01.R;
 
 
 
-public class BBSChooseLableView extends BaseActivity implements OnClickListener{
+public class BBSChooseLabelView extends BaseActivity implements OnClickListener{
 	private String subPath = "atm_hotDeptLabel.action";
 	private static String cookie;
 	private BBSHttpClient httpClient;
@@ -73,6 +75,8 @@ public class BBSChooseLableView extends BaseActivity implements OnClickListener{
 		setListenerForViews();
 		
 	}
+	
+	//请求热门标签数据
 	private void requestContent() {
 		// TODO Auto-generated method stub
 		
@@ -91,9 +95,11 @@ public class BBSChooseLableView extends BaseActivity implements OnClickListener{
 			}
 		}).start();
 	}
+	
 	private void setListenerForViews() {
 		// TODO Auto-generated method stub
 		iv_addLable.setOnClickListener(this);
+		iv_return.setOnClickListener(this);
 	}
 	private void initialViews() {
 		// TODO Auto-generated method stub
@@ -173,7 +179,7 @@ public class BBSChooseLableView extends BaseActivity implements OnClickListener{
 		// TODO Auto-generated method stub
 		switch (arg0.getId()) {
 		case R.id.iv_addLable:
-			if(et_lable.getText() != null){
+			if(et_lable.getText().toString() != null){
 				String str = et_lable.getText().toString();
 				TextView view = (TextView) inflater.inflate(R.layout.textview_style,
 						flowLayout, false);
@@ -185,6 +191,30 @@ public class BBSChooseLableView extends BaseActivity implements OnClickListener{
 						R.drawable.bg_isselected_hottag));
 	            ischeckedHotLabel.add(str);
 			}
+			break;
+		case R.id.iv_return:
+			AlertDialog.Builder back = new AlertDialog.Builder(this);
+			back.setTitle("提示框")
+					.setMessage("确定返回上一个界面？")
+					.setPositiveButton("确定",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int which) {
+									BBSChooseLabelView.this.finish();
+								}
+
+							})
+					.setNegativeButton("取消",
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+									// TODO Auto-generated method stub
+								}
+							});
+
+			back.create().show();
 			break;
 		}
 	}

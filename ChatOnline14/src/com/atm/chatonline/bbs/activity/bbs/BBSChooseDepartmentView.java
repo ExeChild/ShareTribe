@@ -1,6 +1,8 @@
 package com.atm.chatonline.bbs.activity.bbs;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -26,6 +28,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.atm.charonline.bbs.util.BBSHttpClient;
+import com.atm.charonline.bbs.util.PhotoItem;
 import com.atm.chatonline.bbs.commom.UriAPI;
 import com.atm.chatonline.chat.ui.BaseActivity;
 import com.atm.chatonline.chat.util.Config;
@@ -54,8 +57,9 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 	private static String cookie;
 	private Context context;
 	private String tag = "BBSChooseDepartmentView";
-
-	// private static final int RESULT_DEPARTMENT = 2;
+	private Intent intent;
+	private List<PhotoItem> selectedPic = new ArrayList<PhotoItem>();
+	private String str_content, str_title, str_type;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,8 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.choose_department);
 		requestContent();// 开启线程向服务器获取数据
+		intent = getIntent();
+		receiveDataFromPreviousActivity();
 		initialViews();
 		setListenerForViews();
 		getCookie();
@@ -89,6 +95,13 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 				}
 			}
 		};
+	}
+
+	private void receiveDataFromPreviousActivity() {
+		// TODO Auto-generated method stub
+		str_content = intent.getStringExtra("str_content");
+		str_title = intent.getStringExtra("str_title");
+		str_type = intent.getStringExtra("str_type");
 	}
 
 	// 获取cookie
@@ -152,7 +165,8 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 						RadioButton rb = (RadioButton) findViewById(radioButtonId);
 						selectedDepartment = (String) rb.getText();
 						for (String getKey : departInfo.keySet()) {
-							if (departInfo.get(getKey).equals(selectedDepartment)) {
+							if (departInfo.get(getKey).equals(
+									selectedDepartment)) {
 								selectedDno = getKey;
 							}
 						}
@@ -183,7 +197,7 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 	@Override
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
-		switch(arg0.getId()){
+		switch (arg0.getId()) {
 		case R.id.iv_return:
 			AlertDialog.Builder back = new AlertDialog.Builder(this);
 			back.setTitle("提示框")
@@ -209,10 +223,23 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 			back.create().show();
 			break;
 		case R.id.next:
-			Intent intent = new Intent(BBSChooseDepartmentView.this,
-					BBSChooseLableView.class);
-			intent.putExtra("id", selectedDno);
-			startActivity(intent);
+			if (selectedDno == null) {
+				AlertDialog.Builder dept = new AlertDialog.Builder(this);
+				dept.setTitle("提示框")
+						.setMessage("请选择系别")
+						.setPositiveButton("确定",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int which) {
+									}
+								});
+				dept.create().show();
+			} else {
+				Intent intent = new Intent(BBSChooseDepartmentView.this,
+						BBSChooseLabelView.class);
+				intent.putExtra("id", selectedDno);
+				startActivity(intent);
+			}
 			break;
 		}
 	}

@@ -30,12 +30,14 @@
 
   <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal" >
+      android:layout_height="40dp"
+      android:orientation="horizontal"
+      android:layout_marginTop="3dp" 
+	>
 
       <EditText
           android:id="@+id/et_lable"
-          android:layout_width="244dp"
+          android:layout_width="280dp"
           android:layout_height="wrap_content"
           android:layout_marginLeft="10dp"
           android:background="@drawable/post_title_bg"
@@ -43,14 +45,11 @@
           android:hint="标签字数不超过8个字" 
           android:maxLength="30"
           android:maxLines="1"
-          android:singleLine="true" >
+          android:singleLine="true" 
+          >
 
           <requestFocus />
       </EditText>
-
-	  <LinearLayout
-	      android:layout_width="30dp"
-	      android:layout_height="wrap_content" >
 
        <ImageView
           android:id="@+id/iv_addLable"
@@ -58,7 +57,7 @@
           android:layout_height="wrap_content"
           android:layout_marginLeft="10dp"
           android:background="@drawable/addlabel" />
-	  </LinearLayout>
+
   </LinearLayout>
        
     <LinearLayout
