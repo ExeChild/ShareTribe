@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -31,7 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView.OnItemClickListener;
@@ -575,6 +572,7 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 				params.put("title", str_title);
 				params.put("content", str_content);
 				params.put("aiteID", aiteID);
+				params.put("selectedPic", selectedPic);
 				// ´«Í¼Æ¬
 				ArrayList<Bitmap> list = new ArrayList<Bitmap>();
 
@@ -598,7 +596,6 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 				}
 			}
 		}).start();
-
 	}
 
 	@Override

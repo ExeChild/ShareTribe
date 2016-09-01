@@ -1,5 +1,6 @@
 package com.atm.chatonline.bbs.activity.bbs;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +51,7 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 	private String subPath = "atm_deptList.action";
 	private BBSHttpClient connect;
 	private String contentResponse;
-	private String selectedDepartment, selectedDno;
+	private String selectedDept, selectedDno;
 	private Handler handler;
 	private static final int UPDATE_RADIOGROUP = 1;
 	private Map<String, String> departInfo = new HashMap<String, String>();
@@ -58,7 +59,8 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 	private Context context;
 	private String tag = "BBSChooseDepartmentView";
 	private Intent intent;
-	private List<PhotoItem> selectedPic = new ArrayList<PhotoItem>();
+	private List<PhotoItem> selectedPic;
+	private List<String> aiteID;
 	private String str_content, str_title, str_type;
 
 	@Override
@@ -69,7 +71,7 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 		setContentView(R.layout.choose_department);
 		requestContent();// 开启线程向服务器获取数据
 		intent = getIntent();
-		receiveDataFromPreviousActivity();
+		getDataFromPreviousActivity();
 		initialViews();
 		setListenerForViews();
 		getCookie();
@@ -97,11 +99,15 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 		};
 	}
 
-	private void receiveDataFromPreviousActivity() {
+	private void getDataFromPreviousActivity() {
 		// TODO Auto-generated method stub
 		str_content = intent.getStringExtra("str_content");
 		str_title = intent.getStringExtra("str_title");
 		str_type = intent.getStringExtra("str_type");
+		if(intent.getStringArrayListExtra("aiteID") != null)
+			aiteID = intent.getStringArrayListExtra("aiteID");
+		if(intent.getSerializableExtra("selectedPic") != null)
+			selectedPic = (ArrayList<PhotoItem>) intent.getSerializableExtra("selectedPic");
 	}
 
 	// 获取cookie
@@ -163,14 +169,14 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 						int radioButtonId = arg0.getCheckedRadioButtonId();
 						// 根据ID获取RadioButton的实例
 						RadioButton rb = (RadioButton) findViewById(radioButtonId);
-						selectedDepartment = (String) rb.getText();
+						selectedDept = (String) rb.getText();
 						for (String getKey : departInfo.keySet()) {
 							if (departInfo.get(getKey).equals(
-									selectedDepartment)) {
+									selectedDept)) {
 								selectedDno = getKey;
 							}
 						}
-						Log.d(tag, "选中的系别" + selectedDepartment);
+						Log.d(tag, "选中的系别" + selectedDept);
 						Log.d(tag, "系别号" + selectedDno);
 					}
 				});
@@ -238,6 +244,14 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 				Intent intent = new Intent(BBSChooseDepartmentView.this,
 						BBSChooseLabelView.class);
 				intent.putExtra("id", selectedDno);
+				intent.putExtra("selectedDept", selectedDept);
+				intent.putExtra("str_content", str_content);
+				intent.putExtra("str_title", str_title);
+				intent.putExtra("str_type", str_type);
+				if(selectedPic != null)
+					intent.putExtra("selectedPic", (Serializable)selectedPic);
+				if(aiteID != null)
+					intent.putStringArrayListExtra("aiteID", (ArrayList<String>) aiteID);
 				startActivity(intent);
 			}
 			break;

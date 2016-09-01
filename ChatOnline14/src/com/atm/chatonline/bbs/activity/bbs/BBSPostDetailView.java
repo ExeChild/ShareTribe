@@ -373,6 +373,7 @@ public class BBSPostDetailView extends BaseActivity implements
 			break;
 		case R.id.ll_report:
 			Intent intent_report = new Intent(this, BBSReportView.class);
+			intent_report.putExtra("essayId", essayId);
 			startActivity(intent_report);
 			break;
 		case R.id.iv_return:

@@ -88,12 +88,14 @@ public class DatabaseUtil extends SQLiteOpenHelper{
 		if(cursor==null||cursor.getCount()==0){
 			LogUtil.p(tag, "查询状态无记录");
 			insertStatus();
+			cursor.close();
 			return 0;
 		}else{
 			cursor.moveToFirst();
 			LogUtil.p(tag, "有记录");
-			return cursor.getInt(cursor.getColumnIndex("status_id"));
-			
+			int status_id = cursor.getInt(cursor.getColumnIndex("status_id"));
+			cursor.close();
+			return status_id;			
 		}
 	}
 	
