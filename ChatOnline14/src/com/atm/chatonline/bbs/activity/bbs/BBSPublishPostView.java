@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,7 +27,9 @@ import android.provider.MediaStore.Images.Thumbnails;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -83,7 +87,6 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 	private View viewPager1, viewPager2;
 	private boolean isFaceShow = false, isPhotoShow = false;
 	private Resources res;
-	private static int i = 0;// 记录@次数
 	private Bitmap myBitmap;
 	private Uri uri;
 	private static final String CHARSET = "utf-8"; // 设置编码
@@ -113,7 +116,7 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 	private PhotoItem photoItem;
 	private int size;
 	private static final int REQUEST_PHOTO = 1;
-	//private static final int REQUEST_NEXT = 2;
+	// private static final int REQUEST_NEXT = 2;
 	private static final int REQUEST_AITE = 3;
 
 	@SuppressLint("NewApi")
@@ -156,12 +159,12 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 			public View getView(final int position, View arg1, ViewGroup arg2) {
 				// TODO Auto-generated method stub
 				GridViewItemWithDelete grid = null;
-
 				if (selectedPic.get(position).getFlag() == 1) {
 					Log.d(tag, "selectedPic.size()==" + selectedPic.size()
 							+ ",positon==" + position);
 					grid = new GridViewItemWithDelete(context, true);
-					grid.setLayoutParams(new LayoutParams(125, 125));
+					grid.setLayoutParams(new LayoutParams(
+							LayoutParams.MATCH_PARENT, arg2.getHeight() - 10));
 					grid.iv_photo.setOnClickListener(new OnClickListener() {
 
 						@Override
@@ -179,9 +182,14 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 						grid = new GridViewItemWithDelete(context);
 						grid.setLayoutParams(new LayoutParams(
 								LayoutParams.MATCH_PARENT,
-								LayoutParams.MATCH_PARENT));
+								arg2.getHeight() - 10));
+						
 					} else {
 						grid = (GridViewItemWithDelete) arg1;
+						grid.setLayoutParams(new LayoutParams(
+								LayoutParams.MATCH_PARENT,
+								arg2.getHeight() - 10));
+					
 					}
 					grid.iv_delete.setOnClickListener(new OnClickListener() {
 
@@ -216,12 +224,15 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		float density = dm.density;
+		Log.d(tag, "density==" + density);
 		int allWidth = (int) (160 * size * density);
 		int itemWidth = (int) (100 * density);
+		Log.d(tag, "itemWidth==" + itemWidth);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				allWidth, LinearLayout.LayoutParams.FILL_PARENT);
+				allWidth, LinearLayout.LayoutParams.MATCH_PARENT);
 		gv_bottom.setLayoutParams(params);
 		gv_bottom.setColumnWidth(itemWidth);
+		Log.d(tag, "gv_bottom.height ==" + gv_bottom.getHeight());
 		gv_bottom.setNumColumns(size);
 	}
 
@@ -246,29 +257,28 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 		next.setOnClickListener(this);
 		aite.setOnClickListener(this);
 		iv_return.setOnClickListener(this);
-		title.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
+		title.setOnTouchListener(new OnTouchListener() {
+			
 			@Override
-			public void onFocusChange(View arg0, boolean arg1) {
+			public boolean onTouch(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
-				if (arg1) {
-					Log.d(tag, "title");
-				}
 				if (isFaceShow) {
 					ll_exp.setVisibility(View.GONE);
 					isFaceShow = false;
 				}
+				return false;
 			}
 		});
-		content.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
+		content.setOnTouchListener(new OnTouchListener() {
+			
 			@Override
-			public void onFocusChange(View arg0, boolean arg1) {
+			public boolean onTouch(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
 				if (isFaceShow) {
 					ll_exp.setVisibility(View.GONE);
 					isFaceShow = false;
 				}
+				return false;
 			}
 		});
 		// 类型的监听事件
@@ -413,7 +423,7 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 			if (arg1 == RESULT_OK) {// 从关注界面获得数据
 				if (arg2.getStringExtra("friendID") != null) {
 					aiteID.add(arg2.getStringExtra("friendID"));
-					//i++;
+					// i++;
 					contentCursor = content.getSelectionStart();// 获取文本当前所在光标
 					content.getText().insert(contentCursor,
 							"@" + arg2.getStringExtra("nickName") + " ");// 在当前光标处插入文本
@@ -483,8 +493,10 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 			if (!isFaceShow) {
 				if (isPhotoShow)
 					ll_photo.setVisibility(View.GONE);
-				/*mInputMethodManager.hideSoftInputFromWindow(
-						content.getWindowToken(), 0);*/
+				/*
+				 * mInputMethodManager.hideSoftInputFromWindow(
+				 * content.getWindowToken(), 0);
+				 */
 				// try {
 				// Thread.sleep(80);// 解决此时会黑一下屏幕的问题
 				// } catch (InterruptedException e) {
@@ -506,7 +518,8 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 			break;
 		case R.id.iv_return:
 			AlertDialog.Builder build = new AlertDialog.Builder(this);
-			build.setTitle("提示框").setMessage("确定退出当前编辑贴？")
+			build.setTitle("提示框")
+					.setMessage("确定退出当前编辑贴？")
 					.setPositiveButton("确定",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
@@ -536,21 +549,26 @@ public class BBSPublishPostView extends BaseActivity implements OnClickListener 
 				departmentIntent.putExtra("str_title", str_title);
 				departmentIntent.putExtra("str_content", str_content);
 				departmentIntent.putExtra("str_type", str_type);
-				if(!aiteID.isEmpty())
-					departmentIntent.putStringArrayListExtra("aiteID", (ArrayList<String>) aiteID);
-				if(!selectedPic.isEmpty()){					
-					departmentIntent.putExtra("selectedPic", (Serializable)selectedPic);
+				if (!aiteID.isEmpty())
+					departmentIntent.putStringArrayListExtra("aiteID",
+							(ArrayList<String>) aiteID);
+				if (!selectedPic.isEmpty()) {
+					departmentIntent.putExtra("selectedPic",
+							(Serializable) selectedPic);
 				}
 				startActivity(departmentIntent);
 			} else {
 				// 标题或者内容为空时，弹出提示框
 				AlertDialog.Builder nextBuild = new AlertDialog.Builder(this);
-				nextBuild.setTitle("提示框").setMessage("请完善所有内容再点击下一步").setNeutralButton("确定",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,
-									int which) {
-							}
-						});
+				nextBuild
+						.setTitle("提示框")
+						.setMessage("请完善所有内容再点击下一步")
+						.setNeutralButton("确定",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int which) {
+									}
+								});
 				nextBuild.create().show();
 			}
 			break;

@@ -12,7 +12,7 @@
             android:id="@+id/iv_return"
             android:layout_width="wrap_content"
             android:layout_height="27dp"
-            android:src="@drawable/arrow"        
+            android:src="@drawable/btn_onback"        
             android:layout_centerVertical="true">        
         </ImageView>
         <TextView

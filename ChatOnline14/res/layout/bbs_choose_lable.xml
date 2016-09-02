@@ -12,7 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="27dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/arrow" >
+            android:src="@drawable/btn_onback" >
         </ImageView>
 
         <TextView
@@ -37,12 +37,14 @@
 
       <EditText
           android:id="@+id/et_lable"
-          android:layout_width="280dp"
+          android:layout_width="0dp"
           android:layout_height="wrap_content"
+          android:layout_weight="1"
           android:layout_marginLeft="10dp"
+          android:layout_marginTop="3dp"
           android:background="@drawable/post_title_bg"
           android:ems="30"
-          android:hint="标签字数不超过8个字" 
+          android:hint="标签不要太长" 
           android:maxLength="30"
           android:maxLines="1"
           android:singleLine="true" 
@@ -53,9 +55,11 @@
 
        <ImageView
           android:id="@+id/iv_addLable"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="10dp"
+          android:layout_marginTop="3dp"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:layout_marginLeft="5dp"
+          android:layout_marginRight="10dp"
           android:background="@drawable/addlabel" />
 
   </LinearLayout>
@@ -64,7 +68,9 @@
         	android:id="@+id/ll_hotLabel"
         	android:layout_width="match_parent"
     		android:layout_height="wrap_content"
-    		android:orientation="horizontal">
+    		android:orientation="horizontal"
+    		android:layout_marginTop="5dp"
+    		>
     <ImageView 
         	android:id="@+id/hot"
         	android:layout_width="wrap_content"
@@ -80,7 +86,7 @@
     </LinearLayout>
     <com.atm.chatonline.usercenter.view.FlowLayout 
         android:id="@+id/flow_layout_view"
-        android:padding="15dp"
+        android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"

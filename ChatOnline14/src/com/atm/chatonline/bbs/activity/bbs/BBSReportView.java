@@ -20,6 +20,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -194,9 +195,9 @@ public class BBSReportView extends BaseActivity implements OnClickListener {
 			break;
 
 		case R.id.btn_commit:
-			if (reason.size() != 0) {
+			if (reason.size() != 0 || cb_other.isChecked()) {
 				if (cb_other.isChecked()
-						&& et_other.getText().toString().isEmpty()) {
+						&& TextUtils.isEmpty(et_other.getText()) && et_other.getText().toString().length()==0) {
 					AlertDialog.Builder build = new AlertDialog.Builder(this);
 					build.setTitle("提示框")
 							.setMessage("请在输入框内填入原因！")

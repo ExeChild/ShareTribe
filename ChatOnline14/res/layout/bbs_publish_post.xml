@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="27dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/arrow" >
+            android:src="@drawable/btn_onback" >
         </ImageView>
 
         <TextView
@@ -58,7 +58,7 @@
             android:maxLength="30"
             android:singleLine="true"
             android:maxLines="1" >
-            <requestFocus />
+            
         </EditText>
     </LinearLayout>
 
@@ -112,7 +112,7 @@
     <LinearLayout
         android:id="@+id/ll_expression"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:orientation="vertical"
         android:paddingBottom="5dip"
         android:paddingTop="5dip"
@@ -121,11 +121,9 @@
        <android.support.v4.view.ViewPager
             android:id="@+id/exp_pager"
             android:layout_width="fill_parent"
-            android:layout_height="150.0dip"
+            android:layout_height="match_parent"
             android:layout_marginLeft="5dip"
             android:layout_marginRight="5dip"
-            android:background="#0000"
-            android:flipInterval="30"
             android:persistentDrawingCache="animation" >
         </android.support.v4.view.ViewPager>
     </LinearLayout>
@@ -139,25 +137,28 @@
         android:paddingTop="5dip"
         android:visibility="gone"
          >
+       
+        <!-- 95dip -->
         <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="95dip"
+            android:layout_height="match_parent"   
             android:layout_marginRight="5dip"
             android:scrollbars="none" >
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:orientation="horizontal" >
 
                 <GridView
                     android:id="@+id/gv_bottom"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:scrollbars="none" 
                     android:horizontalSpacing="10dp"
-                    android:stretchMode="none"/>
+                    android:stretchMode="none"
+                    />
             </LinearLayout>
         
         </HorizontalScrollView>
