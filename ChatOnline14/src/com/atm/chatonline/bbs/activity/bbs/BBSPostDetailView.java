@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,8 +48,7 @@ import com.example.studentsystem01.R;
  * 
  * */
 
-public class BBSPostDetailView extends BaseActivity implements
-		OnClickListener {
+public class BBSPostDetailView extends BaseActivity implements OnClickListener {
 	private WebView webView;
 	private WebSettings webSettings;
 	private LinearLayout ll_clickGood, ll_comment, ll_share, ll_report;
@@ -62,7 +62,8 @@ public class BBSPostDetailView extends BaseActivity implements
 	private String clickGoodPath = "essay_clickGood.action";// 点赞路径
 	private BBSConnectNet httpClientGet;
 	private String url = UriAPI.SUB_URL + "essay/";
-	public static final int IS_CLICK = 1, IS_NOT_CLICK = 2;
+	public static final int IS_CLICK_COLLECT = 1, IS_CLICK_NOT_COLLECT = 2,
+			NOT_CLICK_IS_COLLECT = 3, NOT_CLICK_NOT_COLLECT = 4;
 	public boolean isClicked, isCollected;
 	private Handler handler;
 	private int replyNum;
@@ -70,10 +71,11 @@ public class BBSPostDetailView extends BaseActivity implements
 	private ProgressDialog dialog;
 
 	private String tag = "BBSPostDetailView";
-	
-	private SharePopupWindow pop;//添加一个Popwindow变量和一个监听对象,线性布局变量 author 李 2016.4.14 
-    private OnClickListener listener;
-    private LinearLayout parentLayout;
+
+	private SharePopupWindow pop;// 添加一个Popwindow变量和一个监听对象,线性布局变量 author 李
+									// 2016.4.14
+	private OnClickListener listener;
+	private LinearLayout parentLayout;
 
 	@SuppressLint("NewApi")
 	@Override
@@ -88,8 +90,7 @@ public class BBSPostDetailView extends BaseActivity implements
 		Bundle bundle = this.getIntent().getExtras();
 		essayId = bundle.getString("id");
 
-		
-		//初始化监听对象，监听用户的操作
+		// 初始化监听对象，监听用户的操作
 		initLintener();
 		initView();
 		initEvent();
@@ -107,15 +108,32 @@ public class BBSPostDetailView extends BaseActivity implements
 			public void handleMessage(Message msg) {
 				// TODO Auto-generated method stub
 				switch (msg.what) {
-				case IS_CLICK:
+				case IS_CLICK_COLLECT:
 					iv_clickGood.setImageResource(R.drawable.clickgood_green);
 					tv_clickGood.setTextColor(0xff33cc66);
 					tv_clickGood.setText("取消赞");
+					Log.d(tag, "IS_CLICK_COLLECT:collected==" + isCollected);
+					iv_collect.setBackground(getResources().getDrawable(R.drawable.collected));
 					break;
-				case IS_NOT_CLICK:
+				case IS_CLICK_NOT_COLLECT:
+					iv_clickGood.setImageResource(R.drawable.clickgood_green);
+					tv_clickGood.setTextColor(0xff33cc66);
+					tv_clickGood.setText("取消赞");
+					Log.d(tag, "IS_CLICK_NOT_COLLECT:collected==" + isCollected);
+					iv_collect.setBackground(getResources().getDrawable(R.drawable.collect));
+					break;
+				case NOT_CLICK_IS_COLLECT:
 					iv_clickGood.setImageResource(R.drawable.clickgood);
 					tv_clickGood.setTextColor(0xff666666);
 					tv_clickGood.setText("点赞");
+					Log.d(tag, "NOT_CLICK_IS_COLLECT:collected==" + isCollected);
+					iv_collect.setBackground(getResources().getDrawable(R.drawable.collected));
+				case NOT_CLICK_NOT_COLLECT:
+					iv_clickGood.setImageResource(R.drawable.clickgood);
+					tv_clickGood.setTextColor(0xff666666);
+					tv_clickGood.setText("点赞");
+					Log.d(tag, "NOT_CLICK_NOT_COLLECT:collected==" + isCollected);
+					iv_collect.setBackground(getResources().getDrawable(R.drawable.collect));
 					break;
 				}
 				tv_comment.setText("评论(" + replyNum + ")");
@@ -219,8 +237,8 @@ public class BBSPostDetailView extends BaseActivity implements
 			public void run() {
 				// TODO Auto-generated method stub
 				try {
-					BBSConnectNet get = new BBSConnectNet(essayId, clickGoodPath,
-							cookie, isClicked);
+					BBSConnectNet get = new BBSConnectNet(essayId,
+							clickGoodPath, cookie, isClicked);
 					clickResponse = get.getResponse();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -242,11 +260,18 @@ public class BBSPostDetailView extends BaseActivity implements
 			System.out.println("clickGood is " + isClicked);
 			isCollected = json.getBoolean("collect");
 			replyNum = json.getInt("replyNum");
-			if (isClicked == true) {
-				message.what = IS_CLICK;
+			if (isClicked) {
+				if (isCollected) {
+					message.what = IS_CLICK_COLLECT;
+				} else
+					message.what = IS_CLICK_NOT_COLLECT;
 			} else {
-				message.what = IS_NOT_CLICK;
+				if (isCollected) {
+					message.what = NOT_CLICK_IS_COLLECT;
+				} else
+					message.what = NOT_CLICK_NOT_COLLECT;
 			}
+
 			handler.sendMessage(message);
 
 		} catch (JSONException e) {
@@ -274,7 +299,7 @@ public class BBSPostDetailView extends BaseActivity implements
 		tv_comment = (TextView) findViewById(R.id.tv_comment);
 		tv_share = (TextView) findViewById(R.id.tv_share);
 		tv_report = (TextView) findViewById(R.id.tv_report);
-		parentLayout=(LinearLayout) findViewById(R.id.parent_layout);
+		parentLayout = (LinearLayout) findViewById(R.id.parent_layout);
 	}
 
 	// 设置监听器
@@ -288,35 +313,40 @@ public class BBSPostDetailView extends BaseActivity implements
 		iv_collect.setOnClickListener(this);
 	}
 
-	//监听对象，判断用户操作（分享给朋友|朋友圈） 2016.4.13 李
-		private void initLintener() {
-			listener=new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					Bitmap thumb=BitmapFactory.decodeResource(BBSPostDetailView.this.getResources(), R.drawable.pic_software_small);
-					WebPageShare webpage=new WebPageShare(BBSPostDetailView.this, url + essayId + ".html", "论坛信息", "在这里你可以和同校的学生交流，甚至和毕业的师兄师姐/还没毕业的师弟师妹进行交流，相互帮助", thumb);
-					if(!webpage.isInstalled()){
-						Toast.makeText(BBSPostDetailView.this.getApplicationContext(), "您还没有安装微信客户端！", Toast.LENGTH_SHORT).show();
-						return;
-					}
-					switch(v.getId()){
-					//点击分享给朋友图标
-					case R.id.ly_share_friend:
-						webpage.shareToWx(0);
-						break;
-						//点击了分享到朋友圈图标
-					case R.id.ly_share_timeline:
-						webpage.shareToWx(1);
-						break;
-					}
-					//每次分享完毕关闭弹出窗口
-					pop.dismiss();
+	// 监听对象，判断用户操作（分享给朋友|朋友圈） 2016.4.13 李
+	private void initLintener() {
+		listener = new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Bitmap thumb = BitmapFactory.decodeResource(
+						BBSPostDetailView.this.getResources(),
+						R.drawable.pic_software_small);
+				WebPageShare webpage = new WebPageShare(BBSPostDetailView.this,
+						url + essayId + ".html", "论坛信息",
+						"在这里你可以和同校的学生交流，甚至和毕业的师兄师姐/还没毕业的师弟师妹进行交流，相互帮助", thumb);
+				if (!webpage.isInstalled()) {
+					Toast.makeText(
+							BBSPostDetailView.this.getApplicationContext(),
+							"您还没有安装微信客户端！", Toast.LENGTH_SHORT).show();
+					return;
 				}
-			};
-		}
-	
-	
+				switch (v.getId()) {
+				// 点击分享给朋友图标
+				case R.id.ly_share_friend:
+					webpage.shareToWx(0);
+					break;
+				// 点击了分享到朋友圈图标
+				case R.id.ly_share_timeline:
+					webpage.shareToWx(1);
+					break;
+				}
+				// 每次分享完毕关闭弹出窗口
+				pop.dismiss();
+			}
+		};
+	}
+
 	@Override
 	public void onClick(View arg0) {
 
@@ -365,14 +395,15 @@ public class BBSPostDetailView extends BaseActivity implements
 			startActivity(intent_comment);
 			break;
 		case R.id.ll_share:
-			//添加一个弹出窗口，author 李 2016.4.14
-			if(pop==null){
-			pop=new SharePopupWindow(this, 0.5f, listener);
+			// 添加一个弹出窗口，author 李 2016.4.14
+			if (pop == null) {
+				pop = new SharePopupWindow(this, 0.5f, listener);
 			}
 			pop.showAtLocation(parentLayout, Gravity.BOTTOM, 0, 0);
 			break;
 		case R.id.ll_report:
 			Intent intent_report = new Intent(this, BBSReportView.class);
+			intent_report.putExtra("essayId", essayId);
 			startActivity(intent_report);
 			break;
 		case R.id.iv_return:
@@ -395,10 +426,14 @@ public class BBSPostDetailView extends BaseActivity implements
 				e.printStackTrace();
 			}
 			if (isCollected == false) {
+				iv_collect.setBackground(getResources().getDrawable(
+						R.drawable.collected));
 				Toast.makeText(BBSPostDetailView.this, "收藏成功",
 						Toast.LENGTH_SHORT).show();
 				isCollected = true;
 			} else {
+				iv_collect.setBackground(getResources().getDrawable(
+						R.drawable.collect));
 				Toast.makeText(BBSPostDetailView.this, "已取消收藏",
 						Toast.LENGTH_SHORT).show();
 				isCollected = false;
@@ -428,15 +463,17 @@ public class BBSPostDetailView extends BaseActivity implements
 		public void finishPostDetailView() {
 			BBSPostDetailView.this.finish();
 		}
-		
-		//跳转到个人信息列表2015.11.16李
+
+		// 跳转到个人信息列表2015.11.16李
 		@JavascriptInterface
-		public void toPersonalMsg(String friendID){
-			Intent intent=new Intent(BBSPostDetailView.this,PersonalMessageActivity.class);
+		public void toPersonalMsg(String friendID) {
+			Intent intent = new Intent(BBSPostDetailView.this,
+					PersonalMessageActivity.class);
 			intent.putExtra("friendID", friendID);
 			startActivity(intent);
 		}
-		//跳转到标签列表2015.11.16李
+
+		// 跳转到标签列表2015.11.16李
 		@JavascriptInterface
 		public void goLabelofBBS(String label) {
 			Intent intent = new Intent(BBSPostDetailView.this, LabelOfBBS.class);

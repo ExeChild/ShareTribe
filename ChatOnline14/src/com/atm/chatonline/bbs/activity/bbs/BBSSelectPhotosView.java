@@ -40,7 +40,7 @@ public class BBSSelectPhotosView extends Activity implements OnClickListener{
 	private GridView gv_photo;
 	private PhotoAdapter photo_adap,select_adap;
 	private TextView tv_cancel, tv_sure;
-	private ImageView iv_return;
+	//private ImageView iv_return;
 	private Context context;
 	private static final int RESULT_PHOTO = 1;
 
@@ -112,7 +112,7 @@ public class BBSSelectPhotosView extends Activity implements OnClickListener{
 	private void initEvent() {
 		// TODO Auto-generated method stub
 		tv_cancel.setOnClickListener(this);
-		iv_return.setOnClickListener(this);
+		//iv_return.setOnClickListener(this);
 	}
 
 
@@ -121,7 +121,7 @@ public class BBSSelectPhotosView extends Activity implements OnClickListener{
 		gv_photo = (GridView) findViewById(R.id.gv_photo);
 		tv_sure = (TextView) findViewById(R.id.tv_sure);
 		tv_cancel = (TextView) findViewById(R.id.tv_cancel);
-		iv_return = (ImageView) findViewById(R.id.iv_return);
+		//iv_return = (ImageView) findViewById(R.id.iv_return);
 	}
 
 	@Override

@@ -25,6 +25,7 @@ public class PhotoAdapter extends BaseAdapter {
 	private List<PhotoItem> selectedPic;// ѡ�е�ͼƬ
 	private Context context;
 
+	
 	public PhotoAdapter() {
 		// TODO Auto-generated constructor stub
 	}

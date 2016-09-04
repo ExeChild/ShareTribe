@@ -65,6 +65,23 @@ public class BBSHttpClient {
 		}
 		Connect(URL, 2);
 	}
+	
+	public BBSHttpClient(String cookie,String relativePath,int aim,String aimId,String reason){
+		this.cookie = cookie;
+		this.relativePath = relativePath;
+		URL = subURL + relativePath;
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("aim", ""+aim));
+		params.add(new BasicNameValuePair("aimId", aimId));
+		params.add(new BasicNameValuePair("reportReason", reason));
+		try {
+			entity = new UrlEncodedFormEntity(params,"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Connect(URL, 2);
+	}
 
 	public String getResponse() {
 		return response;

@@ -349,18 +349,19 @@ public class BBSCommentView extends BaseActivity implements
 					PullToRefreshBase<WebView> refreshView) {
 				// TODO Auto-generated method stub
 				// 设置PullRefreshListView下拉加载时的加载提示
-				pWebView.getLoadingLayoutProxy(true, false).setPullLabel("下拉刷新");
-				pWebView.getLoadingLayoutProxy(true, false).setRefreshingLabel(
-						"刷新中...");
-				pWebView.getLoadingLayoutProxy(true, false).setReleaseLabel(
-						"松开刷新");
-				String str = DateUtils.formatDateTime(BBSCommentView.this,
+				/*pWebView.getLoadingLayoutProxy(true, false).setPullLabel("下拉刷新");*/
+//				pWebView.getLoadingLayoutProxy(true, false).setRefreshingLabel(
+//						"刷新中...");
+//				pWebView.getLoadingLayoutProxy(true, false).setReleaseLabel(
+//						"松开刷新");
+				/*String str = DateUtils.formatDateTime(BBSCommentView.this,
 						System.currentTimeMillis(), DateUtils.FORMAT_SHOW_TIME
 								| DateUtils.FORMAT_SHOW_DATE
-								| DateUtils.FORMAT_ABBREV_ALL);
-				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(str);
+								| DateUtils.FORMAT_ABBREV_ALL);*/
+				
 				// 下拉刷新热门回复 JS：freshReply();
 				new RefreshReplyTask().execute();
+				/*refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(str);*/
 
 			}
 
@@ -437,11 +438,14 @@ public class BBSCommentView extends BaseActivity implements
 			
 			comment_view.getSettings().setBuiltInZoomControls(true);
 			comment_view.getSettings().setSupportZoom(true);
+			
 			// 加载需要显示的网页
 			comment_view.loadUrl("javascript:freshReply()");
-			if (webLoadProgress == 100) {
+			/*if (webLoadProgress == 100) {
+				Log.d(tag, "webview加载完了，停止刷新");
 				pWebView.onRefreshComplete();// 停止刷新操作
-			}
+			}*/
+			pWebView.onRefreshComplete();// 停止刷新操作
 		}
 
 	}

@@ -12,7 +12,7 @@
             android:id="@+id/iv_return"
             android:layout_width="wrap_content"
             android:layout_height="27dp"
-            android:src="@drawable/arrow"        
+            android:src="@drawable/btn_onback"        
             android:layout_centerVertical="true">        
         </ImageView>
         <TextView
@@ -36,6 +36,20 @@
             android:textSize="20sp"
             android:text="下一步">
         </TextView>	    
+	</RelativeLayout>
+	<RelativeLayout
+	    android:id="@+id/rl_proBar"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    >
+
+		<ProgressBar
+		    android:id="@+id/bar"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerHorizontal="true"
+		    />
+
 	</RelativeLayout>
 
     <RadioGroup 

@@ -73,7 +73,7 @@
                 android:screenOrientation="portrait"></activity>
             <activity android:name="com.atm.chatonline.bbs.activity.bbs.BBSChooseDepartmentView"
                 android:screenOrientation="portrait"></activity>
-             <activity android:name="com.atm.chatonline.bbs.activity.bbs.BBSChooseLableView"
+             <activity android:name="com.atm.chatonline.bbs.activity.bbs.BBSChooseLabelView"
                 android:screenOrientation="portrait"></activity>
             <activity android:name="com.atm.chatonline.bbs.activity.bbs.BBSClickGoodListView"
                 android:screenOrientation="portrait"></activity>
