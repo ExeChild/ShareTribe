@@ -6,6 +6,10 @@ package com.atm.chatonline.usermsg.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.atm.chatonline.chat.ui.BaseActivity;
 import com.atm.chatonline.usermsg.adapter.ApplyAdapter;
@@ -35,6 +40,7 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 	private String userId;
 	private ApplyAdapter adapter;
 	private PullToRefreshListView plv;
+	ProgressBar pro;
 	private Handler handler;
 	private CacheManager cacheManager;
 	//private ApplyMessage msg;
@@ -49,6 +55,7 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.usermsg_applymsg_view);
 		Button btn=(Button) findViewById(R.id.btn_back);
+		pro=(ProgressBar) findViewById(R.id.applymsg_probar);
 		btn.setOnClickListener(this);
 		//这里还没有判断con是否存在，假设已经存在
 		//获取userId
@@ -58,22 +65,13 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 		cacheManager=CacheManager.getInstance();
 		cacheManager.init(getApplicationContext());
 		list=getCacheData();
-		if(list==null){
-			Log.i(tag, "LIST IS NULL");
-			initData();
-			addCacheData(list);
-		}
-		
-		
-		//如果list的大小大于0，则显示数据
-		Log.i(tag, "list size="+list.size());
-		if(list.size()>0){
+		if(list!=null&&list.size()>0){
+			//如果list的大小大于0，则显示数据
 			initAdapter();
 		}
+		
 		//获取评论消息
 		new Thread(myMsgRunnable).start();
-		//initData();
-		//initAdapter();
 		
 		if(handler==null){
 			handler=new Handler(){
@@ -83,6 +81,7 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 				public void handleMessage(Message msg) {
 					switch (msg.what) {
 					case 1:
+						pro.setVisibility(View.GONE);
 						
 						break;
 
@@ -97,7 +96,7 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 	}
 	
 	private void initAdapter() {
-		ProgressBar pro=(ProgressBar) findViewById(R.id.applymsg_probar);
+		
 		plv=(PullToRefreshListView)findViewById(R.id.apply_msg_list_view);
 		adapter=new ApplyAdapter(getApplicationContext(), R.layout.apply_msg_listview_item, list); 
 		plv.setAdapter(adapter);
@@ -145,7 +144,7 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 			}
 		});
 		//plv.setVisibility(View.VISIBLE);
-		pro.setVisibility(View.GONE);
+		
 		
 	}
 	private void initData() {
@@ -184,10 +183,31 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 	@Override
 	public void processMessage(Message msg) {
 		Bundle bundle =msg.getData();
-		msg.what=1;//说明已经获取到服务器上的数据
-		handler.sendMessage(msg);
-		//获取完数据之后,包括新旧数据全部加载到list中去
-		adapter.notifyDataSetChanged();
+		String temp=bundle.getString("MyMessage");
+		StringBuffer sb=new StringBuffer();
+		for(int i=0;i<temp.length();i++){
+			if(temp.charAt(i)!='\\'){
+				sb.append(temp.charAt(i));
+			}
+		}
+		Log.i(tag, "转换后的消息："+sb.toString());
+		
+		
+		//JSONObject json=new JSONObject();
+//			if(json.has("message")){
+//				JSONArray arr=json.getJSONArray("message");
+//				
+//				msg.what=1;//说明已经获取到服务器上的数据
+//				handler.sendMessage(msg);
+//				//获取完数据之后,包括新旧数据全部加载到list中去
+//				adapter.notifyDataSetChanged();
+//				
+//			}else{
+//				//没有新消息
+//			}
+		
+		
+		
 	}
 
 	@Override
@@ -209,7 +229,7 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 		@Override
 		public void run() {
 			Log.i(tag, "获取评论消息");
-			ApplyMsg.con.reqMyMsg(userId,0);	
+			ApplyMsg.con.reqMyMsg(userId,1);	
 		}
 	};
 

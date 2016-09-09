@@ -86,7 +86,7 @@ public interface Config {
 	/**
 	 * 我的消息
 	 */
-	public static final int MY_MESSAGE = 1153; 
+	public static final int MY_MESSAGE = 1154; 
 	
 	public static final int CROWD_FIND_SUCCESS = 1350;// 查找群成功后，判断是否调用更新搜索群方法---郑
 	/**
