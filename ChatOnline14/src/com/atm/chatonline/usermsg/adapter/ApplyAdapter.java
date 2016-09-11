@@ -61,10 +61,10 @@ public class ApplyAdapter extends BaseAdapter {
 		}else{
 			viewHolder=(ViewHolder) convertView.getTag();
 		}
-		viewHolder.headImage.setBackgroundResource(R.drawable.headimg);
-		viewHolder.applyContent.setText("ÆÀÂÛ£º"+msg.getApplyContent());
-		viewHolder.applyNickName.setText(msg.getNickName());
-		viewHolder.applyTime.setText(msg.getApplyTime());
+		viewHolder.headImage.setImageDrawable(msg.getContent().getHeadImage());
+		viewHolder.applyContent.setText(msg.getContent().getEssayTitle());
+		viewHolder.applyNickName.setText(msg.getContent().getNickname());
+		viewHolder.applyTime.setText(msg.getContent().getReplyTime());
 		return convertView;
 	}
 

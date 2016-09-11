@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.atm.chatonline.chat.ui.BaseActivity;
@@ -19,6 +20,8 @@ public class MyMessageActivity extends BaseActivity implements OnClickListener{
 		// TODO 自动生成的方法存根
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mymessage_main_view);
+		Button btn=(Button) findViewById(R.id.btn_back);
+		btn.setOnClickListener(this);
 		intiView();
 	}
 	
@@ -59,6 +62,9 @@ public class MyMessageActivity extends BaseActivity implements OnClickListener{
 		case R.id.rl_system_msg:
 			Intent intent3=new Intent(this, SystemMsg.class);
 			startActivity(intent3);
+			break;
+		case R.id.btn_back:
+			finish();
 			break;
 		default:
 			break;

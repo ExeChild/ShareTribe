@@ -2,46 +2,43 @@ package com.atm.chatonline.usermsg.bean;
 
 import java.io.Serializable;
 
+import android.graphics.drawable.Drawable;
+
 @SuppressWarnings("serial")
 public class ApplyMessage implements Serializable{
 
-	private String nickName;
-	private String appliedNickName;
-	private String applyTime;
-	private String applyContent;
+	private int messageId;
+	private int type;
+	private String userId;
+	private ApplyMessageContent content;
 	
-	public ApplyMessage(String nickName, String appliedNickName,
-			String applyTime, String applyContent) {
-		super();
-		this.nickName = nickName;
-		this.appliedNickName = appliedNickName;
-		this.applyTime = applyTime;
-		this.applyContent = applyContent;
+	public int getMessageId() {
+		return messageId;
 	}
-	public String getNickName() {
-		return nickName;
+	public void setMessageId(int messageId) {
+		this.messageId = messageId;
 	}
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+	public int getType() {
+		return type;
 	}
-	public String getAppliedNickName() {
-		return appliedNickName;
+	public void setType(int type) {
+		this.type = type;
 	}
-	public void setAppliedNickName(String appliedNickName) {
-		this.appliedNickName = appliedNickName;
+	public String getUserId() {
+		return userId;
 	}
-	public String getApplyTime() {
-		return applyTime;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-	public void setApplyTime(String applyTime) {
-		this.applyTime = applyTime;
+	public ApplyMessageContent getContent() {
+		return content;
 	}
-	public String getApplyContent() {
-		return applyContent;
+	public void setContent(ApplyMessageContent content) {
+		this.content = content;
 	}
-	public void setApplyContent(String applyContent) {
-		this.applyContent = applyContent;
-	}
+	
+	
+
 	
 	
 }

@@ -3,14 +3,13 @@ package com.atm.chatonline.usermsg.ui;
  *
  * 我的消息里面评论（包括回复）我的界面
  */
-import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,15 +21,22 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
+import com.atm.charonline.bbs.util.ExtendsIntent;
+import com.atm.charonline.bbs.util.LogUtil;
+import com.atm.chatonline.bbs.activity.bbs.BBSListView;
+import com.atm.chatonline.bbs.activity.bbs.BBSPostDetailView;
 import com.atm.chatonline.chat.ui.BaseActivity;
+import com.atm.chatonline.chat.util.FileUtil;
 import com.atm.chatonline.usermsg.adapter.ApplyAdapter;
 import com.atm.chatonline.usermsg.bean.ApplyMessage;
+import com.atm.chatonline.usermsg.bean.MessageData;
 import com.atm.chatonline.usermsg.util.CacheData;
 import com.atm.chatonline.usermsg.util.CacheManager;
 import com.atm.chatonline.usermsg.util.CacheUtils;
+import com.atm.chatonline.usermsg.util.MyMsgReceivePhoto;
 import com.example.studentsystem01.R;
+import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
@@ -40,15 +46,13 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 	private String userId;
 	private ApplyAdapter adapter;
 	private PullToRefreshListView plv;
-	ProgressBar pro;
+	private ProgressBar pro;
 	private Handler handler;
 	private CacheManager cacheManager;
-	//private ApplyMessage msg;
-	private int test=1;
+	private boolean hasCache=false;
 	private String tag="Applymsg";
-	//private 
+	 
 	//private Integer type=0;//0--评论，1--@我，2--系统消息
-	//private View mView;
 	@SuppressWarnings({ "unchecked", "static-access" })
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -62,58 +66,52 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 		userId=BaseActivity.getSelf().getUserID();
 		//发送请求到服务端,理论上应该先查询数据缓存，如果有则先加载缓存，显示，然后再获取新的消息再刷新；如果没有缓存则显示正在刷洗进度条，然后再加载下载的数据
 		
-		cacheManager=CacheManager.getInstance();
-		cacheManager.init(getApplicationContext());
-		list=getCacheData();
-		if(list!=null&&list.size()>0){
-			//如果list的大小大于0，则显示数据
-			initAdapter();
-		}
+		initCache();
 		
 		//获取评论消息
 		new Thread(myMsgRunnable).start();
-		
-		if(handler==null){
-			handler=new Handler(){
 
-				@SuppressLint("HandlerLeak")
-				@Override
-				public void handleMessage(Message msg) {
-					switch (msg.what) {
-					case 1:
-						pro.setVisibility(View.GONE);
-						
-						break;
-
-					default:
-						break;
-					}
-				}
-				
-			};
-		}
-		
 	}
 	
+	@SuppressWarnings({ "deprecation", "static-access" })
+	private void initCache() {
+		cacheManager=CacheManager.getInstance();
+		cacheManager.init(getApplicationContext());
+		list=getCacheData();
+		LogUtil.i("list:"+(list==null));
+		if(list!=null&&list.size()>0){
+			//如果list的大小大于0，则显示数据
+			LogUtil.i("list size="+list.size());
+			for(ApplyMessage applyMeesage:list){
+				applyMeesage.getContent().setHeadImage(new BitmapDrawable(FileUtil.ByteToBitmap(((byte[])cacheManager.getCache(applyMeesage.getContent().getUserId()).getData()))));
+			}
+			hasCache=true;
+			initAdapter();
+		}
+		
+		
+	}
+
 	private void initAdapter() {
 		
 		plv=(PullToRefreshListView)findViewById(R.id.apply_msg_list_view);
 		adapter=new ApplyAdapter(getApplicationContext(), R.layout.apply_msg_listview_item, list); 
 		plv.setAdapter(adapter);
 		
-		
 		//刷新，发送是否有新消息的请求 Config.ishaveNewMessage
 		plv.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
 
 			@Override
 			public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-				// TODO 自动生成的方法存根
 				
+				//获取评论消息
+				new Thread(myMsgRunnable).start();
 			}
 
 			@Override
 			public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-				// TODO 自动生成的方法存根
+				//获取评论消息
+				new Thread(myMsgRunnable).start();
 				
 			}
 		});
@@ -139,21 +137,17 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// TODO 自动生成的方法存根
-				
+				ExtendsIntent intent = new ExtendsIntent(ApplyMsg.this,
+						BBSPostDetailView.class, list.get(position - 1)
+								.getContent().getEssayId(), null, null, 1);
+				startActivity(intent);
 			}
 		});
-		//plv.setVisibility(View.VISIBLE);
 		
+		pro.setVisibility(View.GONE);
 		
 	}
-	private void initData() {
-		list=new ArrayList<ApplyMessage>();
-		list.add(new ApplyMessage("陌天恒","创业去哪儿","2016-09-17","这是@我的内容，拉看看来看看"));
-		list.add(new ApplyMessage("刘天奇","创业去哪儿","2016-09-17","这是@我的内容，拉看看来看看"));
 	
-	}
-
 	/**
 	 * 获取缓存
 	 * @return
@@ -183,38 +177,73 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 	@Override
 	public void processMessage(Message msg) {
 		Bundle bundle =msg.getData();
-		String temp=bundle.getString("MyMessage");
-		StringBuffer sb=new StringBuffer();
-		for(int i=0;i<temp.length();i++){
-			if(temp.charAt(i)!='\\'){
-				sb.append(temp.charAt(i));
+		String json=bundle.getString("MyMessage");
+		JSONObject jsonObject=null;
+		try {
+			jsonObject = new JSONObject(json);
+			if(jsonObject.has("message")){//有新消息
+				MessageData data=new Gson().fromJson(json, MessageData.class);
+				list=data.getApplyMessage();
+				new GetPhotoTask().execute();
+			}else{
+				//没有新消息
+			}
+			
+		} catch (JSONException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+			
+	}
+	
+	
+	/**
+	 * 异步加载头像
+	 */
+	@SuppressWarnings("unused")
+	private class GetPhotoTask extends AsyncTask<Void, Void, String> {
+
+		public GetPhotoTask() {
+		}
+
+		protected String doInBackground(Void... params) {
+			loadPhoto();
+			return null;
+		}
+
+		
+
+		protected void onPostExecute(String result) {
+			//保存缓存
+			addCacheData(list);
+			LogUtil.i("111111111111");
+			//如果有缓存则更新数据，否则创建数据适配器
+			if(hasCache){
+				adapter.notifyDataSetChanged();
+			}else{
+				initAdapter();
+				hasCache=true;
 			}
 		}
-		Log.i(tag, "转换后的消息："+sb.toString());
-		
-		
-		//JSONObject json=new JSONObject();
-//			if(json.has("message")){
-//				JSONArray arr=json.getJSONArray("message");
-//				
-//				msg.what=1;//说明已经获取到服务器上的数据
-//				handler.sendMessage(msg);
-//				//获取完数据之后,包括新旧数据全部加载到list中去
-//				adapter.notifyDataSetChanged();
-//				
-//			}else{
-//				//没有新消息
-//			}
-		
-		
-		
 	}
 
+	//下载图片
+	public void loadPhoto(){
+		MyMsgReceivePhoto recPho=new MyMsgReceivePhoto();
+		for(ApplyMessage applyMeesage:list){
+			applyMeesage.getContent().setHeadImage(recPho.getPhoto(cacheManager, applyMeesage.getContent().getUserId(), applyMeesage.getContent().getAvatar()));
+		}
+		//设置为null,避免长时间占用内存，减少oom的产生概率
+		recPho=null;
+		LogUtil.i("111111111111^^^^^^^^^^^^^");
+	}
+	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_back:
-			onBackPressed();
+			LogUtil.i("click back button!");
+			finish();
 			break;
 
 		default:

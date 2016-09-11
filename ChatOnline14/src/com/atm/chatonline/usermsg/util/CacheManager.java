@@ -47,16 +47,16 @@ public class CacheManager {
 		try {
 			System.out.println(mContext.getCacheDir().toString());
 			File file=new File(mContext.getCacheDir(),key);
-			System.out.println("1");
+			
 			if(file==null) {
-				System.out.println("3");
+				
 				return null;
 			}
-			System.out.println("2");
+		
 			ObjectInputStream ois=new ObjectInputStream(new FileInputStream(file));
-			System.out.println("4");
+			
 			CacheData cacheData=(CacheData) ois.readObject();
-			System.out.println("5");
+			
 			ois.close();
 			System.out.println("缓存数据获取成功");
 			return cacheData;
@@ -65,4 +65,5 @@ public class CacheManager {
 		}
 		return null;
 	}
+	
 }
