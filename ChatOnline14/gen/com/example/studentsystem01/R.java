@@ -824,7 +824,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int bbs_wait=0x7f05005b;
         public static final int big_font=0x7f0501bc;
         public static final int big_img=0x7f0500ec;
-        public static final int both=0x7f050008;
+        public static final int both=0x7f050009;
         public static final int btnLogin=0x7f050109;
         public static final int btnQz=0x7f050022;
         public static final int btnRr=0x7f050023;
@@ -921,7 +921,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int department_content=0x7f050142;
         public static final int dialog=0x7f050092;
         public static final int dianzan=0x7f050053;
-        public static final int disabled=0x7f050005;
+        public static final int disabled=0x7f05000a;
         public static final int edit_account=0x7f050107;
         public static final int edit_confirm_pwd=0x7f0500a1;
         public static final int edit_feedback=0x7f0500d4;
@@ -951,18 +951,18 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int expression=0x7f050080;
         public static final int feedback=0x7f050017;
         public static final int fl_inner=0x7f05015b;
-        public static final int flip=0x7f05000d;
+        public static final int flip=0x7f050010;
         public static final int flow_layout_view=0x7f05004a;
         public static final int followers=0x7f050153;
         public static final int friend_img=0x7f05002a;
         public static final int friend_name=0x7f05002b;
-        public static final int fullscreen=0x7f050003;
+        public static final int fullscreen=0x7f050007;
         public static final int function_menu=0x7f0500ef;
         public static final int gallery=0x7f0501e0;
         public static final int graduated=0x7f0501d9;
         public static final int grid1=0x7f050205;
         public static final int grid2=0x7f050206;
-        public static final int gridview=0x7f05000e;
+        public static final int gridview=0x7f050001;
         public static final int group_desc=0x7f0500c8;
         public static final int group_desc_layout=0x7f0500c6;
         public static final int group_desc_txt=0x7f0500c7;
@@ -1041,7 +1041,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int layout_nickname=0x7f050035;
         public static final int layout_sex=0x7f050039;
         public static final int layout_title_text=0x7f0501ae;
-        public static final int left=0x7f050000;
+        public static final int left=0x7f050005;
         public static final int linear=0x7f050129;
         public static final int linearLayout1=0x7f050057;
         public static final int linearLayout_divider=0x7f0501b2;
@@ -1078,8 +1078,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ly_share_timeline=0x7f0501c4;
         public static final int main_menu=0x7f0500f3;
         public static final int main_title=0x7f05013c;
-        public static final int manualOnly=0x7f050009;
-        public static final int margin=0x7f050002;
+        public static final int manualOnly=0x7f05000b;
+        public static final int margin=0x7f050008;
         public static final int medium_font=0x7f0501bb;
         public static final int message_list=0x7f050156;
         public static final int more_item=0x7f050159;
@@ -1144,10 +1144,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int publish_note_detail=0x7f050144;
         public static final int publish_note_number=0x7f050154;
         public static final int publish_note_title=0x7f050143;
-        public static final int pullDownFromTop=0x7f05000a;
-        public static final int pullFromEnd=0x7f050007;
-        public static final int pullFromStart=0x7f050006;
-        public static final int pullUpFromBottom=0x7f05000b;
+        public static final int pullDownFromTop=0x7f05000c;
+        public static final int pullFromEnd=0x7f05000d;
+        public static final int pullFromStart=0x7f05000e;
+        public static final int pullUpFromBottom=0x7f05000f;
         public static final int pull_to_refresh_image=0x7f05015c;
         public static final int pull_to_refresh_progress=0x7f05015d;
         public static final int pull_to_refresh_sub_text=0x7f05015f;
@@ -1180,7 +1180,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int replymsg_test_content=0x7f05019f;
         public static final int replynum=0x7f050056;
         public static final int retab_view=0x7f050173;
-        public static final int right=0x7f050001;
+        public static final int right=0x7f050006;
         public static final int rl_apply_msg=0x7f050136;
         public static final int rl_register_student_view=0x7f050181;
         public static final int rl_register_student_view02=0x7f05018b;
@@ -1188,15 +1188,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int rl_reply_msg=0x7f050137;
         public static final int rl_shuju=0x7f05008e;
         public static final int rl_system_msg=0x7f050138;
-        public static final int rotate=0x7f05000c;
+        public static final int rotate=0x7f050011;
         public static final int school_content=0x7f050141;
         public static final int screen=0x7f0500b1;
-        public static final int scrollview=0x7f050010;
+        public static final int scrollview=0x7f050003;
         public static final int search_edit=0x7f0501b6;
         public static final int search_friend_lv=0x7f0501b5;
         public static final int search_group=0x7f05008a;
         public static final int search_group_lv=0x7f0501b7;
-        public static final int selected_view=0x7f050004;
+        public static final int selected_view=0x7f050000;
         public static final int send=0x7f0500b0;
         public static final int setting=0x7f0501d1;
         public static final int sex=0x7f050088;
@@ -1303,9 +1303,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int username=0x7f0500e4;
         public static final int vice_title=0x7f05013d;
         public static final int view_count=0x7f05013f;
-        public static final int viewpager=0x7f050011;
+        public static final int viewpager=0x7f050004;
         public static final int webView=0x7f05006b;
-        public static final int webview=0x7f05000f;
+        public static final int webview=0x7f050002;
         public static final int zanNumber=0x7f05012a;
     }
     public static final class layout {
