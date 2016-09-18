@@ -60,9 +60,9 @@ public class ReplyAdapter extends BaseAdapter {
 			viewHolder=(ViewHolder) convertView.getTag();
 		}
 		viewHolder.headImage.setBackgroundResource(R.drawable.headimg);
-		viewHolder.replyContent.setText("@"+msg.getRepliedNickName()+":"+msg.getReplyContent());
-		viewHolder.replyNickName.setText(msg.getNickName());
-		viewHolder.replyTime.setText(msg.getReplyTime());
+		viewHolder.replyContent.setText(msg.getContent().getEssayTitle());
+		viewHolder.replyNickName.setText(msg.getContent().getNickname());
+		viewHolder.replyTime.setText(msg.getContent().getCreateTime());
 		
 		return convertView;
 	}

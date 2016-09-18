@@ -1,34 +1,37 @@
 package com.atm.chatonline.usermsg.bean;
 
-public class Notification {
+import java.io.Serializable;
 
-	private String title;//标题
-	private String content;//内容
-	private String time;//时间
-	
-	public Notification(String title, String content, String time) {
-		super();
-		this.title = title;
-		this.content = content;
-		this.time = time;
+@SuppressWarnings("serial")
+public class Notification implements Serializable{
+
+	private int messageId;
+	private int type;
+	private String userId;
+	private NotificationContent content;
+	public int getMessageId() {
+		return messageId;
 	}
-	public String getTitle() {
-		return title;
+	public void setMessageId(int messageId) {
+		this.messageId = messageId;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public int getType() {
+		return type;
 	}
-	public String getContent() {
+	public void setType(int type) {
+		this.type = type;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public NotificationContent getContent() {
 		return content;
 	}
-	public void setContent(String content) {
+	public void setContent(NotificationContent content) {
 		this.content = content;
-	}
-	public String getTime() {
-		return time;
-	}
-	public void setTime(String time) {
-		this.time = time;
 	}
 	
 }

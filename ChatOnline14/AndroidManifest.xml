@@ -251,6 +251,9 @@
         <activity android:name="com.atm.chatonline.usermsg.ui.ReplyMsg"
             android:theme="@android:style/Theme.NoTitleBar"
              android:screenOrientation="portrait"></activity>
+        <activity android:name="com.atm.chatonline.usermsg.ui.SystemMessageDetail"
+            android:theme="@android:style/Theme.NoTitleBar"
+             android:screenOrientation="portrait"></activity>
         
         
      <!-- 防止搜索時軟鍵盤遮擋listView  -->            

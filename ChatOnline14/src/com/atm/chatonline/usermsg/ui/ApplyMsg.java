@@ -5,6 +5,7 @@ package com.atm.chatonline.usermsg.ui;
  */
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,16 +22,16 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.atm.charonline.bbs.util.ExtendsIntent;
 import com.atm.charonline.bbs.util.LogUtil;
-import com.atm.chatonline.bbs.activity.bbs.BBSListView;
 import com.atm.chatonline.bbs.activity.bbs.BBSPostDetailView;
 import com.atm.chatonline.chat.ui.BaseActivity;
 import com.atm.chatonline.chat.util.FileUtil;
 import com.atm.chatonline.usermsg.adapter.ApplyAdapter;
 import com.atm.chatonline.usermsg.bean.ApplyMessage;
-import com.atm.chatonline.usermsg.bean.MessageData;
+import com.atm.chatonline.usermsg.bean.ApplyMessageData;
 import com.atm.chatonline.usermsg.util.CacheData;
 import com.atm.chatonline.usermsg.util.CacheManager;
 import com.atm.chatonline.usermsg.util.CacheUtils;
@@ -51,6 +52,7 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 	private CacheManager cacheManager;
 	private boolean hasCache=false;
 	private String tag="Applymsg";
+	private TextView applymsg_hint;
 	 
 	//private Integer type=0;//0--评论，1--@我，2--系统消息
 	@SuppressWarnings({ "unchecked", "static-access" })
@@ -60,6 +62,7 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 		setContentView(R.layout.usermsg_applymsg_view);
 		Button btn=(Button) findViewById(R.id.btn_back);
 		pro=(ProgressBar) findViewById(R.id.applymsg_probar);
+		applymsg_hint=(TextView) findViewById(R.id.applymsg_hint);
 		btn.setOnClickListener(this);
 		//这里还没有判断con是否存在，假设已经存在
 		//获取userId
@@ -174,6 +177,7 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 	/**
 	 * 等待后台返回消息，并构造评论消息的List，包括构造接收消息的时间
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void processMessage(Message msg) {
 		Bundle bundle =msg.getData();
@@ -181,12 +185,16 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 		JSONObject jsonObject=null;
 		try {
 			jsonObject = new JSONObject(json);
-			if(jsonObject.has("message")){//有新消息
-				MessageData data=new Gson().fromJson(json, MessageData.class);
-				list=data.getApplyMessage();
+			JSONArray jsonArr=(JSONArray) jsonObject.get("message");
+			
+			if(jsonArr.length()>0){//有新消息
+				ApplyMessageData data=new Gson().fromJson(json, ApplyMessageData.class);
+				list=(List<ApplyMessage>)data.getApplyMessage();
 				new GetPhotoTask().execute();
+				applymsg_hint.setVisibility(View.GONE);
 			}else{
-				//没有新消息
+				applymsg_hint.setVisibility(View.VISIBLE);
+				pro.setVisibility(View.GONE);
 			}
 			
 		} catch (JSONException e) {
@@ -224,6 +232,7 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 				initAdapter();
 				hasCache=true;
 			}
+			plv.onRefreshComplete();
 		}
 	}
 

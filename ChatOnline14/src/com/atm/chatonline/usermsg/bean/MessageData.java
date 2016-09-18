@@ -5,7 +5,7 @@ import java.util.List;
 public class MessageData {
 
 	private int type;
-	private List<ApplyMessage> message;
+	private List message;
 	private String userId;
 	public int getType() {
 		return type;
@@ -13,10 +13,10 @@ public class MessageData {
 	public void setType(int type) {
 		this.type = type;
 	}
-	public List<ApplyMessage> getApplyMessage() {
+	public List getApplyMessage() {
 		return message;
 	}
-	public void setApplyMessage(List<ApplyMessage> message) {
+	public void setApplyMessage(List message) {
 		this.message = message;
 	}
 	public String getUserId() {

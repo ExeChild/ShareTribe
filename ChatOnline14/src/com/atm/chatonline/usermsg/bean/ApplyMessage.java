@@ -2,7 +2,7 @@ package com.atm.chatonline.usermsg.bean;
 
 import java.io.Serializable;
 
-import android.graphics.drawable.Drawable;
+
 
 @SuppressWarnings("serial")
 public class ApplyMessage implements Serializable{
