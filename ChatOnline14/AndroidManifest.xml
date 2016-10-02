@@ -146,10 +146,10 @@
                   
                      <activity android:name="com.atm.chatonline.usercenter.activity.usercenter.UserCenter"
                      android:theme="@android:style/Theme.NoTitleBar"
-                     android:screenOrientation="portrait"></activity>
+                     android:screenOrientation="portrait" android:launchMode="standard"></activity>
                      <activity android:name="com.atm.chatonline.usercenter.activity.usercenter.BasicMessage"
                      android:theme="@android:style/Theme.NoTitleBar"
-                     android:screenOrientation="portrait"></activity>
+                     android:screenOrientation="portrait" android:launchMode="standard"></activity>
                      <activity android:name="com.atm.chatonline.usercenter.activity.usercenter.MyBbs"
                      android:theme="@android:style/Theme.NoTitleBar"
                      android:screenOrientation="portrait"></activity>

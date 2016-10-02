@@ -109,11 +109,9 @@
                      android:screenOrientation="portrait"/>
                  <activity android:name="com.atm.chatonline.chat.ui.FollowersActivity"
                      android:screenOrientation="portrait"/>
-                <activity
-                    android:launchMode="singleTask"
+                <activity android:launchMode="singleTask" 
                     android:name="com.atm.chatonline.chat.ui.ChatMainActivity"
-                    android:screenOrientation="portrait"
-                    ></activity>
+                    android:screenOrientation="portrait"/>
                 <activity  android:theme="@android:style/Theme.NoTitleBar" 
                     android:name="com.atm.chatonline.chat.ui.CreateGroupActivity"
                     android:screenOrientation="portrait"/>  
@@ -148,10 +146,10 @@
                   
                      <activity android:name="com.atm.chatonline.usercenter.activity.usercenter.UserCenter"
                      android:theme="@android:style/Theme.NoTitleBar"
-                     android:screenOrientation="portrait"></activity>
+                     android:screenOrientation="portrait" android:launchMode="standard"></activity>
                      <activity android:name="com.atm.chatonline.usercenter.activity.usercenter.BasicMessage"
                      android:theme="@android:style/Theme.NoTitleBar"
-                     android:screenOrientation="portrait"></activity>
+                     android:screenOrientation="portrait" android:launchMode="standard"></activity>
                      <activity android:name="com.atm.chatonline.usercenter.activity.usercenter.MyBbs"
                      android:theme="@android:style/Theme.NoTitleBar"
                      android:screenOrientation="portrait"></activity>
@@ -185,8 +183,7 @@
                   
                   
                   <activity android:name="com.atm.chatonline.schoolnews.ui.SchoolNewsActivity"
-                      android:screenOrientation="portrait"
-                      android:launchMode="singleTask"></activity>
+                      android:screenOrientation="portrait"></activity>
                   <activity android:name="com.atm.chatonline.schoolnews.ui.NewsDetailActivity"
                       android:screenOrientation="portrait"></activity>
                   <activity android:name="com.atm.chatonline.schoolnews.ui.RecommendActivity"

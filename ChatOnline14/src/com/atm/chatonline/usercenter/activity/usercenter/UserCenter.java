@@ -32,8 +32,14 @@ import com.atm.chatonline.chat.ui.PersonalMessageActivity;
 import com.atm.chatonline.chat.util.Config;
 import com.atm.chatonline.usercenter.util.HttpUtils;
 import com.example.studentsystem01.R;
+/**
+ * 此类用于显示个人中心的各子功能，可以点击进入用户的基本信息，帖子，关注我的人，邀请校友等选项卡，进入此类intent不需要存放数据
+ * @author Jackbing
+ * @date 2016-10-2 修改
+ */
 
 public class UserCenter extends BaseActivity implements OnClickListener{
+	
 	final String tag="UserCenter";
 	private String userId,headImgPath,nickname,cookie;
 	private Handler handler;
@@ -70,6 +76,9 @@ public class UserCenter extends BaseActivity implements OnClickListener{
 		};
 	}
 
+	/**
+	 * 初始化数据，获取用户的cookie，并且启动一个子线程来访问获取用户的信息（如头像,昵称）
+	 */
 	private void initData() {
 		userId=getPreference().getUserID();
 		SharedPreferences pref = getSharedPreferences("data",
