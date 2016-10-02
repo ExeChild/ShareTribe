@@ -308,6 +308,7 @@ public class NewNetWorkSend {
 		}
 		buffer = ByteBuffer.allocateDirect(8+json.toString().getBytes().length);
 		buffer.putInt(Config.MY_MESSAGE);
+		System.out.println(json.toString());
 		put(json.toString());
 		writeBuffer();
 		return true;

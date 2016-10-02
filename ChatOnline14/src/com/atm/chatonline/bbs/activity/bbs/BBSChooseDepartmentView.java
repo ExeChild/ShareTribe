@@ -24,8 +24,10 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.atm.charonline.bbs.util.BBSHttpClient;
@@ -62,14 +64,15 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 	private List<PhotoItem> selectedPic;
 	private List<String> aiteID;
 	private String str_content, str_title, str_type;
-
+	private ProgressBar bar;
+	private RelativeLayout rl_proBar;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		requestContent();// 开启线程向服务器获取数据
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.choose_department);
-		requestContent();// 开启线程向服务器获取数据
 		intent = getIntent();
 		getDataFromPreviousActivity();
 		initialViews();
@@ -93,6 +96,7 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 						button.setTextColor(Color.BLACK);
 						radioGroup.addView(button);
 					}
+					rl_proBar.setVisibility(View.GONE);
 					break;
 				}
 			}
@@ -190,6 +194,8 @@ public class BBSChooseDepartmentView extends BaseActivity implements
 		iv_return = (ImageView) findViewById(R.id.iv_return);
 		next = (TextView) findViewById(R.id.next);
 		radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+		rl_proBar = (RelativeLayout) findViewById(R.id.rl_proBar);
+		bar = (ProgressBar) findViewById(R.id.bar);
 	}
 
 	@Override

@@ -18,7 +18,6 @@
     android:layout_width="45dip"
     android:layout_height="45dip"
     android:layout_marginTop="3dip"
-    android:background="@drawable/headimg"
     android:contentDescription="@string/apply_msg_str"
     />
       <RelativeLayout 

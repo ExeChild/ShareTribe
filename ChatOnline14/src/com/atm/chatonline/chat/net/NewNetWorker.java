@@ -173,135 +173,141 @@ public class NewNetWorker extends Thread {
 	// 处理请求
 
 	private void handleKey(SelectionKey selectionKey) throws IOException {
+		try {
+			Log.i(tag, "NewNetWorker01------要对收到的key进行处理");
+			int tip = 0;
+			if (selectionKey.isReadable()) {
+				tip = getPutInt();
 
-		Log.i(tag, "NewNetWorker01------要对收到的key进行处理");
-		int tip = 0;
-		if (selectionKey.isReadable()) {
-			tip = getPutInt();
+				Log.i(tag, "NewNetWorker01------从服务器得到请求是：" + tip);
+				switch (tip) {
+				case Config.RESULT_LOGIN:
+					Log.i(tag,
+							"NewNetWorker01------从服务器得到请求是：Config.RESULT_LOGIN");
+					handleLogin();
+					break;
+				case Config.REQUEST_BE_OFF:
+					Log.i(tag, "NewNetWorker01--->>>>重复登录时，强制退出handleExit");
+					hanldleExit();
+					break;
+				case Config.MESSAGE_FROM:
+					Log.i(tag,
+							"NewNetWorker01------从服务器得到请求是：Config.MESSAGE_FROM");
+					handleReceive();
+					break;
+				case Config.CROWD_MESSAGE_FROM:
+					Log.i(tag,
+							"NewNetWorker01------从服务器得到请求是：Config.CROWD_MESSAGE_FROM");
+					handGrowdMessage();
+					break;
+				case Config.CROWD_RESULT_CREATE:
+					Log.i(tag,
+							"NewNetWorker01------从服务器得到请求是：Config.CROWD_RESULT_CREATE");
+					handCreateGroupResult();
+					break;
+				case Config.CROWD_RESULT_FIND:
+					Log.i(tag, "NewNetWorker01------Config.CROWD_RESULT_FIND");
+					try {
+						handleCrowdResultFind();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+				case Config.USER_RESULT_FIND:// 用户搜索结果
+					Log.i(tag,
+							"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_FIND");
+					handleFindUser();
+					break;
 
-			Log.i(tag, "NewNetWorker01------从服务器得到请求是：" + tip);
-			switch (tip) {
-			case Config.RESULT_LOGIN:
-				Log.i(tag, "NewNetWorker01------从服务器得到请求是：Config.RESULT_LOGIN");
-				handleLogin();
-				break;
-			case Config.REQUEST_BE_OFF:
-				Log.i(tag, "NewNetWorker01--->>>>重复登录时，强制退出handleExit");
-				hanldleExit();
-				break;
-			case Config.MESSAGE_FROM:
-				Log.i(tag, "NewNetWorker01------从服务器得到请求是：Config.MESSAGE_FROM");
-				handleReceive();
-				break;
-			case Config.CROWD_MESSAGE_FROM:
-				Log.i(tag,
-						"NewNetWorker01------从服务器得到请求是：Config.CROWD_MESSAGE_FROM");
-				handGrowdMessage();
-				break;
-			case Config.CROWD_RESULT_CREATE:
-				Log.i(tag,
-						"NewNetWorker01------从服务器得到请求是：Config.CROWD_RESULT_CREATE");
-				handCreateGroupResult();
-				break;
-			case Config.CROWD_RESULT_FIND:
-				Log.i(tag, "NewNetWorker01------Config.CROWD_RESULT_FIND");
-				try {
-					handleCrowdResultFind();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				case Config.CROWD_RESULT_FOUND:
+					Log.i(tag,
+							"NewNetWorker01---从服务器得到请求是：Config.CROWD_RESULT_FOUND");
+					handleFoundHobbyGroup();
+					break;
+
+				case Config.USER_RESULT_FOUND:
+					Log.i(tag,
+							"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_FOUND");
+					handleFoundHobbyUser();
+					break;
+				case Config.USER_RESULT_ADDATTENT:
+					Log.i(tag,
+							"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_ADDATTENT");
+					handleReqAttention();
+					break;
+				case Config.USER_RESULT_CANCELATTENT:
+					Log.i(tag,
+							"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_CANCELATTENT");
+					handleReqCanncel();
+					break;
+				case Config.USER_RESULT_GETINFO:
+					Log.i(tag,
+							"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_GETINFO");
+					handlePersonINFO();
+					break;
+				case Config.CROWD_RESULT_GETINFO:
+					Log.i(tag,
+							"NewNetWorker01---从服务器得到请求是：Config.CROWD_RESULT_GETINFO");
+					handleLookGroupData();
+					break;
+				case Config.CROWD_RESULT_MY:
+					Log.i(tag,
+							"NewNetWorker01---从服务器得到请求是：Config.CROWD_RESULT_MY");
+					handleFindMyGroup();
+					break;
+				case Config.USER_RESULT_GETATTENT:
+					Log.i(tag,
+							"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_GETATTENT");
+
+					handleMyAttention();
+					break;
+				case Config.USER_RESULT_OATTENT:
+					Log.i(tag,
+							"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_OATTENT");
+					handleOtherAttention();
+					break;
+				case Config.USER_GET_ATTENT:
+					Log.i(tag,
+							"NewNetWorker01---从服务器得到请求是：Config.USER_GET_ATTENT");
+					break;
+				case Config.USER_RESULT_OFANS:
+					Log.i(tag,
+							"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_OFANS");
+					handleOtherAttention();// 虽然方法名是处理别人的关注，但处理别人的粉丝也是可以的，都是查看
+					break;
+				case Config.USER_RESULT_GETHEAD:
+					Log.i(tag,
+							"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_GETHEAD");
+					handleUserHead();
+					break;
+				case Config.MY_MESSAGE:
+					Log.i(tag, "NewNetWorker01---从服务器得到请求是：Config.MY_MESSAGE");
+					handleMyMessage();
+					break;
+
+				case -100:
+					Log.i(tag, "NewNetWorker01------从服务器得到请求是：请求重新连接服务器");
+					connect();
+					String userID = BaseActivity.getSelf().getUserID();
+					String pwd = BaseActivity.getSelf().getPwd();
+					Log.i(tag, "从服务器得到请求是：请求重新连接服务器，userID:" + userID + "、pwd:"
+							+ pwd);
+					// reqLogin(userID,pwd);
+					if (sendMsg == null) {
+						Log.i(tag, "sendmsg为null");
+					}
+					sendMsg.login(userID, pwd);
+					break;
+
 				}
-				break;
-			case Config.USER_RESULT_FIND:// 用户搜索结果
-				Log.i(tag, "NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_FIND");
-				handleFindUser();
-				break;
-
-			case Config.CROWD_RESULT_FOUND:
-				Log.i(tag,
-						"NewNetWorker01---从服务器得到请求是：Config.CROWD_RESULT_FOUND");
-				handleFoundHobbyGroup();
-				break;
-
-			case Config.USER_RESULT_FOUND:
-				Log.i(tag,
-						"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_FOUND");
-				handleFoundHobbyUser();
-				break;
-			case Config.USER_RESULT_ADDATTENT:
-				Log.i(tag,
-						"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_ADDATTENT");
-				handleReqAttention();
-				break;
-			case Config.USER_RESULT_CANCELATTENT:
-				Log.i(tag,
-						"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_CANCELATTENT");
-				handleReqCanncel();
-				break;
-			case Config.USER_RESULT_GETINFO:
-				Log.i(tag,
-						"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_GETINFO");
-				handlePersonINFO();
-				break;
-			case Config.CROWD_RESULT_GETINFO:
-				Log.i(tag,
-						"NewNetWorker01---从服务器得到请求是：Config.CROWD_RESULT_GETINFO");
-				handleLookGroupData();
-				break;
-			case Config.CROWD_RESULT_MY:
-				Log.i(tag, "NewNetWorker01---从服务器得到请求是：Config.CROWD_RESULT_MY");
-				handleFindMyGroup();
-				break;
-			case Config.USER_RESULT_GETATTENT:
-				Log.i(tag,
-						"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_GETATTENT");
-
-				handleMyAttention();
-				break;
-			case Config.USER_RESULT_OATTENT:
-				Log.i(tag,
-						"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_OATTENT");
-				handleOtherAttention();
-				break;
-			case Config.USER_GET_ATTENT:
-				Log.i(tag, "NewNetWorker01---从服务器得到请求是：Config.USER_GET_ATTENT");
-				break;
-			case Config.USER_RESULT_OFANS:
-				Log.i(tag,
-						"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_OFANS");
-				handleOtherAttention();// 虽然方法名是处理别人的关注，但处理别人的粉丝也是可以的，都是查看
-				break;
-			case Config.USER_RESULT_GETHEAD:
-				Log.i(tag,
-						"NewNetWorker01---从服务器得到请求是：Config.USER_RESULT_GETHEAD");
-				handleUserHead();
-				break;
-			case Config.MY_MESSAGE:
-				Log.i(tag,
-						"NewNetWorker01---从服务器得到请求是：Config.MY_MESSAGE");
-				handleMyMessage();
-				break;
-
-			case -100:
-				Log.i(tag, "NewNetWorker01------从服务器得到请求是：请求重新连接服务器");
-				connect();
-				String userID = BaseActivity.getSelf().getUserID();
-				String pwd = BaseActivity.getSelf().getPwd();
-				Log.i(tag, "从服务器得到请求是：请求重新连接服务器，userID:" + userID + "、pwd:"
-						+ pwd);
-				// reqLogin(userID,pwd);
-				if (sendMsg == null) {
-					Log.i(tag, "sendmsg为null");
-				}
-				sendMsg.login(userID, pwd);
-				break;
-
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
 
-	
 	/**
 	 * 重复登录，强制已经登录的用户退出
 	 */
@@ -490,7 +496,7 @@ public class NewNetWorker extends Thread {
 			File fileImg = FileUtil.createFromImg(friendID, content);
 			FileUtil.saveBitmap(fileImg, bm2);
 			content = fileImg.getAbsolutePath();
-			LogUtil.p(tag, "图片存档后的路径名:"+content);
+			LogUtil.p(tag, "图片存档后的路径名:" + content);
 			ChatMessage chatMessage = new ChatMessage(userID, friendID,
 					nickName, Config.MESSAGE_FROM, Config.MESSAGE_IMG, time,
 					content, 0);
@@ -1006,21 +1012,24 @@ public class NewNetWorker extends Thread {
 		}
 		BaseActivity.sendMessage(msg);
 	}
-	
+
 	/**
 	 * 处理服务器发送过来的我的消息
 	 */
 	private void handleMyMessage() {
-		//Message msg=new Message();
-		System.out.println("获取到发送过来的消息");
-		String json=getString();
-		System.out.println(json.toString());
-		
+		// Message msg=new Message();
+		// System.out.println("获取到发送过来的消息");
+		String json = getString();
+		System.out.println("获取到发送过来的消息" + json.toString());
+		Bundle bundle = new Bundle();
+		bundle.putString("MyMessage", json);
+		Message msg = new Message();
+		msg.setData(bundle);
+		BaseActivity.sendMessage(msg);
 
-		//BaseActivity.sendMessage(msg);
+		// BaseActivity.sendMessage(msg);
 	}
 
-	
 	// 处理关注
 	public void handleReqAttention() {
 		int result = getPutInt();
@@ -1103,58 +1112,63 @@ public class NewNetWorker extends Thread {
 
 	public void handleMyAttention() throws IOException {
 		Log.i(tag, "进入handleMyAttention() ");
-		int result = getPutInt();
-		Message msg = new Message();
-		if (result == Config.SUCCESS) {
-			Log.i(tag, "handleMyAttention()--result==Config.SUCCESS");
-			List<Friend> friendList = new ArrayList<Friend>();
-			ArrayList list = new ArrayList();
-			int listNum = getPutInt();
-			Log.i(tag, "搜到" + listNum + "条有关的用户记录");
-			int j = 1;
-			int z = 1;
-			for (int i = 0; i < listNum; i++) {
-				Log.i(tag, "第" + j++ + "次进来");
-				// 某个人它的关注列表里每个人的ID
-				String friendID = getString();
-				Log.i(tag, "friendID: " + friendID);
-				String friendNickName = getString();
-				Log.i(tag, "friendNickName:" + friendNickName);
-				String department = getString(); // 2015-8-23新加的，列表显示院系
-				Log.i(tag, "department:" + department);
-				String friendSex = getString();
-				Log.i(tag, "friendSex:" + friendSex);
-				int relationship = getPutInt();
-				Log.i(tag, "relationship:" + relationship + "");
-				byte[] friendImg = getFileBytes(socketChannel);
-				BitmapFactory.Options options = new Options();
-				options.inDither = false; // 不进行图片抖动处理；
-				options.inPreferredConfig = null;// 设置最佳解码器解码
-				options.inSampleSize = 2;
-				// Bitmap bm = BitmapFactory.decodeStream(is, outPadding, opts)
-				Bitmap bm = BitmapFactory.decodeByteArray(friendImg, 0,
-						friendImg.length, options);
-				Friend friend = new Friend(friendID, friendNickName,
-						department, relationship, bm);
-				friendList.add(friend);
-				Log.i(tag, "第" + z++ + "次读完");
+		try {
+			int result = getPutInt();
+			Message msg = new Message();
+			if (result == Config.SUCCESS) {
+				Log.i(tag, "handleMyAttention()--result==Config.SUCCESS");
+				List<Friend> friendList = new ArrayList<Friend>();
+				ArrayList list = new ArrayList();
+				int listNum = getPutInt();
+				Log.i(tag, "搜到" + listNum + "条有关的用户记录");
+				int j = 1;
+				int z = 1;
+				for (int i = 0; i < listNum; i++) {
+					Log.i(tag, "第" + j++ + "次进来");
+					// 某个人它的关注列表里每个人的ID
+					String friendID = getString();
+					Log.i(tag, "friendID: " + friendID);
+					String friendNickName = getString();
+					Log.i(tag, "friendNickName:" + friendNickName);
+					String department = getString(); // 2015-8-23新加的，列表显示院系
+					Log.i(tag, "department:" + department);
+					String friendSex = getString();
+					Log.i(tag, "friendSex:" + friendSex);
+					int relationship = getPutInt();
+					Log.i(tag, "relationship:" + relationship + "");
+					byte[] friendImg = getFileBytes(socketChannel);
+					BitmapFactory.Options options = new Options();
+					options.inDither = false; // 不进行图片抖动处理；
+					options.inPreferredConfig = null;// 设置最佳解码器解码
+					options.inSampleSize = 2;
+					// Bitmap bm = BitmapFactory.decodeStream(is, outPadding,
+					// opts)
+					Bitmap bm = BitmapFactory.decodeByteArray(friendImg, 0,
+							friendImg.length, options);
+					Friend friend = new Friend(friendID, friendNickName,
+							department, relationship, bm);
+					friendList.add(friend);
+					Log.i(tag, "第" + z++ + "次读完");
+				}
+
+				if (friendList.size() != 0) {
+					Log.i(tag, "从服务器接收的群列表不为空");
+					Log.i(tag, "friendList的数量是:" + friendList.size());
+				}
+				list.add(friendList);
+				Bundle bundle = new Bundle();
+				bundle.putParcelableArrayList("myAttentionList", list);
+
+				msg.setData(bundle);
+				msg.what = Config.USER_ATTENTION_LIST_SUCCESS;
+
+			} else if (result == Config.NOT_FOUND) {
+				msg.what = Config.NOT_FOUND_HOBBY_USER;
 			}
-
-			if (friendList.size() != 0) {
-				Log.i(tag, "从服务器接收的群列表不为空");
-				Log.i(tag, "friendList的数量是:" + friendList.size());
-			}
-			list.add(friendList);
-			Bundle bundle = new Bundle();
-			bundle.putParcelableArrayList("myAttentionList", list);
-
-			msg.setData(bundle);
-			msg.what = Config.USER_ATTENTION_LIST_SUCCESS;
-
-		} else if (result == Config.NOT_FOUND) {
-			msg.what = Config.NOT_FOUND_HOBBY_USER;
+			BaseActivity.sendMessage(msg);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		BaseActivity.sendMessage(msg);
 	}
 
 	// 处理服务器发来的用户头像
@@ -1180,9 +1194,6 @@ public class NewNetWorker extends Thread {
 		}
 	}
 
-	
-	
-	
 	public byte[] getFileBytes(SocketChannel socketChannel) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		int length = getPutInt();

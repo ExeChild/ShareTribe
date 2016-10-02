@@ -7,12 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.atm.chatonline.usermsg.bean.Notification;
 import com.example.studentsystem01.R;
 
-public class SystemMsgAdapter extends ArrayAdapter<Notification> {
+public class SystemMsgAdapter extends BaseAdapter {
 
 	private List<Notification> list;
 	private Context context;
@@ -20,15 +21,33 @@ public class SystemMsgAdapter extends ArrayAdapter<Notification> {
 	
 	public SystemMsgAdapter(Context context, int resource,
 			List<Notification> objects) {
-		super(context, resource,objects);
+		super();
 		this.list=objects;
 		this.context=context;
 		this.resId=resource;	
 	}
+	
+	@Override
+	public int getCount() {
+		// TODO 自动生成的方法存根
+		return list.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		// TODO 自动生成的方法存根
+		return list.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		// TODO 自动生成的方法存根
+		return position;
+	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Notification notify=getItem(position);
+		Notification notify=list.get(position);
 		ViewHolder viewHolder;
 		
 		if(convertView==null){
@@ -41,12 +60,16 @@ public class SystemMsgAdapter extends ArrayAdapter<Notification> {
 		}else{
 			viewHolder=(ViewHolder) convertView.getTag();
 		}
-		
-		viewHolder.title.setText(notify.getTitle());
-		viewHolder.content.setText(notify.getContent());
-		viewHolder.time.setText(notify.getTime());
+		System.out.println("-->>:"+notify.getContent().getTitle());
+		System.out.println("-->>:"+notify.getContent().getContent());
+		System.out.println("-->>:"+notify.getContent().getTime());
+		viewHolder.title.setText(notify.getContent().getTitle());
+		viewHolder.content.setText(notify.getContent().getContent());
+		viewHolder.time.setText(notify.getContent().getTime());
 		return convertView;
 	}
+
+
 
 }
 class ViewHolder{
