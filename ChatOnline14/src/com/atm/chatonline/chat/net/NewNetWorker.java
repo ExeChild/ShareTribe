@@ -77,14 +77,18 @@ public class NewNetWorker extends Thread {
 	}
 
 	public void run() {
-		int i = 0;
-		Log.i(tag, "i:" + i++);
-		while (isWork) {
-			switch (state) {
-			case running:
-				receiveMsg();
-				break;
+		try {
+			int i = 0;
+			Log.i(tag, "i:" + i++);
+			while (isWork) {
+				switch (state) {
+				case running:
+					receiveMsg();
+					break;
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -328,21 +332,25 @@ public class NewNetWorker extends Thread {
 	// 处理登入请求
 
 	public void handleLogin() {
-		int result = getPutInt();
-		Message msg = new Message();
-		Log.i(tag, "handleLogin-result:" + result);
-		if (result == Config.SUCCESS) {
-			Log.i(tag, "handleLogin()----Config.SUCCESS");
-			msg.what = Config.LOGIN_SUCCESS;
-			Log.i(tag, "handleLogin()--success");
+		try {
+			int result = getPutInt();
+			Message msg = new Message();
+			Log.i(tag, "handleLogin-result:" + result);
+			if (result == Config.SUCCESS) {
+				Log.i(tag, "handleLogin()----Config.SUCCESS");
+				msg.what = Config.LOGIN_SUCCESS;
+				Log.i(tag, "handleLogin()--success");
 
-		} else if (result == Config.FAILED) {
-			msg.what = Config.FAILED;
-			Log.i(tag, "handleLogin()--falied");
-		} else {
-			msg.what = Config.USER_LOGIN_ALREADY;
+			} else if (result == Config.FAILED) {
+				msg.what = Config.FAILED;
+				Log.i(tag, "handleLogin()--falied");
+			} else {
+				msg.what = Config.USER_LOGIN_ALREADY;
+			}
+			BaseActivity.sendMessage(msg);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		BaseActivity.sendMessage(msg);
 	}
 
 	/*
@@ -407,131 +415,136 @@ public class NewNetWorker extends Thread {
 	 * @throws IOException
 	 */
 	private void handleReceive() throws IOException {
-		int type = getPutInt();// 消息類型
-		if (type == Config.MESSAGE_TEXT) {
-			// 发信人
-			String friendID = getString();
-			LogUtil.p(tag, "friendID:" + friendID);
-			// 发信人名字
-			String nickName = getString();
-			LogUtil.p(tag, "nickName:" + nickName);
-			// 收信人，即目前登入的用户
-			String userID = getString();
-			LogUtil.p(tag, "userID:" + userID);
-			String time = getString();
-			String content = getString();
-			Log.i(tag, "接收内容:" + content);
-			byte[] headImg = getFileBytes(socketChannel);
-			Bitmap bm = FileUtil.ByteToBitmap(headImg);
-			Log.i(tag, "handleReceiveText()---friendID:" + friendID);
-			// 保存到数据库
-			File file = FileUtil.createFriendFile(userID, friendID);
-			Log.i(tag, "头像保存路径》》》》》》" + file.getAbsolutePath());
-			FileUtil.saveBitmap(file, bm);
+		try {
+			int type = getPutInt();// 消息類型
+			if (type == Config.MESSAGE_TEXT) {
+				// 发信人
+				String friendID = getString();
+				LogUtil.p(tag, "friendID:" + friendID);
+				// 发信人名字
+				String nickName = getString();
+				LogUtil.p(tag, "nickName:" + nickName);
+				// 收信人，即目前登入的用户
+				String userID = getString();
+				LogUtil.p(tag, "userID:" + userID);
+				String time = getString();
+				String content = getString();
+				Log.i(tag, "接收内容:" + content);
+				byte[] headImg = getFileBytes(socketChannel);
+				Bitmap bm = FileUtil.ByteToBitmap(headImg);
+				Log.i(tag, "handleReceiveText()---friendID:" + friendID);
+				// 保存到数据库
+				File file = FileUtil.createFriendFile(userID, friendID);
+				Log.i(tag, "头像保存路径》》》》》》" + file.getAbsolutePath());
+				FileUtil.saveBitmap(file, bm);
 
-			Log.i(tag, "NewNetWorker01-----handleReceiveText()收到一下这些东西");
-			Log.i(tag, "NewNetWorker01---friendID:" + friendID + " 、userID:"
-					+ userID + "、time:" + time + "、content：" + content);
-			Log.i(tag, "first nickname is " + nickName);
-			ChatMessage chatMessage = new ChatMessage(userID, friendID,
-					nickName, Config.MESSAGE_FROM, Config.MESSAGE_TEXT, time,
-					content, 0);
-			Message msg = new Message();
-			Bundle bundle = new Bundle();
-			Log.i(tag, "nickName is " + chatMessage.getNickName());
-			bundle.putSerializable("chatMessage", chatMessage);
-			msg.setData(bundle);
-			BaseActivity.getFriend().setFriendID(friendID);
-			BaseActivity.getFriend().setNickName(nickName);
-			BaseActivity.getFriend().setBm(bm);
-			Log.i(tag, "看看queue的大小:" + BaseActivity.queue.size());
-			BaseActivity nowActivity = BaseActivity.getNowActivity();
-			if (nowActivity instanceof PersonChatActivity) {
-				if (isChatting("P", chatMessage)) {
-					Log.i(tag,
-							"NewNetWorker01-- 用户和正在和消息的发送者聊天，所以直接将消息发送到聊天界面中--");
-					msg.what = Config.MESSAGE_FROM;
-					BaseActivity.sendMessage(msg);
+				Log.i(tag, "NewNetWorker01-----handleReceiveText()收到一下这些东西");
+				Log.i(tag, "NewNetWorker01---friendID:" + friendID
+						+ " 、userID:" + userID + "、time:" + time + "、content："
+						+ content);
+				Log.i(tag, "first nickname is " + nickName);
+				ChatMessage chatMessage = new ChatMessage(userID, friendID,
+						nickName, Config.MESSAGE_FROM, Config.MESSAGE_TEXT,
+						time, content, 0);
+				Message msg = new Message();
+				Bundle bundle = new Bundle();
+				Log.i(tag, "nickName is " + chatMessage.getNickName());
+				bundle.putSerializable("chatMessage", chatMessage);
+				msg.setData(bundle);
+				BaseActivity.getFriend().setFriendID(friendID);
+				BaseActivity.getFriend().setNickName(nickName);
+				BaseActivity.getFriend().setBm(bm);
+				Log.i(tag, "看看queue的大小:" + BaseActivity.queue.size());
+				BaseActivity nowActivity = BaseActivity.getNowActivity();
+				if (nowActivity instanceof PersonChatActivity) {
+					if (isChatting("P", chatMessage)) {
+						Log.i(tag,
+								"NewNetWorker01-- 用户和正在和消息的发送者聊天，所以直接将消息发送到聊天界面中--");
+						msg.what = Config.MESSAGE_FROM;
+						BaseActivity.sendMessage(msg);
 
-				} else {
+					} else {
+						msg.what = Config.SEND_NOTIFICATION;
+						Log.i(tag, "-- 用户和别的好友正在聊天，所以状态栏发出来消息通知--");
+						BaseActivity.sendMessage(msg);
+					}
+				} else {// else if(nowActivity instanceof ChatMainActivity)
+					Log.i(tag, "用户不在聊天界面");
 					msg.what = Config.SEND_NOTIFICATION;
-					Log.i(tag, "-- 用户和别的好友正在聊天，所以状态栏发出来消息通知--");
-					BaseActivity.sendMessage(msg);
-				}
-			} else {// else if(nowActivity instanceof ChatMainActivity)
-				Log.i(tag, "用户不在聊天界面");
-				msg.what = Config.SEND_NOTIFICATION;
 
-				BaseActivity.saveToDB(chatMessage);
-				BaseActivity.sendMessage(msg);
-				// 需要给当前活动不是PersonChatActivity的类里添加sendNotifycation()方法
+					BaseActivity.saveToDB(chatMessage);
+					BaseActivity.sendMessage(msg);
+					// 需要给当前活动不是PersonChatActivity的类里添加sendNotifycation()方法
+
+				}
+
+			} else if (type == Config.MESSAGE_IMG) {
+				LogUtil.p(tag, "收到的是Config.message_img");
+				// 发信人
+				String friendID = getString();
+				LogUtil.p(tag, "friendID:" + friendID);
+				// 发信人名字
+				String nickName = getString();
+				LogUtil.p(tag, "nickName:" + nickName);
+				// 收信人，即目前登入的用户
+				String userID = getString();
+				LogUtil.p(tag, "userID:" + userID);
+				String time = getString();
+				String content = getString();
+				Log.i(tag, "接收内容:" + content);
+				byte[] headImg = getFileBytes(socketChannel);
+				LogUtil.p(tag, "头像收完");
+				Bitmap bm = FileUtil.ByteToBitmap(headImg);
+				Log.i(tag, "handleReceiveImg()---friendID:" + friendID);
+				// 保存到数据库
+				File file = FileUtil.createFriendFile(userID, friendID);
+				Log.i(tag, "头像保存路径》》》》》》" + file.getAbsolutePath());
+				FileUtil.saveBitmap(file, bm);
+				byte[] chatImg = getFileBytes(socketChannel);
+				LogUtil.p(tag, "图片收完");
+				Bitmap bm2 = FileUtil.ByteToBitmap(chatImg);
+				File fileImg = FileUtil.createFromImg(friendID, content);
+				FileUtil.saveBitmap(fileImg, bm2);
+				content = fileImg.getAbsolutePath();
+				LogUtil.p(tag, "图片存档后的路径名:" + content);
+				ChatMessage chatMessage = new ChatMessage(userID, friendID,
+						nickName, Config.MESSAGE_FROM, Config.MESSAGE_IMG,
+						time, content, 0);
+				Message msg = new Message();
+				Bundle bundle = new Bundle();
+				Log.i(tag, "nickName is " + chatMessage.getNickName());
+				bundle.putSerializable("chatMessage", chatMessage);
+				msg.setData(bundle);
+				BaseActivity.getFriend().setFriendID(friendID);
+				BaseActivity.getFriend().setNickName(nickName);
+				BaseActivity.getFriend().setBm(bm);
+				Log.i(tag, "看看queue的大小:" + BaseActivity.queue.size());
+				BaseActivity nowActivity = BaseActivity.getNowActivity();
+				if (nowActivity instanceof PersonChatActivity) {
+					if (isChatting("P", chatMessage)) {
+						Log.i(tag,
+								"NewNetWorker01-- 用户和正在和消息的发送者聊天，所以直接将消息发送到聊天界面中--");
+						msg.what = Config.MESSAGE_FROM;
+						BaseActivity.sendMessage(msg);
+
+					} else {
+						msg.what = Config.SEND_NOTIFICATION;
+						Log.i(tag, "-- 用户和别的好友正在聊天，所以状态栏发出来消息通知--");
+						BaseActivity.sendMessage(msg);
+					}
+				} else {// else if(nowActivity instanceof ChatMainActivity)
+					Log.i(tag, "用户不在聊天界面");
+					msg.what = Config.SEND_NOTIFICATION;
+
+					BaseActivity.saveToDB(chatMessage);
+					BaseActivity.sendMessage(msg);
+					// 需要给当前活动不是PersonChatActivity的类里添加sendNotifycation()方法
+
+				}
 
 			}
-
-		} else if (type == Config.MESSAGE_IMG) {
-			LogUtil.p(tag, "收到的是Config.message_img");
-			// 发信人
-			String friendID = getString();
-			LogUtil.p(tag, "friendID:" + friendID);
-			// 发信人名字
-			String nickName = getString();
-			LogUtil.p(tag, "nickName:" + nickName);
-			// 收信人，即目前登入的用户
-			String userID = getString();
-			LogUtil.p(tag, "userID:" + userID);
-			String time = getString();
-			String content = getString();
-			Log.i(tag, "接收内容:" + content);
-			byte[] headImg = getFileBytes(socketChannel);
-			LogUtil.p(tag, "头像收完");
-			Bitmap bm = FileUtil.ByteToBitmap(headImg);
-			Log.i(tag, "handleReceiveImg()---friendID:" + friendID);
-			// 保存到数据库
-			File file = FileUtil.createFriendFile(userID, friendID);
-			Log.i(tag, "头像保存路径》》》》》》" + file.getAbsolutePath());
-			FileUtil.saveBitmap(file, bm);
-			byte[] chatImg = getFileBytes(socketChannel);
-			LogUtil.p(tag, "图片收完");
-			Bitmap bm2 = FileUtil.ByteToBitmap(chatImg);
-			File fileImg = FileUtil.createFromImg(friendID, content);
-			FileUtil.saveBitmap(fileImg, bm2);
-			content = fileImg.getAbsolutePath();
-			LogUtil.p(tag, "图片存档后的路径名:" + content);
-			ChatMessage chatMessage = new ChatMessage(userID, friendID,
-					nickName, Config.MESSAGE_FROM, Config.MESSAGE_IMG, time,
-					content, 0);
-			Message msg = new Message();
-			Bundle bundle = new Bundle();
-			Log.i(tag, "nickName is " + chatMessage.getNickName());
-			bundle.putSerializable("chatMessage", chatMessage);
-			msg.setData(bundle);
-			BaseActivity.getFriend().setFriendID(friendID);
-			BaseActivity.getFriend().setNickName(nickName);
-			BaseActivity.getFriend().setBm(bm);
-			Log.i(tag, "看看queue的大小:" + BaseActivity.queue.size());
-			BaseActivity nowActivity = BaseActivity.getNowActivity();
-			if (nowActivity instanceof PersonChatActivity) {
-				if (isChatting("P", chatMessage)) {
-					Log.i(tag,
-							"NewNetWorker01-- 用户和正在和消息的发送者聊天，所以直接将消息发送到聊天界面中--");
-					msg.what = Config.MESSAGE_FROM;
-					BaseActivity.sendMessage(msg);
-
-				} else {
-					msg.what = Config.SEND_NOTIFICATION;
-					Log.i(tag, "-- 用户和别的好友正在聊天，所以状态栏发出来消息通知--");
-					BaseActivity.sendMessage(msg);
-				}
-			} else {// else if(nowActivity instanceof ChatMainActivity)
-				Log.i(tag, "用户不在聊天界面");
-				msg.what = Config.SEND_NOTIFICATION;
-
-				BaseActivity.saveToDB(chatMessage);
-				BaseActivity.sendMessage(msg);
-				// 需要给当前活动不是PersonChatActivity的类里添加sendNotifycation()方法
-
-			}
-
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -649,51 +662,6 @@ public class NewNetWorker extends Thread {
 		BaseActivity.sendMessage(msg);
 	}
 
-	// 暂时先被弃用
-	// private void handleFindFriendList() throws IOException{
-	// Bundle bundle = new Bundle();
-	// Message msg = new Message();
-	// Log.i(tag, "即将接收到FindFriendList result");
-	// msg.what=1;//1表示这是好友列表
-	// int result=getPutInt();
-	// if(result==Config.SUCCESS){
-	// Log.i(tag, "查询成功");
-	// List<Friend> friendList = new ArrayList<Friend>();
-	// ArrayList list = new ArrayList();
-	// int listNum = getPutInt();
-	// Log.i(tag, "listNum:"+listNum);
-	// for(int i=0;i<listNum;i++){
-	// String friendId = getString();
-	// Log.i(tag, "friend"+friendId);
-	// String nickName = getString();
-	// Log.i(tag, "groupName"+nickName);
-	// byte[] friendImg = getFileBytes(socketChannel);
-	// Bitmap bm=FileUtil.ByteToBitmap(friendImg);
-	// //Bitmap bm = BitmapFactory.decodeByteArray(friendImg, 0,
-	// friendImg.length);
-	// Friend friend=new Friend(nickName,bm);
-	// friendList.add(friend);
-	// }
-	//
-	// if(friendList.size()!=0){
-	// Log.i(tag, "从服务器接收的朋友的列表为"+friendList.size());
-	// }else
-	// {
-	// Log.i(tag, "从服务器接收的朋友的列表为0");
-	// }
-	// list.add(friendList);
-	// bundle.putParcelableArrayList("friendList",list);
-	//
-	// }else if(result==Config.FAILED){
-	// Log.i(tag, "查找好友列表失败");
-	// }else if(result==Config.NOT_FOUND){
-	// Log.i(tag, "查找不到列表");
-	// }
-	// bundle.putInt("result", result);
-	// msg.setData(bundle);
-	// WoliaoBaseActivity.sendMessage(msg);
-	//
-	// }
 	private void handleCrowdResultFind() throws IOException {
 		int result = getPutInt();//
 		Message msg = new Message();
@@ -786,59 +754,63 @@ public class NewNetWorker extends Thread {
 	}
 
 	public void handleFindUser() throws IOException {
-		int result = getPutInt();
-		Message msg = new Message();
-		if (result == Config.SUCCESS) {
-			Log.i(tag, "handleFindUser()--result==Config.SUCCESS");
-			List<Friend> friendList = new ArrayList<Friend>();
-			ArrayList list = new ArrayList();
-			int listNum = getPutInt();
-			Log.i(tag, "搜到" + listNum + "条有关的用户记录");
-			int j = 1;
-			int z = 1;
-			for (int i = 0; i < listNum; i++) {
-				Log.i(tag, "第" + j++ + "次进来");
-				String friendID = getString();
-				Log.i(tag, "friendID: " + friendID);
-				String friendNickName = getString();
-				Log.i(tag, "friendNickName:" + friendNickName);
-				String department = getString(); // 2015-8-23新加的，列表显示院系
-				Log.i(tag, "department:" + department);
-				String friendSex = getString();
-				Log.i(tag, "friendSex:" + friendSex);
-				int flag = getPutInt();
-				Log.i(tag, "relationship:" + flag + ",但这是搜索列表，所以无作用");
-				// byte[] friendImg = getFileBytes(socketChannel);
-				// BitmapFactory.Options options = new Options();
-				// options.inDither = false; //不进行图片抖动处理；
-				// options.inPreferredConfig = null;//设置最佳解码器解码
-				// options.inSampleSize = 2;
-				// Bitmap bm = BitmapFactory.decodeByteArray(friendImg, 0,
-				// friendImg.length, options);
-				Log.i(tag, "我来看看图片");
-				byte[] friendImg = getFileBytes(socketChannel);
-				Bitmap bm = FileUtil.ByteToBitmap(friendImg);
-				Friend friend = new Friend(friendID, friendNickName,
-						department, friendSex, bm);
-				friendList.add(friend);
-				Log.i(tag, "第" + z++ + "次读完");
+		try {
+			int result = getPutInt();
+			Message msg = new Message();
+			if (result == Config.SUCCESS) {
+				Log.i(tag, "handleFindUser()--result==Config.SUCCESS");
+				List<Friend> friendList = new ArrayList<Friend>();
+				ArrayList list = new ArrayList();
+				int listNum = getPutInt();
+				Log.i(tag, "搜到" + listNum + "条有关的用户记录");
+				int j = 1;
+				int z = 1;
+				for (int i = 0; i < listNum; i++) {
+					Log.i(tag, "第" + j++ + "次进来");
+					String friendID = getString();
+					Log.i(tag, "friendID: " + friendID);
+					String friendNickName = getString();
+					Log.i(tag, "friendNickName:" + friendNickName);
+					String department = getString(); // 2015-8-23新加的，列表显示院系
+					Log.i(tag, "department:" + department);
+					String friendSex = getString();
+					Log.i(tag, "friendSex:" + friendSex);
+					int flag = getPutInt();
+					Log.i(tag, "relationship:" + flag + ",但这是搜索列表，所以无作用");
+					// byte[] friendImg = getFileBytes(socketChannel);
+					// BitmapFactory.Options options = new Options();
+					// options.inDither = false; //不进行图片抖动处理；
+					// options.inPreferredConfig = null;//设置最佳解码器解码
+					// options.inSampleSize = 2;
+					// Bitmap bm = BitmapFactory.decodeByteArray(friendImg, 0,
+					// friendImg.length, options);
+					Log.i(tag, "我来看看图片");
+					byte[] friendImg = getFileBytes(socketChannel);
+					Bitmap bm = FileUtil.ByteToBitmap(friendImg);
+					Friend friend = new Friend(friendID, friendNickName,
+							department, friendSex, bm);
+					friendList.add(friend);
+					Log.i(tag, "第" + z++ + "次读完");
+				}
+
+				if (friendList.size() != 0) {
+					Log.i(tag, "从服务器接收的群列表不为空");
+					Log.i(tag, "friendList的数量是:" + friendList.size());
+				}
+				list.add(friendList);
+				Bundle bundle = new Bundle();
+				bundle.putParcelableArrayList("friendList", list);
+
+				msg.setData(bundle);
+				msg.what = Config.USER_FIND_SUCCESS;
+
+			} else if (result == Config.NOT_FOUND) {
+				msg.what = Config.FAILED;
 			}
-
-			if (friendList.size() != 0) {
-				Log.i(tag, "从服务器接收的群列表不为空");
-				Log.i(tag, "friendList的数量是:" + friendList.size());
-			}
-			list.add(friendList);
-			Bundle bundle = new Bundle();
-			bundle.putParcelableArrayList("friendList", list);
-
-			msg.setData(bundle);
-			msg.what = Config.USER_FIND_SUCCESS;
-
-		} else if (result == Config.NOT_FOUND) {
-			msg.what = Config.FAILED;
+			BaseActivity.sendMessage(msg);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		BaseActivity.sendMessage(msg);
 	}
 
 	// 处理请求感兴趣群的结果
@@ -899,224 +871,11 @@ public class NewNetWorker extends Thread {
 
 	public void handleFoundHobbyUser() throws IOException {
 		Log.i(tag, "进入handleFoundHobbyUser() ");
-		int result = getPutInt();
-		Message msg = new Message();
-		if (result == Config.SUCCESS) {
-			Log.i(tag, "handleFoundHobbyUser()--result==Config.SUCCESS");
-			List<Friend> friendList = new ArrayList<Friend>();
-			ArrayList list = new ArrayList();
-			int listNum = getPutInt();
-			Log.i(tag, "搜到" + listNum + "条有关的用户记录");
-			int j = 1;
-			int z = 1;
-			for (int i = 0; i < listNum; i++) {
-				Log.i(tag, "第" + j++ + "次进来");
-				String friendID = getString();
-				Log.i(tag, "friendID: " + friendID);
-				String friendNickName = getString();
-				Log.i(tag, "friendNickName:" + friendNickName);
-				String department = getString(); // 2015-8-23新加的，列表显示院系
-				Log.i(tag, "department:" + department);
-				String friendSex = getString();
-				Log.i(tag, "friendSex:" + friendSex);
-				int flag = getPutInt();
-				Log.i(tag, "relationship:" + flag + ",但这是搜索列表，所以无作用");
-				byte[] friendImg = getFileBytes(socketChannel);
-				BitmapFactory.Options options = new Options();
-				options.inDither = false; // 不进行图片抖动处理；
-				options.inPreferredConfig = null;// 设置最佳解码器解码
-				options.inSampleSize = 2;
-				Bitmap bm = BitmapFactory.decodeByteArray(friendImg, 0,
-						friendImg.length, options);
-				Friend friend = new Friend(friendID, friendNickName,
-						department, friendSex, bm);
-				friendList.add(friend);
-				Log.i(tag, "第" + z++ + "次读完");
-			}
-
-			if (friendList.size() != 0) {
-				Log.i(tag, "从服务器接收的群列表不为空");
-				Log.i(tag, "friendList的数量是:" + friendList.size());
-			}
-			list.add(friendList);
-			Bundle bundle = new Bundle();
-			bundle.putParcelableArrayList("friendList", list);
-
-			msg.setData(bundle);
-			msg.what = Config.USER_FIND_SUCCESS;
-
-		} else if (result == Config.NOT_FOUND) {
-			msg.what = Config.NOT_FOUND_HOBBY_USER;
-		}
-		BaseActivity.sendMessage(msg);
-	}
-
-	public void handlePersonINFO() throws IOException {
-		int result = getPutInt();
-		Message msg = new Message();
-		if (result == Config.SUCCESS) {
-			Log.i(tag, "handlePersonINFO()--result==Config.SUCCESS");
-			List<Friend> friendINFOList = new ArrayList<Friend>();
-			ArrayList list = new ArrayList();
-			String friendID = getString();
-			Log.i(tag, "friendID:" + friendID);
-			String nickName = getString();
-			Log.i(tag, "nickName:" + nickName);
-			String sex = getString();
-			Log.i(tag, "sex:" + sex);
-			String attentions = getString();
-			Log.i(tag, "attentions:" + attentions);
-			String followers = getString();
-			Log.i(tag, "followers:" + followers);
-			String signature = getString();
-			Log.i(tag, "signature:" + signature);
-			String school = getString();
-			Log.i(tag, "school:" + school);
-			String department = getString();
-			Log.i(tag, "department:" + department);
-			int relationship = getPutInt();
-			Log.i(tag, "relationship:" + relationship);
-			String publishNoteNum = getString();
-			Log.i(tag, "publishNoteNum:" + publishNoteNum);
-			String publishNoteTitle = getString();
-			Log.i(tag, "publishNoteTitle:" + publishNoteTitle);
-			String publishNoteDetail = getString();
-			Log.i(tag, "publishNoteDetail:" + publishNoteDetail);
-			String collectNoteNum = getString();
-			Log.i(tag, "collectNoteNum:" + collectNoteNum);
-			String collectNoteTitle = getString();
-			Log.i(tag, "collectNoteTitle:" + collectNoteTitle);
-			String collectNoteDetail = getString();
-			Log.i(tag, "collectNoteDetail:" + collectNoteDetail);
-			byte[] friendImg = getFileBytes(socketChannel);
-			BitmapFactory.Options options = new Options();
-			options.inDither = false; // 不进行图片抖动处理；
-			options.inPreferredConfig = null;// 设置最佳解码器解码
-			options.inSampleSize = 2;
-			Bitmap bm = BitmapFactory.decodeByteArray(friendImg, 0,
-					friendImg.length, options);
-			Friend friend = new Friend(friendID, nickName, sex, attentions,
-					followers, signature, school, department, relationship,
-					publishNoteNum, publishNoteTitle, publishNoteDetail,
-					collectNoteNum, collectNoteTitle, collectNoteDetail, bm);
-			friendINFOList.add(friend);
-			list.add(friendINFOList);
-			Bundle bundle = new Bundle();
-			bundle.putParcelableArrayList("friendINFOList", list);
-			msg.setData(bundle);
-			Log.i(tag, "relationship:" + relationship);
-			msg.what = Config.SUCCESS;
-		} else if (result == Config.FAILED) {
-			Log.i(tag, "handlePersonINFO()--result==Config.SUCCESS");
-			msg.what = Config.FAILED;
-		}
-		BaseActivity.sendMessage(msg);
-	}
-
-	/**
-	 * 处理服务器发送过来的我的消息
-	 */
-	private void handleMyMessage() {
-		// Message msg=new Message();
-		// System.out.println("获取到发送过来的消息");
-		String json = getString();
-		System.out.println("获取到发送过来的消息" + json.toString());
-		Bundle bundle = new Bundle();
-		bundle.putString("MyMessage", json);
-		Message msg = new Message();
-		msg.setData(bundle);
-		BaseActivity.sendMessage(msg);
-
-		// BaseActivity.sendMessage(msg);
-	}
-
-	// 处理关注
-	public void handleReqAttention() {
-		int result = getPutInt();
-		if (result == Config.SUCCESS) {
-			Log.i(tag, "请求关注成功");
-		} else if (result == Config.FAILED) {
-			Log.i(tag, "请求关注失败");
-		}
-	}
-
-	// 处理取消关注
-	public void handleReqCanncel() {
-		int result = getPutInt();
-		if (result == Config.SUCCESS) {
-			Log.i(tag, "请求取消关注成功");
-		} else if (result == Config.FAILED) {
-			Log.i(tag, "请求取消关注失败");
-		}
-	}
-
-	public void handleOtherAttention() throws IOException {
-		Log.i(tag, "进入handleOtherAttention() ");
-		int result = getPutInt();
-		Message msg = new Message();
-		if (result == Config.SUCCESS) {
-			Log.i(tag, "handleOtherAttention()--result==Config.SUCCESS");
-			List<Friend> friendList = new ArrayList<Friend>();
-			ArrayList list = new ArrayList();
-			String userID = getString();
-			Log.i(tag, "userID:" + userID);
-			// 当前查看某个人的关注列表的ID
-			String friendID = getString();
-			Log.i(tag, "friendID:" + friendID);
-			int listNum = getPutInt();
-			Log.i(tag, "搜到" + listNum + "条有关的用户记录");
-			int j = 1;
-			int z = 1;
-			for (int i = 0; i < listNum; i++) {
-				Log.i(tag, "第" + j++ + "次进来");
-				// 某个人它的关注列表里每个人的ID
-				String otherID = getString();
-				Log.i(tag, "otherID: " + otherID);
-				String friendNickName = getString();
-				Log.i(tag, "friendNickName:" + friendNickName);
-				String department = getString(); // 2015-8-23新加的，列表显示院系
-				Log.i(tag, "department:" + department);
-				String friendSex = getString();
-				Log.i(tag, "friendSex:" + friendSex);
-				int relationship = getPutInt();
-				Log.i(tag, "relationship:" + relationship + "");
-				byte[] friendImg = getFileBytes(socketChannel);
-				BitmapFactory.Options options = new Options();
-				options.inDither = false; // 不进行图片抖动处理；
-				options.inPreferredConfig = null;// 设置最佳解码器解码
-				options.inSampleSize = 2;
-				Bitmap bm = BitmapFactory.decodeByteArray(friendImg, 0,
-						friendImg.length, options);
-				Friend friend = new Friend(userID, friendID, otherID,
-						friendNickName, department, relationship, bm);
-				friendList.add(friend);
-				Log.i(tag, "第" + z++ + "次读完");
-			}
-
-			if (friendList.size() != 0) {
-				Log.i(tag, "从服务器接收的群列表不为空");
-				Log.i(tag, "friendList的数量是:" + friendList.size());
-			}
-			list.add(friendList);
-			Bundle bundle = new Bundle();
-			bundle.putParcelableArrayList("attentionList", list);
-
-			msg.setData(bundle);
-			msg.what = Config.SUCCESS;
-
-		} else if (result == Config.NOT_FOUND) {
-			msg.what = Config.NOT_FOUND_HOBBY_USER;
-		}
-		BaseActivity.sendMessage(msg);
-	}
-
-	public void handleMyAttention() throws IOException {
-		Log.i(tag, "进入handleMyAttention() ");
 		try {
 			int result = getPutInt();
 			Message msg = new Message();
 			if (result == Config.SUCCESS) {
-				Log.i(tag, "handleMyAttention()--result==Config.SUCCESS");
+				Log.i(tag, "handleFoundHobbyUser()--result==Config.SUCCESS");
 				List<Friend> friendList = new ArrayList<Friend>();
 				ArrayList list = new ArrayList();
 				int listNum = getPutInt();
@@ -1125,9 +884,186 @@ public class NewNetWorker extends Thread {
 				int z = 1;
 				for (int i = 0; i < listNum; i++) {
 					Log.i(tag, "第" + j++ + "次进来");
-					// 某个人它的关注列表里每个人的ID
 					String friendID = getString();
 					Log.i(tag, "friendID: " + friendID);
+					String friendNickName = getString();
+					Log.i(tag, "friendNickName:" + friendNickName);
+					String department = getString(); // 2015-8-23新加的，列表显示院系
+					Log.i(tag, "department:" + department);
+					String friendSex = getString();
+					Log.i(tag, "friendSex:" + friendSex);
+					int flag = getPutInt();
+					Log.i(tag, "relationship:" + flag + ",但这是搜索列表，所以无作用");
+					byte[] friendImg = getFileBytes(socketChannel);
+					BitmapFactory.Options options = new Options();
+					options.inDither = false; // 不进行图片抖动处理；
+					options.inPreferredConfig = null;// 设置最佳解码器解码
+					options.inSampleSize = 2;
+					Bitmap bm = BitmapFactory.decodeByteArray(friendImg, 0,
+							friendImg.length, options);
+					Friend friend = new Friend(friendID, friendNickName,
+							department, friendSex, bm);
+					friendList.add(friend);
+					Log.i(tag, "第" + z++ + "次读完");
+				}
+
+				if (friendList.size() != 0) {
+					Log.i(tag, "从服务器接收的群列表不为空");
+					Log.i(tag, "friendList的数量是:" + friendList.size());
+				}
+				list.add(friendList);
+				Bundle bundle = new Bundle();
+				bundle.putParcelableArrayList("friendList", list);
+
+				msg.setData(bundle);
+				msg.what = Config.USER_FIND_SUCCESS;
+
+			} else if (result == Config.NOT_FOUND) {
+				msg.what = Config.NOT_FOUND_HOBBY_USER;
+			}
+			BaseActivity.sendMessage(msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void handlePersonINFO() throws IOException {
+		try {
+			int result = getPutInt();
+			Message msg = new Message();
+			if (result == Config.SUCCESS) {
+				Log.i(tag, "handlePersonINFO()--result==Config.SUCCESS");
+				List<Friend> friendINFOList = new ArrayList<Friend>();
+				ArrayList list = new ArrayList();
+				String friendID = getString();
+				Log.i(tag, "friendID:" + friendID);
+				String nickName = getString();
+				Log.i(tag, "nickName:" + nickName);
+				String sex = getString();
+				Log.i(tag, "sex:" + sex);
+				String attentions = getString();
+				Log.i(tag, "attentions:" + attentions);
+				String followers = getString();
+				Log.i(tag, "followers:" + followers);
+				String signature = getString();
+				Log.i(tag, "signature:" + signature);
+				String school = getString();
+				Log.i(tag, "school:" + school);
+				String department = getString();
+				Log.i(tag, "department:" + department);
+				int relationship = getPutInt();
+				Log.i(tag, "relationship:" + relationship);
+				String publishNoteNum = getString();
+				Log.i(tag, "publishNoteNum:" + publishNoteNum);
+				String publishNoteTitle = getString();
+				Log.i(tag, "publishNoteTitle:" + publishNoteTitle);
+				String publishNoteDetail = getString();
+				Log.i(tag, "publishNoteDetail:" + publishNoteDetail);
+				String collectNoteNum = getString();
+				Log.i(tag, "collectNoteNum:" + collectNoteNum);
+				String collectNoteTitle = getString();
+				Log.i(tag, "collectNoteTitle:" + collectNoteTitle);
+				String collectNoteDetail = getString();
+				Log.i(tag, "collectNoteDetail:" + collectNoteDetail);
+				byte[] friendImg = getFileBytes(socketChannel);
+				BitmapFactory.Options options = new Options();
+				options.inDither = false; // 不进行图片抖动处理；
+				options.inPreferredConfig = null;// 设置最佳解码器解码
+				options.inSampleSize = 2;
+				Bitmap bm = BitmapFactory.decodeByteArray(friendImg, 0,
+						friendImg.length, options);
+				Friend friend = new Friend(friendID, nickName, sex, attentions,
+						followers, signature, school, department, relationship,
+						publishNoteNum, publishNoteTitle, publishNoteDetail,
+						collectNoteNum, collectNoteTitle, collectNoteDetail, bm);
+				friendINFOList.add(friend);
+				list.add(friendINFOList);
+				Bundle bundle = new Bundle();
+				bundle.putParcelableArrayList("friendINFOList", list);
+				msg.setData(bundle);
+				Log.i(tag, "relationship:" + relationship);
+				msg.what = Config.SUCCESS;
+			} else if (result == Config.FAILED) {
+				Log.i(tag, "handlePersonINFO()--result==Config.SUCCESS");
+				msg.what = Config.FAILED;
+			}
+			BaseActivity.sendMessage(msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 处理服务器发送过来的我的消息
+	 */
+	private void handleMyMessage() {
+		try {
+			// Message msg=new Message();
+			// System.out.println("获取到发送过来的消息");
+			String json = getString();
+			System.out.println("获取到发送过来的消息" + json.toString());
+			Bundle bundle = new Bundle();
+			bundle.putString("MyMessage", json);
+			Message msg = new Message();
+			msg.setData(bundle);
+			BaseActivity.sendMessage(msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// BaseActivity.sendMessage(msg);
+	}
+
+	// 处理关注
+	public void handleReqAttention() {
+		try {
+			int result = getPutInt();
+			if (result == Config.SUCCESS) {
+				Log.i(tag, "请求关注成功");
+			} else if (result == Config.FAILED) {
+				Log.i(tag, "请求关注失败");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 处理取消关注
+	public void handleReqCanncel() {
+		try {
+			int result = getPutInt();
+			if (result == Config.SUCCESS) {
+				Log.i(tag, "请求取消关注成功");
+			} else if (result == Config.FAILED) {
+				Log.i(tag, "请求取消关注失败");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void handleOtherAttention() throws IOException {
+		try {
+			Log.i(tag, "进入handleOtherAttention() ");
+			int result = getPutInt();
+			Message msg = new Message();
+			if (result == Config.SUCCESS) {
+				Log.i(tag, "handleOtherAttention()--result==Config.SUCCESS");
+				List<Friend> friendList = new ArrayList<Friend>();
+				ArrayList list = new ArrayList();
+				String userID = getString();
+				Log.i(tag, "userID:" + userID);
+				// 当前查看某个人的关注列表的ID
+				String friendID = getString();
+				Log.i(tag, "friendID:" + friendID);
+				int listNum = getPutInt();
+				Log.i(tag, "搜到" + listNum + "条有关的用户记录");
+				int j = 1;
+				int z = 1;
+				for (int i = 0; i < listNum; i++) {
+					Log.i(tag, "第" + j++ + "次进来");
+					// 某个人它的关注列表里每个人的ID
+					String otherID = getString();
+					Log.i(tag, "otherID: " + otherID);
 					String friendNickName = getString();
 					Log.i(tag, "friendNickName:" + friendNickName);
 					String department = getString(); // 2015-8-23新加的，列表显示院系
@@ -1141,12 +1077,10 @@ public class NewNetWorker extends Thread {
 					options.inDither = false; // 不进行图片抖动处理；
 					options.inPreferredConfig = null;// 设置最佳解码器解码
 					options.inSampleSize = 2;
-					// Bitmap bm = BitmapFactory.decodeStream(is, outPadding,
-					// opts)
 					Bitmap bm = BitmapFactory.decodeByteArray(friendImg, 0,
 							friendImg.length, options);
-					Friend friend = new Friend(friendID, friendNickName,
-							department, relationship, bm);
+					Friend friend = new Friend(userID, friendID, otherID,
+							friendNickName, department, relationship, bm);
 					friendList.add(friend);
 					Log.i(tag, "第" + z++ + "次读完");
 				}
@@ -1157,10 +1091,10 @@ public class NewNetWorker extends Thread {
 				}
 				list.add(friendList);
 				Bundle bundle = new Bundle();
-				bundle.putParcelableArrayList("myAttentionList", list);
+				bundle.putParcelableArrayList("attentionList", list);
 
 				msg.setData(bundle);
-				msg.what = Config.USER_ATTENTION_LIST_SUCCESS;
+				msg.what = Config.SUCCESS;
 
 			} else if (result == Config.NOT_FOUND) {
 				msg.what = Config.NOT_FOUND_HOBBY_USER;
@@ -1171,26 +1105,96 @@ public class NewNetWorker extends Thread {
 		}
 	}
 
+	public void handleMyAttention() throws IOException {
+		try {
+			Log.i(tag, "进入handleMyAttention() ");
+			try {
+				int result = getPutInt();
+				Message msg = new Message();
+				if (result == Config.SUCCESS) {
+					Log.i(tag, "handleMyAttention()--result==Config.SUCCESS");
+					List<Friend> friendList = new ArrayList<Friend>();
+					ArrayList list = new ArrayList();
+					int listNum = getPutInt();
+					Log.i(tag, "搜到" + listNum + "条有关的用户记录");
+					int j = 1;
+					int z = 1;
+					for (int i = 0; i < listNum; i++) {
+						Log.i(tag, "第" + j++ + "次进来");
+						// 某个人它的关注列表里每个人的ID
+						String friendID = getString();
+						Log.i(tag, "friendID: " + friendID);
+						String friendNickName = getString();
+						Log.i(tag, "friendNickName:" + friendNickName);
+						String department = getString(); // 2015-8-23新加的，列表显示院系
+						Log.i(tag, "department:" + department);
+						String friendSex = getString();
+						Log.i(tag, "friendSex:" + friendSex);
+						int relationship = getPutInt();
+						Log.i(tag, "relationship:" + relationship + "");
+						byte[] friendImg = getFileBytes(socketChannel);
+						BitmapFactory.Options options = new Options();
+						options.inDither = false; // 不进行图片抖动处理；
+						options.inPreferredConfig = null;// 设置最佳解码器解码
+						options.inSampleSize = 2;
+						// Bitmap bm = BitmapFactory.decodeStream(is,
+						// outPadding,
+						// opts)
+						Bitmap bm = BitmapFactory.decodeByteArray(friendImg, 0,
+								friendImg.length, options);
+						Friend friend = new Friend(friendID, friendNickName,
+								department, relationship, bm);
+						friendList.add(friend);
+						Log.i(tag, "第" + z++ + "次读完");
+					}
+
+					if (friendList.size() != 0) {
+						Log.i(tag, "从服务器接收的群列表不为空");
+						Log.i(tag, "friendList的数量是:" + friendList.size());
+					}
+					list.add(friendList);
+					Bundle bundle = new Bundle();
+					bundle.putParcelableArrayList("myAttentionList", list);
+
+					msg.setData(bundle);
+					msg.what = Config.USER_ATTENTION_LIST_SUCCESS;
+
+				} else if (result == Config.NOT_FOUND) {
+					msg.what = Config.NOT_FOUND_HOBBY_USER;
+				}
+				BaseActivity.sendMessage(msg);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	// 处理服务器发来的用户头像
 	public void handleUserHead() throws IOException {
-		Log.i(tag, "进入handleUserHead() ");
-		int result = getPutInt();
-		if (result == Config.SUCCESS) {
-			Log.i(tag, "handleUserHead()--result==Config.SUCCESS");
-			String userID = getString();
-			Log.i(tag, "userID:" + userID);
-			byte[] UserImg = getFileBytes(socketChannel);
-			BitmapFactory.Options options = new Options();
-			options.inDither = false; // 不进行图片抖动处理；
-			options.inPreferredConfig = null;// 设置最佳解码器解码
-			options.inSampleSize = 2;
-			Bitmap bm = BitmapFactory.decodeByteArray(UserImg, 0,
-					UserImg.length, options);
-			File file = FileUtil.createUserHead(userID);
-			FileUtil.saveBitmap(file, bm);
-			Log.i(tag, "头像发送完毕");
-		} else {
-			Log.i(tag, "handleUserHead()--result==Config.FAILED");
+		try {
+			Log.i(tag, "进入handleUserHead() ");
+			int result = getPutInt();
+			if (result == Config.SUCCESS) {
+				Log.i(tag, "handleUserHead()--result==Config.SUCCESS");
+				String userID = getString();
+				Log.i(tag, "userID:" + userID);
+				byte[] UserImg = getFileBytes(socketChannel);
+				BitmapFactory.Options options = new Options();
+				options.inDither = false; // 不进行图片抖动处理；
+				options.inPreferredConfig = null;// 设置最佳解码器解码
+				options.inSampleSize = 2;
+				Bitmap bm = BitmapFactory.decodeByteArray(UserImg, 0,
+						UserImg.length, options);
+				File file = FileUtil.createUserHead(userID);
+				FileUtil.saveBitmap(file, bm);
+				Log.i(tag, "头像发送完毕");
+			} else {
+				Log.i(tag, "handleUserHead()--result==Config.FAILED");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
