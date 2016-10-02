@@ -69,6 +69,7 @@ public abstract class BaseActivity extends ActivityGroup{
 	
 	protected  void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		try{
 		Log.i(tag, "WoliaoBaseActivity---判断队列中是否有这个Activity");
 		if(!queue.contains(this)){
 			if(con==null){
@@ -87,6 +88,9 @@ public abstract class BaseActivity extends ActivityGroup{
 		isDisturb =dbUtil.queryStatus();
 		LogUtil.p(tag, "isDisturb"+isDisturb);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	public static User getSelf() {
@@ -182,14 +186,19 @@ public abstract class BaseActivity extends ActivityGroup{
 
 	
 	protected void setPreference(String userID,String pwd){
+		try{
 		SharedPreferences.Editor editor = getSharedPreferences("User",MODE_PRIVATE).edit();
 		editor.putString("userID", userID);
 		editor.putString("pwd", pwd);
 		editor.commit();
 		getPreference();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	protected User getPreference(){
+		
 		User user=new User();
 		SharedPreferences pref = getSharedPreferences("User",MODE_PRIVATE);
 	    String userId=pref.getString("userID", "");
@@ -197,6 +206,7 @@ public abstract class BaseActivity extends ActivityGroup{
 	    user.setUserID(userId);
 	    user.setPwd(pwd);
 	    return user;
+		
 	}
 	
 	//设置字体的大小  先试试2016.7.19

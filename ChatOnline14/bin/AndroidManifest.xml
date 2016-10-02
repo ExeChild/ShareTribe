@@ -109,9 +109,11 @@
                      android:screenOrientation="portrait"/>
                  <activity android:name="com.atm.chatonline.chat.ui.FollowersActivity"
                      android:screenOrientation="portrait"/>
-                <activity android:launchMode="singleTask" 
+                <activity
+                    android:launchMode="singleTask"
                     android:name="com.atm.chatonline.chat.ui.ChatMainActivity"
-                    android:screenOrientation="portrait"/>
+                    android:screenOrientation="portrait"
+                    ></activity>
                 <activity  android:theme="@android:style/Theme.NoTitleBar" 
                     android:name="com.atm.chatonline.chat.ui.CreateGroupActivity"
                     android:screenOrientation="portrait"/>  
@@ -183,7 +185,8 @@
                   
                   
                   <activity android:name="com.atm.chatonline.schoolnews.ui.SchoolNewsActivity"
-                      android:screenOrientation="portrait"></activity>
+                      android:screenOrientation="portrait"
+                      android:launchMode="singleTask"></activity>
                   <activity android:name="com.atm.chatonline.schoolnews.ui.NewsDetailActivity"
                       android:screenOrientation="portrait"></activity>
                   <activity android:name="com.atm.chatonline.schoolnews.ui.RecommendActivity"
