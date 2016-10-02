@@ -871,8 +871,8 @@ int id spi_school 0x7f050188
 int id spi_school_t 0x7f050197
 int id spinner 0x7f05007c
 int id switch_disturb 0x7f0501bf
-int id system_content 0x7f0501d8
-int id system_time 0x7f0501d9
+int id system_content 0x7f0501d9
+int id system_time 0x7f0501d8
 int id system_title 0x7f0501d7
 int id systemmsg_content 0x7f050209
 int id systemmsg_hint 0x7f05020c

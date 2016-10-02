@@ -1225,8 +1225,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int spi_school_t=0x7f050197;
         public static final int spinner=0x7f05007c;
         public static final int switch_disturb=0x7f0501bf;
-        public static final int system_content=0x7f0501d8;
-        public static final int system_time=0x7f0501d9;
+        public static final int system_content=0x7f0501d9;
+        public static final int system_time=0x7f0501d8;
         public static final int system_title=0x7f0501d7;
         public static final int systemmsg_content=0x7f050209;
         public static final int systemmsg_hint=0x7f05020c;
