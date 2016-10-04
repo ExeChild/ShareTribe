@@ -77,6 +77,7 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try{
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login_view);
         context=getApplicationContext();
@@ -173,6 +174,9 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
         		}
         	}
         };
+        }catch(Exception e){
+        	e.printStackTrace();
+        }
        }
         
     
@@ -255,6 +259,7 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
     //³õÊ¼»¯popupWindow
     public void initPopupWindow()
     {
+    	try{
     	View v=getLayoutInflater().inflate(R.layout.login_error_choose_view, null);
     	popup=new PopupWindow(v,LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
         ColorDrawable cd = new ColorDrawable(-0000);
@@ -293,6 +298,9 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 			}
         	
         });
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
     }
     
     public void login(String userId,String pwd){
@@ -311,6 +319,7 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
     }
     //ÕâÊÇÈí¼þ¹Ø±Õºó£¬²»Ð¶ÔØ£¬ÔÙ´ò¿ªÈí¼þ£¬×Ô¶¯µÇÈë
     public void autoRedirectTo(){
+    	try{
 //    	initProgressDialog();
     	Log.i(tag, "ÕâÊÇÈí¼þ¹Ø±Õºó£¬²»Ð¶ÔØ£¬ÔÙ´ò¿ªÈí¼þ£¬×Ô¶¯µÇÈë");
        	cancelToast();//Ïû³ýÏûÏ¢ÌáÊ¾¿ò
@@ -341,12 +350,16 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
     	startActivity(intent);
 //    	new Thread(runnableGetOfflineMessage).start();
     	finish();
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
     }
     
     
     //½øÈëÖ÷½çÃæ
     public void redirectTo()
     {
+    	try{
     	cancelToast();//Ïû³ýÏûÏ¢ÌáÊ¾¿ò
 //    	Log.i(tag, "·¢ËÍ×Ô¶¯µÇÂ¼ÇëÇó");
 //    	Thread thread = new Thread(autoLoginRunnable);
@@ -362,6 +375,9 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 //			Log.i(tag, "½ø¶È¿ò±»ÏûÃð");
 //			}
     	finish();
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
     }
     
     Runnable runnable=new Runnable(){
@@ -535,6 +551,7 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 
 		@Override
 		public void processMessage(Message msg) {
+			try{
 			Message msg1 = new Message();//ÓëprocessMessageµÄmsgÇø·Ö
 			if(msg.what==Config.LOGIN_SUCCESS){
 				
@@ -564,6 +581,9 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 				LogUtil.p(tag, "ÐÂÏûÏ¢Í¨Öª");
 				sendNotifycation();
 			}
+			}catch(Exception e){
+	    		e.printStackTrace();
+	    	}
 			
 		}
 
