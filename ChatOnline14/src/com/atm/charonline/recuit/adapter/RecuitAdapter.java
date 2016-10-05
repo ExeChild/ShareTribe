@@ -19,11 +19,10 @@ import com.atm.charonline.recuit.bean.Recuit;
 import com.example.studentsystem01.R;
 
 /**
- * @Àà com.atm.charonline.recuit.adapter ---RecuitAdapter
- * @×÷ÓÃ ÕĞÆ¸ÁĞ±íµÄÊÊÅäÆ÷
- * @×÷Õß ³ÂĞ¡¶ş
- * @Ê±¼ä 2015-9-20
- * 
+ * @ç±» com.atm.charonline.recuit.adapter ---RecuitAdapter
+ * @ä½œç”¨ æ‹›è˜åˆ—è¡¨çš„é€‚é…å™¨
+ * @ä½œè€… é™ˆå°äºŒ
+ * @æ—¶é—´ 2015-9-20
  * 
  */
 public class RecuitAdapter extends ArrayAdapter<Recuit> {
@@ -69,21 +68,21 @@ public class RecuitAdapter extends ArrayAdapter<Recuit> {
 		Log.d("recuitAdapter:recuit.getWoTypeName()",recuit.getWoTypeName());
 		Log.d("recuitAdapter:recuit.getReTypeName()",recuit.getReTypeName());
 		viewHolder.publishTime.setText(recuit.getPublishTime());
-		viewHolder.salary.setText("Ğ½×Ê£º"+recuit.getSalary());
-		viewHolder.workContent.setText("¸ÚÎ»£º"+recuit.getWoTypeName());
+		viewHolder.salary.setText("è–ªèµ„ï¼š"+recuit.getSalary());
+		viewHolder.workContent.setText("å²—ä½ï¼š"+recuit.getWoTypeName());
 		viewHolder.location.setText(recuit.getWorkAddress());
 
 			switch(recuit.getReTypeName()) {
-			case "ÊµÏ°":
-				LogUtil.d("Í¼Æ¬±ä¶¯£ºÊµÏ°");
+			case "å®ä¹ ":
+				LogUtil.d("å›¾ç‰‡å˜åŠ¨ï¼šå®ä¹ ");
 				viewHolder.recuitType.setBackgroundResource(R.drawable.image_internship);
 				break;
-			case "È«Ö°":
-				LogUtil.d("Í¼Æ¬±ä¶¯£ºÈ«Ö°");
+			case "å…¨èŒ":
+				LogUtil.d("å›¾ç‰‡å˜åŠ¨ï¼šå…¨èŒ");
 				viewHolder.recuitType.setBackgroundResource(R.drawable.image_fulltime);
 				break;
-			case "¼æÖ°":
-				LogUtil.d("Í¼Æ¬±ä¶¯£º¼æÖ°");
+			case "å…¼èŒ":
+				LogUtil.d("å›¾ç‰‡å˜åŠ¨ï¼šå…¼èŒ");
 				viewHolder.recuitType.setBackgroundResource(R.drawable.image_parttime);
 				break;
 			default:
