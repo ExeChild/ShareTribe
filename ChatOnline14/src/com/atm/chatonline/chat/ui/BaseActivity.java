@@ -26,11 +26,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atm.charonline.bbs.util.LogUtil;
 import com.atm.chatonline.all.util.FontConfig;
@@ -64,6 +66,7 @@ public abstract class BaseActivity extends ActivityGroup{
 	private static List<View> listView = new ArrayList<View>();
 	public  static float fontSize = FontConfig.NOMAL_FONT;
 	public static  int isDisturb;//0表示勿扰模式是关闭
+	public long mExitTime;
 	
 	int count=0;
 	
@@ -253,6 +256,7 @@ public abstract class BaseActivity extends ActivityGroup{
 	
 	
 	 public static void showDialog(){
+		 try{
 	    	AlertDialog.Builder builder=new Builder(getNowActivity());
 	    	View view =LayoutInflater.from(getNowActivity().getApplicationContext()).inflate(com.example.studentsystem01.R.layout.be_off_dialog_view, null);
 	    	builder.setView(view);
@@ -270,6 +274,9 @@ public abstract class BaseActivity extends ActivityGroup{
 				}
 			});
 	    	builder.create().show();
+		 }catch(Exception e){
+			 e.printStackTrace();
+		 }
 	    }
 	 
 	 //发送消息通知在手机栏上，并实现点击事件
@@ -365,7 +372,24 @@ public abstract class BaseActivity extends ActivityGroup{
 //			WoliaoBaseActivity.finishAll();
 //		}
 //		
-		
+		//按两次才退出程序
+		 public boolean onKeyDown(int keyCode, KeyEvent event) {
+	         if (keyCode == KeyEvent.KEYCODE_BACK) {
+	        	 Log.i(tag,"按了系统自带的返回键");
+	                 if ((System.currentTimeMillis() - mExitTime) > 2000) {
+	                         Object mHelperUtils;
+	                         Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+	                         mExitTime = System.currentTimeMillis();
+
+	                 } else {
+	                         finish();
+	                         con.shutDownSocketChannel();
+	                         LogUtil.p(tag, "shutDownSocketChannel");
+	                 }
+	                 return true;
+	         }
+	         return super.onKeyDown(keyCode, event);
+	     }
 		
 		
 	
