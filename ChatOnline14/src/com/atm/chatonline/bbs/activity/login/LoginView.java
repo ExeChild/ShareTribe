@@ -235,26 +235,26 @@ public class LoginView extends BaseActivity implements OnClickListener,OnTouchLi
 		}
     }
     
-	/**
-	 * ¸ßË¹Ä£ºýµÄÊµÏÖ SDK Build-tools ±ØÐë´óÓÚ»òµÈÓÚ18
-	 * 			  SDK Tools ±ØÐëÐ¡ÓÚ»òµÈÓÚ22
-	 * @param bmp  ´«ÈëµÄÒªÊµÏÖÄ£ºýµÄBimapÍ¼Æ¬ £¬¿ÉÒÔÓÃBitmapFactory.decodeResource£¨£©»ñÈ¡
-	 * @param img  ´«ÈëµÄImageView
-	 */
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-	@SuppressLint("NewApi")
-	private void bulr(Bitmap bmp, RelativeLayout view) {
-		 	RenderScript rs = RenderScript.create(context);// ¹¹½¨Ò»¸öRenderScript¶ÔÏó
-		    Allocation overlayAlloc = Allocation.createFromBitmap(rs, bmp);// ´´½¨ÓÃÓÚÊäÈëµÄ½Å±¾ÀàÐÍ
-		    ScriptIntrinsicBlur blur = 
-		        ScriptIntrinsicBlur.create(rs, overlayAlloc.getElement());// ´´½¨¸ßË¹Ä£ºý½Å±¾
-		    blur.setInput(overlayAlloc);// ÉèÖÃÊäÈë½Å±¾ÀàÐÍ
-		    blur.setRadius(radius);// ÉèÖÃÄ£ºý°ë¾¶£¬·¶Î§0f<radius<=25f
-		    blur.forEach(overlayAlloc);// Ö´ÐÐ¸ßË¹Ä£ºýËã·¨£¬²¢½«½á¹ûÌîÈëÊä³ö½Å±¾ÀàÐÍÖÐ
-		    overlayAlloc.copyTo(bmp);// ½«Êä³öÄÚ´æ±àÂëÎªBitmap£¬Í¼Æ¬´óÐ¡±ØÐë×¢Òâ
-		    view.setBackground(new BitmapDrawable(getResources(), bmp));//ÉèÖÃ±³¾°
-		    rs.destroy();// ¹Ø±ÕRenderScript¶ÔÏó
-	}
+//	/**
+//	 * ¸ßË¹Ä£ºýµÄÊµÏÖ SDK Build-tools ±ØÐë´óÓÚ»òµÈÓÚ18
+//	 * 			  SDK Tools ±ØÐëÐ¡ÓÚ»òµÈÓÚ22
+//	 * @param bmp  ´«ÈëµÄÒªÊµÏÖÄ£ºýµÄBimapÍ¼Æ¬ £¬¿ÉÒÔÓÃBitmapFactory.decodeResource£¨£©»ñÈ¡
+//	 * @param img  ´«ÈëµÄImageView
+//	 */
+//	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+//	@SuppressLint("NewApi")
+//	private void bulr(Bitmap bmp, RelativeLayout view) {
+//		 	RenderScript rs = RenderScript.create(context);// ¹¹½¨Ò»¸öRenderScript¶ÔÏó
+//		    Allocation overlayAlloc = Allocation.createFromBitmap(rs, bmp);// ´´½¨ÓÃÓÚÊäÈëµÄ½Å±¾ÀàÐÍ
+//		    ScriptIntrinsicBlur blur = 
+//		        ScriptIntrinsicBlur.create(rs, overlayAlloc.getElement());// ´´½¨¸ßË¹Ä£ºý½Å±¾
+//		    blur.setInput(overlayAlloc);// ÉèÖÃÊäÈë½Å±¾ÀàÐÍ
+//		    blur.setRadius(radius);// ÉèÖÃÄ£ºý°ë¾¶£¬·¶Î§0f<radius<=25f
+//		    blur.forEach(overlayAlloc);// Ö´ÐÐ¸ßË¹Ä£ºýËã·¨£¬²¢½«½á¹ûÌîÈëÊä³ö½Å±¾ÀàÐÍÖÐ
+//		    overlayAlloc.copyTo(bmp);// ½«Êä³öÄÚ´æ±àÂëÎªBitmap£¬Í¼Æ¬´óÐ¡±ØÐë×¢Òâ
+//		    view.setBackground(new BitmapDrawable(getResources(), bmp));//ÉèÖÃ±³¾°
+//		    rs.destroy();// ¹Ø±ÕRenderScript¶ÔÏó
+//	}
     
     //³õÊ¼»¯popupWindow
     public void initPopupWindow()
