@@ -660,23 +660,23 @@ public class BBSMainView extends BaseActivity implements OnClickListener {
 	}
 
 	//按两次才退出程序
-//	 public boolean onKeyDown(int keyCode, KeyEvent event) {
-//         if (keyCode == KeyEvent.KEYCODE_BACK) {
-//        	 Log.i(tag,"按了系统自带的返回键");
-//                 if ((System.currentTimeMillis() - mExitTime) > 2000) {
-//                         Object mHelperUtils;
-//                         Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-//                         mExitTime = System.currentTimeMillis();
-//
-//                 } else {
-//                         finish();
-//                         con.shutDownSocketChannel();
-//                         LogUtil.p(tag, "shutDownSocketChannel");
-//                 }
-//                 return true;
-//         }
-//         return super.onKeyDown(keyCode, event);
-// }
+	 public boolean onKeyDown(int keyCode, KeyEvent event) {
+         if (keyCode == KeyEvent.KEYCODE_BACK) {
+        	 Log.i(tag,"按了系统自带的返回键");
+                 if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                         Object mHelperUtils;
+                         Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                         mExitTime = System.currentTimeMillis();
+
+                 } else {
+                         finish();
+                         con.shutDownSocketChannel();
+                         LogUtil.p(tag, "shutDownSocketChannel");
+                 }
+                 return true;
+         }
+         return super.onKeyDown(keyCode, event);
+ }
 
 	/* (non-Javadoc)
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
