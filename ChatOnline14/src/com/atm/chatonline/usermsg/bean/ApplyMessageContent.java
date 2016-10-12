@@ -2,6 +2,7 @@ package com.atm.chatonline.usermsg.bean;
 
 import java.io.Serializable;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 @SuppressWarnings("serial")
@@ -63,12 +64,12 @@ public class ApplyMessageContent implements Serializable{
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	transient private Drawable HeadImage;
+	transient private Bitmap HeadImage;
 
-	public Drawable getHeadImage() {
+	public Bitmap getHeadImage() {
 		return HeadImage;
 	}
-	public void setHeadImage(Drawable headImage) {
+	public void setHeadImage(Bitmap headImage) {
 		HeadImage = headImage;
 	}
 	

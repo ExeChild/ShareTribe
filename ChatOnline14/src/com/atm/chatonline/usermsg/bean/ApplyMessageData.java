@@ -1,9 +1,14 @@
 package com.atm.chatonline.usermsg.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ApplyMessageData {
+public class ApplyMessageData implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1093654656449529135L;
 	private int type;
 	private List<ApplyMessage> message;
 	private String userId;

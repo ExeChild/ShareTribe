@@ -61,7 +61,8 @@ public class ApplyAdapter extends BaseAdapter {
 		}else{
 			viewHolder=(ViewHolder) convertView.getTag();
 		}
-		viewHolder.headImage.setImageDrawable(msg.getContent().getHeadImage());
+//		viewHolder.headImage.setImageDrawable(msg.getContent().getHeadImage());
+		viewHolder.headImage.setImageBitmap(msg.getContent().getHeadImage());
 		viewHolder.applyContent.setText(msg.getContent().getEssayTitle());
 		viewHolder.applyNickName.setText(msg.getContent().getNickname());
 		viewHolder.applyTime.setText(msg.getContent().getReplyTime());

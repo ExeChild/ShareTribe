@@ -23,6 +23,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -521,6 +522,14 @@ public class ChatMainActivity extends BaseActivity implements OnClickListener,
 		values.put("groupName", groupName);
 		dbUtil.insertGroupInfo(values);
 	}
+	//按两次才退出程序
+		 public boolean onKeyDown(int keyCode, KeyEvent event) {
+	         if (keyCode == KeyEvent.KEYCODE_BACK) {
+	        	 onBackPressed();
+	                 return true;
+	         }
+	         return super.onKeyDown(keyCode, event);
+	 }
 
 	/**
 	 * 将私聊的离线消息存入数据库

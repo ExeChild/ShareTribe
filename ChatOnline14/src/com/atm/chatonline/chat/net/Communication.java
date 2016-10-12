@@ -29,6 +29,13 @@ public class Communication {
 			ReceiveInfoListener listener) {
 		newNetWorker01.addReceiveInfoListener(state, listener);
 	}
+	
+//	//×¢Ïú¼àÌý
+//	public void unRegisterReceiveInfoListener(String state){
+//		if(newNetWorker01.listeners.containsKey(state)){
+//			newNetWorker01.listeners.remove(state);
+//		}
+//	}
 	//µÇÂ¼ÇëÇó
 	public void reqLogin(String userID, String pwd) {
 		if(newNetWorker01.sendMsg==null){

@@ -220,7 +220,7 @@ public class ReplyMsg extends BaseActivity implements OnClickListener{
 	public void loadPhoto(){
 		MyMsgReceivePhoto recPho=new MyMsgReceivePhoto();
 		for(ReplyMessage replyMeesage:list){
-			replyMeesage.getContent().setHeadImage(recPho.getPhoto(cacheManager, replyMeesage.getContent().getUserId(), replyMeesage.getContent().getAvatar()));
+			//replyMeesage.getContent().setHeadImage(recPho.getPhoto(cacheManager, replyMeesage.getContent().getUserId(), replyMeesage.getContent().getAvatar()));
 		}
 		//设置为null,避免长时间占用内存，减少oom的产生概率
 		recPho=null;

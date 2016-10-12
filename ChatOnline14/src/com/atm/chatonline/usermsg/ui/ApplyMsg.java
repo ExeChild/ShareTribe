@@ -5,6 +5,7 @@ package com.atm.chatonline.usermsg.ui;
  */
 import java.util.List;
 
+import org.afinal.simplecache.ACache;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,45 +49,79 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 	private ApplyAdapter adapter;
 	private PullToRefreshListView plv;
 	private ProgressBar pro;
-	private Handler handler;
+	//private Handler handler=new Handler();
 	private CacheManager cacheManager;
+	private ACache mCache;
 	private boolean hasCache=false;
 	private String tag="Applymsg";
 	private TextView applymsg_hint;
-	 
+	private Thread myMsgThread;
+	private ApplyMessageData data;//包含了评论消息的列表
 	//private Integer type=0;//0--评论，1--@我，2--系统消息
+	
+	//发送获取我的评论消息的请求进程,为了之后避免因为Activity销毁后子线程没有被销毁，所以把这个线程写在前面
+	Runnable myMsgRunnable=new Runnable() {
+			
+			@Override
+			public void run() {
+				Log.i(tag, "获取评论消息");
+				ApplyMsg.con.reqMyMsg(userId,1);	
+			}
+	};
+	
+
 	@SuppressWarnings({ "unchecked", "static-access" })
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.usermsg_applymsg_view);
-		Button btn=(Button) findViewById(R.id.btn_back);
-		pro=(ProgressBar) findViewById(R.id.applymsg_probar);
-		applymsg_hint=(TextView) findViewById(R.id.applymsg_hint);
-		btn.setOnClickListener(this);
+		initUI();
+		initData();
+	}
+	
+	private void initData() {
+		
+		mCache=ACache.get(getApplicationContext());
 		//这里还没有判断con是否存在，假设已经存在
 		//获取userId
 		userId=BaseActivity.getSelf().getUserID();
 		//发送请求到服务端,理论上应该先查询数据缓存，如果有则先加载缓存，显示，然后再获取新的消息再刷新；如果没有缓存则显示正在刷洗进度条，然后再加载下载的数据
-		
 		initCache();
-		
 		//获取评论消息
-		new Thread(myMsgRunnable).start();
+		myMsgThread=new Thread(myMsgRunnable);//如果在Activity被销毁之前，还没有返回，则要终止该进程
+		myMsgThread.start();
+		
+		
+		
+	}
+
+	/**
+	 * 获取组件对象，设置监听等初始化工作
+	 */
+	private void initUI() {
+		Button btn=(Button) findViewById(R.id.btn_back);
+		pro=(ProgressBar) findViewById(R.id.applymsg_probar);
+		applymsg_hint=(TextView) findViewById(R.id.applymsg_hint);
+		btn.setOnClickListener(this);
 
 	}
-	
+
+	/**
+	 * 获取缓存
+	 */
 	@SuppressWarnings({ "deprecation", "static-access" })
 	private void initCache() {
-		cacheManager=CacheManager.getInstance();
-		cacheManager.init(getApplicationContext());
-		list=getCacheData();
-		LogUtil.i("list:"+(list==null));
-		if(list!=null&&list.size()>0){
+//		cacheManager=CacheManager.getInstance();
+//		cacheManager.init(getApplicationContext());
+		data=getCacheData();
+		
+		if(data!=null){
 			//如果list的大小大于0，则显示数据
+			list=data.getApplyMessage();
 			LogUtil.i("list size="+list.size());
 			for(ApplyMessage applyMeesage:list){
-				applyMeesage.getContent().setHeadImage(new BitmapDrawable(FileUtil.ByteToBitmap(((byte[])cacheManager.getCache(applyMeesage.getContent().getUserId()).getData()))));
+				applyMeesage.getContent().setHeadImage(mCache.getAsBitmap(applyMeesage.getContent().getUserId())
+						);
 			}
 			hasCache=true;
 			initAdapter();
@@ -107,14 +142,24 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 			@Override
 			public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
 				
-				//获取评论消息
-				new Thread(myMsgRunnable).start();
+				if(myMsgThread==null){
+					myMsgThread=new Thread(myMsgRunnable);
+					myMsgThread.start();
+				}else{
+					myMsgThread.start();
+				}
+				
 			}
 
 			@Override
 			public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-				//获取评论消息
-				new Thread(myMsgRunnable).start();
+				if(myMsgThread==null){
+					myMsgThread=new Thread(myMsgRunnable);
+					myMsgThread.start();
+				}else{
+					myMsgThread.start();
+				}
+				
 				
 			}
 		});
@@ -156,12 +201,13 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private List<ApplyMessage> getCacheData(){
-		CacheData  data =cacheManager.getCache(CacheUtils.APPLY_MSG);
-		if(data==null){
-			return null;
-		}
-		return (List<ApplyMessage>) data.getData();
+	private ApplyMessageData getCacheData(){
+		return (ApplyMessageData) mCache.getAsObject(CacheUtils.APPLY_MSG);
+//		CacheData  data =cacheManager.getCache(CacheUtils.APPLY_MSG);
+//		if(data==null){
+//			return null;
+//		}
+//		return (List<ApplyMessage>) data.getData();
 	}
 	
 	/**
@@ -169,9 +215,10 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 	 * @param data
 	 */
 	@SuppressWarnings({ "unused", "rawtypes", "unchecked" })
-	private void addCacheData(List<ApplyMessage> data){
-		CacheData cacheData=new CacheData(CacheUtils.APPLY_MSG, data);
-		cacheManager.addCache(cacheData);
+	private void addCacheData(ApplyMessageData data){
+		mCache.put(CacheUtils.APPLY_MSG, data);
+//		CacheData cacheData=new CacheData(CacheUtils.APPLY_MSG, data);
+//		cacheManager.addCache(cacheData);
 	}
 	
 	/**
@@ -188,9 +235,18 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 			JSONArray jsonArr=(JSONArray) jsonObject.get("message");
 			
 			if(jsonArr.length()>0){//有新消息
-				ApplyMessageData data=new Gson().fromJson(json, ApplyMessageData.class);
-				list=(List<ApplyMessage>)data.getApplyMessage();
-				new GetPhotoTask().execute();
+				
+				//如果已经有缓存，则把新消息添加到后面，否则则直接直接转换为data
+				if(data==null){
+					data=new Gson().fromJson(json, ApplyMessageData.class);
+					list=(List<ApplyMessage>)data.getApplyMessage();
+					new GetPhotoTask().execute();
+				}else{//把消息添加到后面
+					ApplyMessageData temp=new Gson().fromJson(json, ApplyMessageData.class);
+					data.getApplyMessage().addAll(temp.getApplyMessage());
+					list=data.getApplyMessage();
+					new GetPhotoTask().execute();
+				}
 				applymsg_hint.setVisibility(View.GONE);
 			}else{
 				applymsg_hint.setVisibility(View.VISIBLE);
@@ -223,7 +279,7 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 
 		protected void onPostExecute(String result) {
 			//保存缓存
-			addCacheData(list);
+			addCacheData(data);
 			LogUtil.i("111111111111");
 			//如果有缓存则更新数据，否则创建数据适配器
 			if(hasCache){
@@ -236,11 +292,11 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 		}
 	}
 
-	//下载图片
+	//下载头像图片，顺便更新头像
 	public void loadPhoto(){
 		MyMsgReceivePhoto recPho=new MyMsgReceivePhoto();
 		for(ApplyMessage applyMeesage:list){
-			applyMeesage.getContent().setHeadImage(recPho.getPhoto(cacheManager, applyMeesage.getContent().getUserId(), applyMeesage.getContent().getAvatar()));
+			applyMeesage.getContent().setHeadImage(recPho.getPhoto(mCache, applyMeesage.getContent().getUserId(), applyMeesage.getContent().getAvatar()));
 		}
 		//设置为null,避免长时间占用内存，减少oom的产生概率
 		recPho=null;
@@ -261,14 +317,18 @@ public class ApplyMsg extends BaseActivity implements OnClickListener{
 		
 	}
 	
-	//发送获取我的评论消息的请求进程
-	Runnable myMsgRunnable=new Runnable() {
-		
-		@Override
-		public void run() {
-			Log.i(tag, "获取评论消息");
-			ApplyMsg.con.reqMyMsg(userId,1);	
+	
+	@Override
+	protected void onDestroy() {
+		if(myMsgThread!=null){
+			if(myMsgThread.isAlive()){
+				myMsgThread.interrupt();
+			}
 		}
-	};
+		super.onDestroy();
+	}
+	
+	
+	
 
 }

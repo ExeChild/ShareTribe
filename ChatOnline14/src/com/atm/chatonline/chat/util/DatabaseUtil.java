@@ -52,7 +52,7 @@ public class DatabaseUtil extends SQLiteOpenHelper{
 	
 	
 	public DatabaseUtil(Context context){
-		this(context,DB_NAME,null,1);
+		this(context.getApplicationContext(),DB_NAME,null,1);
 	}
 	
 	public DatabaseUtil(Context context,String name,CursorFactory factory, int version){

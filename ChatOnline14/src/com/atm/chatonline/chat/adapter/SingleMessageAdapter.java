@@ -16,7 +16,7 @@ import com.example.studentsystem01.R;
 
 public class SingleMessageAdapter extends ArrayAdapter<Friend>{
 	private int resourceId;
-	
+	private Context context;
 	private String tag="SingleMessageAdapter";
 	
 	
@@ -24,6 +24,7 @@ public class SingleMessageAdapter extends ArrayAdapter<Friend>{
 	public SingleMessageAdapter(Context context, int textViewResourceId,
 			List<Friend> objects) {
 		super(context,textViewResourceId, objects);
+		this.context=context;
 		resourceId=textViewResourceId;
 	}
 	
@@ -32,7 +33,7 @@ public class SingleMessageAdapter extends ArrayAdapter<Friend>{
 		View view;
 		ViewHolder viewHolder;
 		if(convertView==null){
-			view = LayoutInflater.from(getContext()).inflate(resourceId, null);
+			view = LayoutInflater.from(context).inflate(resourceId, null);
 			viewHolder = new ViewHolder();
 			viewHolder.signature = (TextView)view.findViewById(R.id.personal_content);
 			viewHolder.school = (TextView)view.findViewById(R.id.school_content);

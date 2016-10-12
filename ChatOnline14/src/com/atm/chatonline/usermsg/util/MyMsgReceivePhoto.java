@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.afinal.simplecache.ACache;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
@@ -21,13 +23,12 @@ public class MyMsgReceivePhoto {
 	private String tag ="MyMsgReceivePhoto";
 	
 	private String address;
-	private Drawable d;
 	private URL url;
 	private String subURL = UriAPI.SUB_URL;
 	private HttpURLConnection con;
 	private InputStream is;
 	private Bitmap bm; 
-	private CacheManager cacheManager;
+	private ACache mCahce;
 	private String key;
 	
 	public MyMsgReceivePhoto(){}
@@ -40,20 +41,24 @@ public class MyMsgReceivePhoto {
 	 * @return	返回头像Drawable
 	 */
 	@SuppressWarnings("deprecation")
-	public Drawable getPhoto(CacheManager cacheManager,String key,String address){		
+	public Bitmap getPhoto(ACache cacheManager,String key,String address){		
 		this.address = subURL + address;
-		this.cacheManager=cacheManager;
+		this.mCahce=cacheManager;
 		this.key=key;
 		sendRequestWithHttpURLConnection();
-		if(cacheManager.getCache(key)==null){
-			cacheManager.addCache(new CacheData<byte[]>(key, FileUtil.BitmapToBytes(bm, false)));
-			d = new BitmapDrawable(bm);
-		}else{
-			d=new BitmapDrawable(FileUtil.ByteToBitmap((byte[])cacheManager.getCache(key).getData()));
-			//更新头像
-			cacheManager.addCache(new CacheData<byte[]>(key, FileUtil.BitmapToBytes(bm, false)));
-		}
-		return d;
+		mCahce.put(key,bm);
+//		if(mCahce.getAsBitmap(key)==null){
+//			mCahce.put(key, bm);
+////			cacheManager.addCache(new CacheData<byte[]>(key, FileUtil.BitmapToBytes(bm, false)));
+////			d = new BitmapDrawable(bm);
+//		}else{
+//			mCahce.put(key, bm);
+//			
+////			d=new BitmapDrawable(FileUtil.ByteToBitmap((byte[])cacheManager.getCache(key).getData()));
+////			//更新头像
+////			cacheManager.addCache(new CacheData<byte[]>(key, FileUtil.BitmapToBytes(bm, false)));
+//		}
+		return bm;
 	}
 	
 	
@@ -72,6 +77,7 @@ public class MyMsgReceivePhoto {
 					options.inPreferredConfig = null;//设置最佳解码器解码
 					options.inSampleSize = 2;
 					bm = BitmapFactory.decodeStream(is, null, options);
+					
 					
 				}catch(Exception e){
 					e.printStackTrace();
